@@ -40,7 +40,14 @@ hold off;
 export_fig('./pliki wynikowe/test_punktu_pracy_y(k).pdf');
 
 %% Realizacja zadania 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+% wektory dla przechowywania danych statycznych
+u_stat = zeros(1, size(u_konc, 2)+1);
+u_stat(1) = upp;
+u_stat(2:size(u_konc, 2)+1) = u_konc;
+y_stat = zeros(1, size(u_konc, 2)+1);
+y_stat(1) = ypp;
+% wektory dla przechowywania danych statycznych
+    
 figure;
 for i=1:size(u_konc, 2)
     u(1, 1:200) = upp; % U_pp=1
@@ -71,6 +78,8 @@ for i=1:size(u_konc, 2)
     end
     plot(1:k_konc, y);
     hold on;
+  
+    y_stat(i+1) = y(k_konc); % zapis danych dla wektora statycznego y
 end
 
 legend_list = strings([1 size(u_konc, 2)]);
@@ -78,7 +87,7 @@ xlabel('k');
 ylabel('y(k)');
 title('Wykres y(k)');
 for i=1:size(u_konc, 2)
-    legend_text = 'y(k)=' + string(u_konc(i));
+    legend_text = 'y(k)=' + string(y_stat(i+1));
     legend_list(i) = legend_text;
 end
 legend(legend_list, 'Location', 'southeast');
@@ -86,6 +95,21 @@ hold off;
 export_fig('./pliki wynikowe/zad2_y(k).pdf');
 
 % ch-ka stat%
+% sortowanie i rysowanie danych
+figure;
+[u_stat, sortIndex] = sort(u_stat);
+y_stat = y_stat(sortIndex);
 
+plot(u_stat, y_stat);
+hold on;
+plot(u_stat, y_stat, '.', 'MarkerSize',12);
+legend("Interpolacja danych statycznych", "Dane statyczne", 'Location', 'southeast');
+k_stat = rdivide(y_stat, u_stat);
+
+xlabel('u');
+ylabel('y(u)');
+title('Dane statyczne y(u)');
+hold off;
+export_fig('./pliki wynikowe/zad2_y(u)_stat.pdf');
 
 
