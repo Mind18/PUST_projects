@@ -10,6 +10,11 @@ u(1, 1:11) = 0.5; % Sygnał początkowy do zad.1
 u(1, 12:k_konc) = 1; % Sygnał końcowy do zad.2
 y = zeros(1, k_konc);
 
+% Inicjalizacja danych algorytmu DMC
+D = 200; % Horyzont dynamiki D
+s = zeros(1, D);
+skok_u = 2; % Wybrana odpowiedź skokowa do wyznaczenia wektora s;
+
 % Punkt pracy według funkcji symulacji obiektu
 upp = 1;
 ypp = 1.7;
@@ -82,10 +87,15 @@ for i=1:size(u_konc, 2)
     for k=12:k_konc
         y(k) = symulacja_obiektu8y_p1(u(k-10), u(k-11), y(k-1), y(k-2));
     end
+
     plot(1:k_konc, y);
     hold on;
   
     y_stat(i+1) = y(k_konc); % zapis danych dla wektora statycznego y
+end
+
+for k=1:D
+    s(k) = (y(k+199) - ypp) / u(skok_u) - upp; 
 end
 
 % Dodanie informacji do wygenerowanego wykresu
