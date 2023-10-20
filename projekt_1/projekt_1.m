@@ -143,3 +143,46 @@ title(title_name);
 xlabel('k');
 ylabel('y(k)');
 export_fig('./pliki_wynikowe/odpowiedź_skokowa.pdf');
+
+% Realizacja zadania 4
+
+% Algorytm regulacji PID
+
+% Inicjalizacja zmiennych
+K_r = 1; T_p = 0.5; T_i = 1; T_d = 1; 
+
+% warunki początkowe
+u = zeros(1, k_konc); y = zeros(1, k_konc);
+u(1:11)=0.5; y(1:11)=0;
+yzad(1:11)=0; yzad(12:k_konc)=1.5;
+e(1:11)=0;
+
+% Współczynniki algorytmu
+r2 = (K_r * T_d) / T_p;
+r1 = K_r * (T_p/(2*T_i) - 2*(T_d / T_p) - 1);
+r0 = K_r * (1 + (T_p / (2*T_i)) + (T_d/T_p));
+
+for k=12:k_konc % główna pętla symulacyjna
+% symulacja obiektu
+ y(k)=symulacja_obiektu8y_p1(u(k-10), u(k-11), y(k-1), y(k-2));
+% uchyb regulacji
+ e(k)=yzad(k) - y(k);
+% sygnał sterujący regulatora PID
+ u(k)=r2*e(k-2)+r1*e(k-1)+r0*e(k)+u(k-1);
+end
+
+% Narysowanie wykresów
+figure;
+stairs(u);
+xlabel('k');
+ylabel('u(k)');
+title("Sygnał sterujący u(k) algorytmu PID");
+
+figure;
+stairs(y);
+hold on;
+stairs(yzad, ':');
+xlabel('k');
+ylabel('y(k)');
+title("Sygnał wyjściowy y(K) algorytmu PID");
+legend('y(k)', 'y^{zad}', 'Location', 'southeast');
