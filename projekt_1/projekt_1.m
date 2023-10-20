@@ -4,10 +4,10 @@ import symulacja_obiektu8y_p1.*
 
 clear;
 zad_2_target = 'u'; % 'u' lub 'y'
-u_konc = [0.7 1.3 1.1 0.5 1.5];
-k_konc = 400;
-u(1, 1:11) = 0.5;
-u(1, 12:k_konc) = 1;
+u_konc = [0.7 1.3 1.1 0.5 1.5]; % Sygnały u(k) użye do odpowiedzi skokowej
+k_konc = 400; 
+u(1, 1:11) = 0.5; % Sygnał początkowy do zad.1
+u(1, 12:k_konc) = 1; % Sygnał końcowy do zad.2
 y = zeros(1, k_konc);
 
 % Punkt pracy według funkcji symulacji obiektu
@@ -16,10 +16,12 @@ ypp = 1.7;
 
 %% Realizacja zadania 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%1
 
+% Symulacja obiektu
 for k=12:k_konc
     y(k) = symulacja_obiektu8y_p1(u(k-10), u(k-11), y(k-1), y(k-2));
 end
 
+% Narysowanie wykresu u(k)
 figure;
 plot(1:k_konc, u);
 hold on;
@@ -30,6 +32,7 @@ title('Wykres u(k)');
 hold off;
 export_fig('./pliki wynikowe/test_punktu_pracy_u(k).pdf');
 
+% Narysowanie wykresu y(k)
 figure;
 plot(1:k_konc, y);
 hold on;
@@ -47,7 +50,8 @@ u_stat(2:size(u_konc, 2)+1) = u_konc;
 y_stat = zeros(1, size(u_konc, 2)+1);
 y_stat(1) = ypp;
 % wektory dla przechowywania danych statycznych
-    
+
+% Narysowanie wykresów sygnałów u(k) odp. skokowej
 figure;
 for i=1:size(u_konc, 2)
     u(1, 1:200) = upp; % U_pp=1
@@ -56,6 +60,7 @@ for i=1:size(u_konc, 2)
     hold on;
 end
 
+% Dodanie informacji do wygenerowanego wykresu
 legend_list = strings([1 size(u_konc, 2)]);
 xlabel('k');
 ylabel('u(k)');
@@ -69,6 +74,7 @@ legend(legend_list, 'Location', 'best');
 hold off;
 export_fig('./pliki wynikowe/zad2_u(k).pdf');
 
+% Narysowanie wykresów y(k) odp. skokowej
 figure;
 for i=1:size(u_konc, 2)
     u(1, 1:200) = upp; % U_pp=1
@@ -82,6 +88,7 @@ for i=1:size(u_konc, 2)
     y_stat(i+1) = y(k_konc); % zapis danych dla wektora statycznego y
 end
 
+% Dodanie informacji do wygenerowanego wykresu
 legend_list = strings([1 size(u_konc, 2)]);
 xlabel('k');
 ylabel('y(k)');
