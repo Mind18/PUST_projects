@@ -101,8 +101,6 @@ for i=1:size(u_konc, 2)
     y_stat(i+1) = y(k_konc); % zapis danych dla wektora statycznego y
 end
 
-
-
 % Dodanie informacji do wygenerowanego wykresu
 legend_list = strings([1 size(u_konc, 2)]);
 xlabel('k');
@@ -185,4 +183,80 @@ stairs(yzad, ':');
 xlabel('k');
 ylabel('y(k)');
 title("Sygnał wyjściowy y(K) algorytmu PID");
+legend('y(k)', 'y^{zad}', 'Location', 'southeast');
+
+% Algorytm regulacji DMC
+
+D = 132;   % Horyzont dynamiki
+N = 27;   % Horyzont predykcji
+N_u = 8;   % Horyzont sterowania
+lambda = 10;
+theta = 1;
+Lambda = lambda.*eye(N_u, N_u);
+Theta_1 = theta.*eye(N, N);
+Theta_2 = theta.*eye(N, N);
+k_j = 0;
+M = zeros(N, N_u);
+M_p = zeros(N, D-1);
+U_p = zeros(D-1, 1);
+
+% warunki początkowe
+u = zeros(1, k_konc); y = zeros(1, k_konc);
+u(1:11)=0.5; y(1:11)=0;
+yzad(1:11)=0; yzad(12:k_konc)=1.5;
+
+% Generacja macierzy M
+for j=1:N_u % dla każdej kolumny macierzy M
+    for i=j:N % Dla każdego wiersza kolumny j począwszy od przekątnej
+        M(i, j) = s(i-j+1);
+    end
+end
+
+% Generacja macierzy M_p
+for j=1:D-1 % dla każdej kolumny macierzy M_p
+    for i=1:N % dla każdego wiersza macierzy M_p
+        if j+i > D
+            p = D;
+        else
+            p = j+i;
+        end
+        M_p(i, j) = s(p) - s(j);
+    end
+end
+
+% Wyznaczenie wektora współczynników K
+K = (M'*M+Lambda)^-1*M';
+
+% Wyznaczenie współczynnika k_e
+k_e = sum(K(1,:));
+
+for j=1:D-1
+    k_j = k_j + ((K(1, :)*M_p(:, j))*U_p(j));
+end
+
+for k=12:k_konc
+    % symulacja obiektu
+    y(k) = symulacja_obiektu8y_p1(u(k-10), u(k-11), y(k-1), y(k-2));
+    % wyznaczenie zmiany sterowania
+    delta_u = k_e*(yzad(k) - y(k)) - k_j;
+    % Dokonanie zmiany sterowania
+    u(k) = u(k-1) + delta_u;
+    % Zapamiętanie zmiany sterowania do kolejnych iteracji
+    U_p = [delta_u; U_p(1:D-2, 1)];
+end
+
+% Narysowanie wykresów
+figure;
+stairs(u);
+xlabel('k');
+ylabel('u(k)');
+title("Sygnał sterujący u(k) algorytmu DMC");
+
+figure;
+stairs(y);
+hold on;
+stairs(yzad, ':');
+xlabel('k');
+ylabel('y(k)');
+title("Sygnał wyjściowy y(K) algorytmu DMC");
 legend('y(k)', 'y^{zad}', 'Location', 'southeast');
