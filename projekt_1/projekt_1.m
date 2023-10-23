@@ -154,7 +154,7 @@ export_fig('./pliki_wynikowe/odpowiedź_skokowa.pdf');
 %% Algorytm regulacji PID
 
 % Inicjalizacja zmiennych
-K_r = 0.5; T_p = 0.5; T_i = 9; T_d = 2; e_pid = 0;
+K_r = 0.5; T_p = 0.5; T_i = 9; T_d = 2; e_pid(1:k_konc) = 0;
 
 % warunki początkowe
 u = zeros(1, k_konc); y = zeros(1, k_konc);
@@ -189,7 +189,7 @@ for k=12:k_konc % główna pętla symulacyjna
     end
 
     % Błąd średniokwadratowy dla algorytmu PID
-    e_pid = e_pid + (yzad(k) - y(k))^2;
+    e_pid(k) = e_pid(k-1) + (yzad(k) - y(k))^2;
 end
 
 % Narysowanie wykresów
@@ -203,10 +203,11 @@ figure;
 stairs(y);
 hold on;
 stairs(yzad, ':');
+stairs(e_pid);
 xlabel('k');
 ylabel('y(k)');
-title("Sygnał wyjściowy y(K) algorytmu PID");
-legend('y(k)', 'y^{zad}', 'Location', 'southeast');
+title("Sygnał wyjściowy y(k) algorytmu PID oraz błąd średniokwadratowy");
+legend('y(k)', 'y^{zad}', 'e_{pid}', 'Location', 'southeast');
 %% Algorytm regulacji DMC
 
 D = 200;   % Horyzont dynamiki
@@ -218,7 +219,7 @@ k_j = 0;
 M = zeros(N, N_u);
 M_p = zeros(N, D-1);
 U_p = zeros(D-1, 1);
-e_dmc = 0; %Błąd średniokwadratowy dla algorytmu DMC
+e_dmc(1:k_konc) = 0; %Błąd średniokwadratowy dla algorytmu DMC
 
 % warunki początkowe
 u = zeros(1, k_konc); y = zeros(1, k_konc);
@@ -279,7 +280,7 @@ for k=12:k_konc
         u(k) = u_max;
     end
 
-    e_dmc = e_dmc + (yzad(k) - y(k))^2;
+    e_dmc(k) = e_dmc(k-1) + (yzad(k) - y(k))^2;
 end
 
 % Narysowanie wykresów
@@ -293,7 +294,8 @@ figure;
 stairs(y);
 hold on;
 stairs(yzad, ':');
+stairs(e_dmc);
 xlabel('k');
 ylabel('y(k)');
-title("Sygnał wyjściowy y(K) algorytmu DMC");
-legend('y(k)', 'y^{zad}', 'Location', 'southeast');
+title("Sygnał wyjściowy y(k) algorytmu DMC oraz błąd średniokwadratowy");
+legend('y(k)', 'y^{zad}','e_{dmc}', 'Location', 'southeast');
