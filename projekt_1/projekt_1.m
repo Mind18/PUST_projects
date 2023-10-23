@@ -5,10 +5,17 @@ import symulacja_obiektu8y_p1.*
 clear;
 zad_2_target = 'u'; % 'u' lub 'y'
 u_konc = [0.7 1.3 1.1 0.5 1.5]; % Sygnały u(k) użye do odpowiedzi skokowej
-k_konc = 400; 
+k_konc = 400;
 u(1, 1:11) = 0.5; % Sygnał początkowy do zad.1
 u(1, 12:k_konc) = 1; % Sygnał końcowy do zad.2
 y = zeros(1, k_konc);
+% Ograniczenia regulatora DMC
+du_min = -1;
+du_max = 1;
+u_min = 0.5;
+u_max = 1.5;
+% Wartość zadana dla regulatora DMC
+y_zad = 1.2;
 
 % Inicjalizacja danych algorytmu DMC
 D = 200; % Horyzont dynamiki D
@@ -142,12 +149,12 @@ xlabel('k');
 ylabel('y(k)');
 export_fig('./pliki_wynikowe/odpowiedź_skokowa.pdf');
 
-% Realizacja zadania 4
+%% Realizacja zadania 4
 
-% Algorytm regulacji PID
+%% Algorytm regulacji PID
 
 % Inicjalizacja zmiennych
-K_r = 1; T_p = 0.5; T_i = 1; T_d = 1; 
+K_r = 5; T_p = 0.5; T_i = 1; T_d = 1; 
 
 % warunki początkowe
 u = zeros(1, k_konc); y = zeros(1, k_konc);
@@ -185,16 +192,13 @@ ylabel('y(k)');
 title("Sygnał wyjściowy y(K) algorytmu PID");
 legend('y(k)', 'y^{zad}', 'Location', 'southeast');
 
-% Algorytm regulacji DMC
+%% Algorytm regulacji DMC
 
-D = 132;   % Horyzont dynamiki
-N = 27;   % Horyzont predykcji
-N_u = 8;   % Horyzont sterowania
-lambda = 10;
-theta = 1;
+D = 200;   % Horyzont dynamiki
+N = 200;   % Horyzont predykcji
+N_u = 200;   % Horyzont sterowania
+lambda = 170;
 Lambda = lambda.*eye(N_u, N_u);
-Theta_1 = theta.*eye(N, N);
-Theta_2 = theta.*eye(N, N);
 k_j = 0;
 M = zeros(N, N_u);
 M_p = zeros(N, D-1);
@@ -202,8 +206,8 @@ U_p = zeros(D-1, 1);
 
 % warunki początkowe
 u = zeros(1, k_konc); y = zeros(1, k_konc);
-u(1:11)=0.5; y(1:11)=0;
-yzad(1:11)=0; yzad(12:k_konc)=1.5;
+u(1:11)=upp; y(1:11)=ypp;
+yzad(1:11)=ypp; yzad(12:k_konc)=y_zad;
 
 % Generacja macierzy M
 for j=1:N_u % dla każdej kolumny macierzy M
@@ -225,24 +229,39 @@ for j=1:D-1 % dla każdej kolumny macierzy M_p
 end
 
 % Wyznaczenie wektora współczynników K
-K = (M'*M+Lambda)^-1*M';
+K = ((M'*M+Lambda)^(-1))*M';
 
 % Wyznaczenie współczynnika k_e
 k_e = sum(K(1,:));
-
-for j=1:D-1
-    k_j = k_j + ((K(1, :)*M_p(:, j))*U_p(j));
-end
 
 for k=12:k_konc
     % symulacja obiektu
     y(k) = symulacja_obiektu8y_p1(u(k-10), u(k-11), y(k-1), y(k-2));
     % wyznaczenie zmiany sterowania
+    k_j = 0;
+    for j=1:D-1
+        k_j = k_j + ((K(1, :)*M_p(:, j))*U_p(j));
+    end
     delta_u = k_e*(yzad(k) - y(k)) - k_j;
+    % Ograniczenia zmiany sterowania
+    if delta_u < du_min
+        delta_u = du_min;
+    elseif delta_u > du_max
+        delta_u = du_max;
+    end
+    % Zapamiętanie zmiany sterowania do kolejnych iteracji
+    for n=D-1:-1:2
+        U_p(n,1) = U_p(n-1,1);
+    end
+    U_p(1) = delta_u;
     % Dokonanie zmiany sterowania
     u(k) = u(k-1) + delta_u;
-    % Zapamiętanie zmiany sterowania do kolejnych iteracji
-    U_p = [delta_u; U_p(1:D-2, 1)];
+    % Ograniczenia wartości sterowania
+    if u(k) < u_min
+        u(k) = u_min;
+    elseif u(k) > u_max
+        u(k) = u_max;
+    end
 end
 
 % Narysowanie wykresów
