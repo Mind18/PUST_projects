@@ -154,7 +154,7 @@ export_fig('./pliki_wynikowe/odpowiedź_skokowa.pdf');
 %% Algorytm regulacji PID
 
 % Inicjalizacja zmiennych
-K_r = 0.5; T_p = 0.5; T_i = 9; T_d = 2; 
+K_r = 0.5; T_p = 0.5; T_i = 9; T_d = 2; e_pid = 0;
 
 % warunki początkowe
 u = zeros(1, k_konc); y = zeros(1, k_konc);
@@ -187,6 +187,9 @@ for k=12:k_konc % główna pętla symulacyjna
     elseif u(k) > u_max
         u(k) = u_max;
     end
+
+    % Błąd średniokwadratowy dla algorytmu PID
+    e_pid = e_pid + (yzad(k) - y(k))^2;
 end
 
 % Narysowanie wykresów
@@ -204,7 +207,6 @@ xlabel('k');
 ylabel('y(k)');
 title("Sygnał wyjściowy y(K) algorytmu PID");
 legend('y(k)', 'y^{zad}', 'Location', 'southeast');
-
 %% Algorytm regulacji DMC
 
 D = 200;   % Horyzont dynamiki
@@ -216,6 +218,7 @@ k_j = 0;
 M = zeros(N, N_u);
 M_p = zeros(N, D-1);
 U_p = zeros(D-1, 1);
+e_dmc = 0; %Błąd średniokwadratowy dla algorytmu DMC
 
 % warunki początkowe
 u = zeros(1, k_konc); y = zeros(1, k_konc);
@@ -275,6 +278,8 @@ for k=12:k_konc
     elseif u(k) > u_max
         u(k) = u_max;
     end
+
+    e_dmc = e_dmc + (yzad(k) - y(k))^2;
 end
 
 % Narysowanie wykresów

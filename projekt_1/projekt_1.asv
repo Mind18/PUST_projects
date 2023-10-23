@@ -12,7 +12,7 @@ y = zeros(1, k_konc);
 % Ograniczenia regulatora DMC
 du_max = 1;
 du_min = -du_max;
-du_min = 0.5;
+u_min = 0.5;
 u_max = 1.5;
 % Wartość zadana dla regulatora DMC
 y_zad = 1.2;
@@ -154,7 +154,7 @@ export_fig('./pliki_wynikowe/odpowiedź_skokowa.pdf');
 %% Algorytm regulacji PID
 
 % Inicjalizacja zmiennych
-K_r = 5; T_p = 0.5; T_i = 9; T_d = 1; 
+K_r = 0.5; T_p = 0.5; T_i = 9; T_d = 2; 
 
 % warunki początkowe
 u = zeros(1, k_konc); y = zeros(1, k_konc);
@@ -178,7 +178,7 @@ for k=12:k_konc % główna pętla symulacyjna
     du = u(k) - u(k-1);
     if du < du_min
         u(k) = u(k-1) + du_min;
-    elseif delta_u > du_max
+    elseif du > du_max
         u(k) = u(k-1) + du_max;
     end
     % Ograniczenia wartości sterowania
@@ -204,6 +204,10 @@ xlabel('k');
 ylabel('y(k)');
 title("Sygnał wyjściowy y(K) algorytmu PID");
 legend('y(k)', 'y^{zad}', 'Location', 'southeast');
+
+% Błąd średniokwadratowy dla algorytmu PID
+for k=12:k_konc
+e_pid = e_pid + (yzad(k) - y(k))^2;
 
 %% Algorytm regulacji DMC
 
