@@ -1,0 +1,39 @@
+import Approximation_lab.*
+
+Td = 1;
+y_test = y15;
+x0 = [1, 9, 9];
+A = [2, 1, 1];
+b = 50;
+f = @(param)Approximation_lab(param, y_test, Td);
+param = fmincon(f, x0, A, b)
+disp(param);
+
+K = param(3);
+T1 = param(1);
+T2 = param(2);
+E = 0;
+
+alfa_1 = exp(-1/T1);
+alfa_2 = exp(-1/T2);
+a1 = -alfa_1 - alfa_2;
+a2 = alfa_1 * alfa_2;
+b1 = (K / (T1 - T2))*(T1*(1 - alfa_1)- ...
+    T2*(1-alfa_2));
+b2 = (K / (T1 - T2))*(alfa_1*T2*(1 - alfa_2)- ...
+    alfa_2*T1*(1-alfa_1));
+
+u = zeros(1, size(y_test, 2)); y1 = zeros(1, size(y_test, 2));
+u(1, 1:Td+2) = 28; y1(1, 1:Td+2) = 31.75;
+
+for i=Td+3:size(y_test, 2)
+    y1(i) = b1*u(i-1-Td) + b2*u(i-2-Td) - a1*y1(i-1) - a2*y1(i-2);
+    E = E + (y_test(i) - y1(i))^2;
+end
+disp("E ="+ E)
+x = 1:size(y_test, 2);
+plot(x, y_test);
+hold on;
+plot(x, y1);
+legend('Model wyznaczony z pomiarów', 'Model aproksymowany', ...
+    'Location', 'best');
