@@ -197,6 +197,7 @@ end
 % Narysowanie wykresów
 figure;
 stairs(u);
+ylim([0.4 1.6]);
 xlabel('k');
 ylabel('u(k)');
 title("Sygnał sterujący u(k) algorytmu PID");
@@ -288,6 +289,7 @@ end
 % Narysowanie wykresów
 figure;
 stairs(u);
+ylim([0.4 1.6]);
 xlabel('k');
 ylabel('u(k)');
 title("Sygnał sterujący u(k) algorytmu DMC");
@@ -353,9 +355,10 @@ end
 % Narysowanie wykresów
 figure;
 stairs(u);
+ylim([0.4 1.6]);
 xlabel('k');
 ylabel('u(k)');
-title("Sygnał sterujący u(k) algorytmu PID - po optymalizacji");
+title("Sygnał sterujący u(k) PID - po optymalizacji");
 
 figure;
 stairs(y);
@@ -364,8 +367,7 @@ stairs(yzad, ':');
 stairs(e_pid_fmincon);
 xlabel('k');
 ylabel('y(k)');
-title("Sygnał wyjściowy y(k) algorytmu PID oraz błąd średniokwadratowy "...
-    + " - po optymalizacji");
+title("Sygnał wyjściowy y(k) PID - po optymalizacji");
 legend('y(k)', 'y^{zad}', 'e_{pid}', 'Location', 'southeast');
 
 % Optymalizacja parametrów DMC
