@@ -71,6 +71,7 @@ for i=1:size(u_konc, 2)
     u(1, 1:200) = upp; % U_pp=1
     u(1, 201:k_konc) = u_konc(i);
     plot(1:k_konc, u);
+    ylim([0.4 1.6]);
     hold on;
 end
 
@@ -134,7 +135,6 @@ hold on;
 plot(u_stat, y_stat, '.', 'MarkerSize',12);
 legend("Interpolacja danych statycznych", "Dane statyczne", 'Location', 'southeast');
 k_stat = rdivide(y_stat, u_stat);
-
 xlabel('u');
 ylabel('y(u)');
 title('Dane statyczne y(u)');
