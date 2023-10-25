@@ -196,14 +196,15 @@ end
 
 % Narysowanie wykresów
 figure;
-stairs(u);
+stairs(u); % Dodać wartość błędu średniokwadratowego do tytułu
 ylim([0.4 1.6]);
 xlabel('k');
 ylabel('u(k)');
 title("Sygnał sterujący u(k) algorytmu PID");
+export_fig('./pliki_wynikowe/regulator_pid_u(k).pdf');
 
 figure;
-stairs(y);
+stairs(y); % Dodać wartość błędu średniokwadratowego do tytułu
 hold on;
 stairs(yzad, ':');
 stairs(e_pid);
@@ -211,6 +212,8 @@ xlabel('k');
 ylabel('y(k)');
 title("Sygnał wyjściowy y(k) algorytmu PID oraz błąd średniokwadratowy");
 legend('y(k)', 'y^{zad}', 'e_{pid}', 'Location', 'southeast');
+export_fig('./pliki_wynikowe/regulator_pid_y(k).pdf');
+
 %% Algorytm regulacji DMC
 
 D = 200;   % Horyzont dynamiki
@@ -222,7 +225,7 @@ k_j = 0;
 M = zeros(N, N_u);
 M_p = zeros(N, D-1);
 U_p = zeros(D-1, 1);
-e_dmc(1:k_konc) = 0; %Błąd średniokwadratowy dla algorytmu DMC
+e_dmc(1:k_konc) = 0; % Błąd średniokwadratowy dla algorytmu DMC
 
 % warunki początkowe
 u = zeros(1, k_konc); y = zeros(1, k_konc);
@@ -288,14 +291,15 @@ end
 
 % Narysowanie wykresów
 figure;
-stairs(u);
+stairs(u); % Dodać wartość błędu średniokwadratowego do tytułu
 ylim([0.4 1.6]);
 xlabel('k');
 ylabel('u(k)');
 title("Sygnał sterujący u(k) algorytmu DMC");
+export_fig('./pliki_wynikowe/regulator_dmc_u(k).pdf');
 
 figure;
-stairs(y);
+stairs(y); % Dodać wartość błędu średniokwadratowego do tytułu
 hold on;
 stairs(yzad, ':');
 stairs(e_dmc);
@@ -303,6 +307,7 @@ xlabel('k');
 ylabel('y(k)');
 title("Sygnał wyjściowy y(k) algorytmu DMC oraz błąd średniokwadratowy");
 legend('y(k)', 'y^{zad}','e_{dmc}', 'Location', 'southeast');
+export_fig('./pliki_wynikowe/regulator_dmc_y(k).pdf');
 
 %% Zadanie 6
 
@@ -354,14 +359,15 @@ end
 
 % Narysowanie wykresów
 figure;
-stairs(u);
+stairs(u); % Dodać wartość błędu średniokwadratowego do tytułu
 ylim([0.4 1.6]);
 xlabel('k');
 ylabel('u(k)');
 title("Sygnał sterujący u(k) PID - po optymalizacji");
+export_fig('./pliki_wynikowe/regulator_pid_u(k)_optymalizacja.pdf');
 
 figure;
-stairs(y);
+stairs(y); % Dodać wartość błędu średniokwadratowego do tytułu
 hold on;
 stairs(yzad, ':');
 stairs(e_pid_fmincon);
@@ -369,6 +375,7 @@ xlabel('k');
 ylabel('y(k)');
 title("Sygnał wyjściowy y(k) PID - po optymalizacji");
 legend('y(k)', 'y^{zad}', 'e_{pid}', 'Location', 'southeast');
+export_fig('./pliki_wynikowe/regulator_pid_y(k)_optymalizacja.pdf');
 
 % Optymalizacja parametrów DMC
 
