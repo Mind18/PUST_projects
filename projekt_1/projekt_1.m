@@ -379,7 +379,103 @@ export_fig('./pliki_wynikowe/regulator_pid_y(k)_optymalizacja.pdf');
 
 % Optymalizacja parametrów DMC
 
-% x0 = [200, 200, 170];
-% A = [0.5, 0.5, 1];
-% b = 1000;
-% dmc_params = fmincon(@DMC_SE, x0, A, b)
+x0 = [170];
+A = [0.5];
+b = 1000;
+N_test = 200;
+N_u_test = 200;
+f = @(lambda_test)DMC_SE(lambda_test, N_test, N_u_test);
+dmc_params = fmincon(f, x0, A, b)
+
+D = 200;   % Horyzont dynamiki
+N = N_test;   % Horyzont predykcji
+N_u = N_u_test;   % Horyzont sterowania
+lambda = dmc_params(1);
+Lambda = lambda.*eye(N_u, N_u);
+k_j = 0;
+M = zeros(N, N_u);
+M_p = zeros(N, D-1);
+U_p = zeros(D-1, 1);
+e_dmc(1:k_konc) = 0; % Błąd średniokwadratowy dla algorytmu DMC
+
+% warunki początkowe
+u = zeros(1, k_konc); y = zeros(1, k_konc);
+u(1:11)=upp; y(1:11)=ypp;
+yzad(1:11)=ypp; yzad(12:k_konc)=y_zad;
+
+% Generacja macierzy M
+for j=1:N_u % dla każdej kolumny macierzy M
+    for i=j:N % Dla każdego wiersza kolumny j począwszy od przekątnej
+        M(i, j) = s(i-j+1);
+    end
+end
+
+% Generacja macierzy M_p
+for j=1:D-1 % dla każdej kolumny macierzy M_p
+    for i=1:N % dla każdego wiersza macierzy M_p
+        if j+i > D
+            p = D;
+        else
+            p = j+i;
+        end
+        M_p(i, j) = s(p) - s(j);
+    end
+end
+
+% Wyznaczenie wektora współczynników K
+K = ((M'*M+Lambda)^(-1))*M';
+
+% Wyznaczenie współczynnika k_e
+k_e = sum(K(1,:));
+
+for k=12:k_konc
+    % symulacja obiektu
+    y(k) = symulacja_obiektu8y_p1(u(k-10), u(k-11), y(k-1), y(k-2));
+    % wyznaczenie zmiany sterowania
+    k_j = 0;
+    for j=1:D-1
+        k_j = k_j + ((K(1, :)*M_p(:, j))*U_p(j));
+    end
+    delta_u = k_e*(yzad(k) - y(k)) - k_j;
+    % Ograniczenia zmiany sterowania
+    if delta_u < du_min
+        delta_u = du_min;
+    elseif delta_u > du_max
+        delta_u = du_max;
+    end
+    % Zapamiętanie zmiany sterowania do kolejnych iteracji
+    for n=D-1:-1:2
+        U_p(n,1) = U_p(n-1,1);
+    end
+    U_p(1) = delta_u;
+    % Dokonanie zmiany sterowania
+    u(k) = u(k-1) + delta_u;
+    % Ograniczenia wartości sterowania
+    if u(k) < u_min
+        u(k) = u_min;
+    elseif u(k) > u_max
+        u(k) = u_max;
+    end
+
+    e_dmc(k) = e_dmc(k-1) + (yzad(k) - y(k))^2;
+end
+
+% Narysowanie wykresów
+figure;
+stairs(u); % Dodać wartość błędu średniokwadratowego do tytułu
+ylim([0.4 1.6]);
+xlabel('k');
+ylabel('u(k)');
+title("Sygnał sterujący u(k) algorytmu DMC - optymalizacja");
+export_fig('./pliki_wynikowe/regulator_dmc_u(k).pdf');
+
+figure;
+stairs(y); % Dodać wartość błędu średniokwadratowego do tytułu
+hold on;
+stairs(yzad, ':');
+stairs(e_dmc);
+xlabel('k');
+ylabel('y(k)');
+title("Sygnał wyjściowy y(k) algorytmu DMC - optymalizacja");
+legend('y(k)', 'y^{zad}','e_{dmc}', 'Location', 'southeast');
+export_fig('./pliki_wynikowe/regulator_dmc_y(k).pdf');

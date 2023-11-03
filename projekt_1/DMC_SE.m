@@ -1,4 +1,4 @@
-function [sqrd_err] = DMC_SE(dmc_param)
+function [sqrd_err] = DMC_SE(lambda, N, N_u)
 
 % Inicjalizacja zmiennych
 k_konc = 400;
@@ -15,9 +15,9 @@ upp = 1;
 ypp = 1.7;
 
 D = 200;   % Horyzont dynamiki
-N = dmc_param(1);   % Horyzont predykcji
-N_u = dmc_param(2);   % Horyzont sterowania
-lambda = dmc_param(3); % Parametr kary sterowania lambda
+% N = dmc_param(1);   % Horyzont predykcji
+% N_u = dmc_param(2);   % Horyzont sterowania
+% lambda = dmc_param(3); % Parametr kary sterowania lambda
 Lambda = lambda.*eye(N_u, N_u);
 M = zeros(N, N_u);
 M_p = zeros(N, D-1);
