@@ -1,8 +1,13 @@
+%% TO DO
+% Wyregulować algorytmy
+% Upewnić się czy generowane grafy są ładne
+% 
+
 import symulacja_obiektu8y_p1.*
 import PID_SE.*
 import DMC_SE.*
 
-% Inicjalizacja
+% Inicjalizacja 
 
 clear;
 zad_2_target = 'u'; % 'u' lub 'y'
