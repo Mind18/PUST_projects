@@ -14,8 +14,8 @@ y = zeros(1, k_konc);
 % Ograniczenia regulatorów
 du_max = 1;
 du_min = -du_max;
-u_min = 0.5;
-u_max = 1.5;
+u_min = 0.5; % 0.5 z racji na uwarunkowanie obiektu
+u_max = 1.5; % 1.5 z racji na uwarunkowanie obiektu
 % Wartość zadana dla regulatora DMC
 y_zad = 1.2;
 
@@ -194,32 +194,39 @@ for k=12:k_konc % główna pętla symulacyjna
     e_pid(k) = e_pid(k-1) + (yzad(k) - y(k))^2;
 end
 
+E = e_pid(k_konc);
+
 % Narysowanie wykresów
 figure;
 stairs(u); % Dodać wartość błędu średniokwadratowego do tytułu
 ylim([0.4 1.6]);
 xlabel('k');
 ylabel('u(k)');
-title("Sygnał sterujący u(k) algorytmu PID");
+title_str = "Algorytm PID u(k): K_r=" + string(K_r) ...
+    + " T_i=" + string(T_i) + " T_D=" + string(T_d) + " E=" ...
+    + string(E);
+title(title_str);
 export_fig('./pliki_wynikowe/regulator_pid_u(k).pdf');
 
 figure;
 stairs(y); % Dodać wartość błędu średniokwadratowego do tytułu
 hold on;
 stairs(yzad, ':');
-stairs(e_pid);
 xlabel('k');
 ylabel('y(k)');
-title("Sygnał wyjściowy y(k) algorytmu PID oraz błąd średniokwadratowy");
-legend('y(k)', 'y^{zad}', 'e_{pid}', 'Location', 'southeast');
+title_str = "Algorytm PID y(k): K_r=" + string(K_r) ...
+    + " T_i=" + string(T_i) + " T_D=" + string(T_d) + " E=" ...
+    + string(E);
+title(title_str);
+legend('y(k)', 'y^{zad}', 'Location', 'southeast');
 export_fig('./pliki_wynikowe/regulator_pid_y(k).pdf');
 
 %% Algorytm regulacji DMC
 
 D = 200;   % Horyzont dynamiki
-N = 200;   % Horyzont predykcji
-N_u = 200;   % Horyzont sterowania
-lambda = 170;
+N = 100;   % Horyzont predykcji
+N_u = 100;   % Horyzont sterowania
+lambda = 15;
 Lambda = lambda.*eye(N_u, N_u);
 k_j = 0;
 M = zeros(N, N_u);
@@ -289,24 +296,32 @@ for k=12:k_konc
     e_dmc(k) = e_dmc(k-1) + (yzad(k) - y(k))^2;
 end
 
+E = e_dmc(k_konc); % Błąd średniokwadratowy algorytmu
+
 % Narysowanie wykresów
 figure;
 stairs(u); % Dodać wartość błędu średniokwadratowego do tytułu
 ylim([0.4 1.6]);
 xlabel('k');
 ylabel('u(k)');
-title("Sygnał sterujący u(k) algorytmu DMC");
+title_str = "Algorytm DMC u(k): N=" + string(N) ...
+    + " N_u=" + string(N_u) + " λ=" + string(lambda) + " E=" ...
+    + string(E);
+title(title_str);
 export_fig('./pliki_wynikowe/regulator_dmc_u(k).pdf');
 
 figure;
 stairs(y); % Dodać wartość błędu średniokwadratowego do tytułu
 hold on;
 stairs(yzad, ':');
-stairs(e_dmc);
+ylim([1.1 1.8]);
 xlabel('k');
 ylabel('y(k)');
-title("Sygnał wyjściowy y(k) algorytmu DMC oraz błąd średniokwadratowy");
-legend('y(k)', 'y^{zad}','e_{dmc}', 'Location', 'southeast');
+title_str = "Algorytm DMC y(k): N=" + string(N) ...
+    + " N_u=" + string(N_u) + " λ=" + string(lambda) + " E=" ...
+    + string(E);
+title(title_str);
+legend('y(k)', 'y^{zad}', 'Location', 'southeast');
 export_fig('./pliki_wynikowe/regulator_dmc_y(k).pdf');
 
 %% Zadanie 6
@@ -357,13 +372,18 @@ for k=12:k_konc % główna pętla symulacyjna
     e_pid_fmincon(k) = e_pid_fmincon(k-1) + (yzad(k) - y(k))^2;
 end
 
+E = e_pid_fmincon(k_konc);
+
 % Narysowanie wykresów
 figure;
 stairs(u); % Dodać wartość błędu średniokwadratowego do tytułu
 ylim([0.4 1.6]);
 xlabel('k');
 ylabel('u(k)');
-title("Sygnał sterujący u(k) PID - po optymalizacji");
+title_str = "PID u(k) - optymalizacja: K_r=" + string(K_r) ...
+    + " T_i=" + string(T_i) + " T_D=" + string(T_d) + " E=" ...
+    + string(E);
+title(title_str);
 export_fig('./pliki_wynikowe/regulator_pid_u(k)_optymalizacja.pdf');
 
 figure;
@@ -373,24 +393,33 @@ stairs(yzad, ':');
 stairs(e_pid_fmincon);
 xlabel('k');
 ylabel('y(k)');
-title("Sygnał wyjściowy y(k) PID - po optymalizacji");
+title_str = "PID y(k) - optymalizacja: K_r=" + string(K_r) ...
+    + " T_i=" + string(T_i) + " T_D=" + string(T_d) + " E=" ...
+    + string(E);
+title(title_str);
 legend('y(k)', 'y^{zad}', 'e_{pid}', 'Location', 'southeast');
 export_fig('./pliki_wynikowe/regulator_pid_y(k)_optymalizacja.pdf');
 
 % Optymalizacja parametrów DMC
 
-x0 = [170];
-A = [0.5];
-b = 1000;
-N_test = 200;
-N_u_test = 200;
-f = @(lambda_test)DMC_SE(lambda_test, N_test, N_u_test);
-dmc_params = fmincon(f, x0, A, b)
+% Inicjalizacja parametrów
+e_min = Inf;
 
+x0 = 170;
+A = 0.5;
+b = 1000;
+N_test = 100;
+N_u_test = 100;
+
+% Wyznaczenie optymalnej wartości lambda dla N_test=200 i N_u_test=200
+f = @(lambda_test)DMC_SE(lambda_test, N_test, N_u_test);
+dmc_param = fmincon(f, x0, A, b);
+
+% Zrealizuj symulację algorytmu DMC
 D = 200;   % Horyzont dynamiki
 N = N_test;   % Horyzont predykcji
 N_u = N_u_test;   % Horyzont sterowania
-lambda = dmc_params(1);
+lambda = dmc_param(1);
 Lambda = lambda.*eye(N_u, N_u);
 k_j = 0;
 M = zeros(N, N_u);
@@ -456,9 +485,10 @@ for k=12:k_konc
     elseif u(k) > u_max
         u(k) = u_max;
     end
-
+    % Oblicz aktualny błąd średniokwadratowy
     e_dmc(k) = e_dmc(k-1) + (yzad(k) - y(k))^2;
 end
+E = e_dmc(k_konc);
 
 % Narysowanie wykresów
 figure;
@@ -466,16 +496,22 @@ stairs(u); % Dodać wartość błędu średniokwadratowego do tytułu
 ylim([0.4 1.6]);
 xlabel('k');
 ylabel('u(k)');
-title("Sygnał sterujący u(k) algorytmu DMC - optymalizacja");
+title_str = "Algorytm DMC u(k) - optymalizacja: N=" + string(N_test) ...
+    + " N_u=" + string(N_u_test) + " λ=" + string(lambda) + " E=" ...
+    + string(E);
+title(title_str);
 export_fig('./pliki_wynikowe/regulator_dmc_u(k).pdf');
 
 figure;
 stairs(y); % Dodać wartość błędu średniokwadratowego do tytułu
 hold on;
 stairs(yzad, ':');
-stairs(e_dmc);
+ylim([1.1 1.8]);
 xlabel('k');
 ylabel('y(k)');
-title("Sygnał wyjściowy y(k) algorytmu DMC - optymalizacja");
-legend('y(k)', 'y^{zad}','e_{dmc}', 'Location', 'southeast');
+title_str = "Algorytm DMC y(k) - optymalizacja: N=" + string(N_test) ...
+    + " N_u=" + string(N_u_test) + " λ=" + string(lambda) + " E=" ...
+    + string(E);
+title(title_str);
+legend('y(k)', 'y^{zad}', 'Location', 'southeast');
 export_fig('./pliki_wynikowe/regulator_dmc_y(k).pdf');

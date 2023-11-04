@@ -8,10 +8,10 @@ ypp = 1.7;
 y_zad = 1.2;
 
 % Ograniczenia regulatora
-du_max = 1;
+du_max = 1; % 1
 du_min = -du_max;
-u_min = 0.5;
-u_max = 1.5;
+u_min = 0.5; % 0.5
+u_max = 1.5; % 1.5
 
 % warunki początkowe
 u = zeros(1, k_konc); y = zeros(1, k_konc);

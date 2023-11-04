@@ -3,10 +3,10 @@ function [sqrd_err] = DMC_SE(lambda, N, N_u)
 % Inicjalizacja zmiennych
 k_konc = 400;
 u_konc = 1.5;
-du_max = 1;
+du_max = 1; % 1
 du_min = -du_max;
-u_min = 0.5;
-u_max = 1.5;
+u_min = 0.5; % 0.5
+u_max = 1.5; % 1.5
 % Wartość zadana dla regulatora DMC
 y_zad = 1.2;
 
