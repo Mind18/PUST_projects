@@ -73,8 +73,8 @@ y_stat(1) = ypp;
 % Narysowanie wykresów sygnałów u(k) odp. skokowej
 figure;
 for i=1:size(u_konc, 2)
-    u(1, 1:200) = upp; % U_pp=1
-    u(1, 201:k_konc) = u_konc(i);
+    u(1, 1:k_konc) = upp; % U_pp=1
+    u(1, 15:k_konc) = u_konc(i);
     plot(1:k_konc, u);
     ylim([0.4 1.6]);
     hold on;
@@ -97,8 +97,9 @@ export_fig('./pliki_wynikowe/zad2_u(k).pdf');
 % Narysowanie wykresów y(k) odp. skokowej
 figure;
 for i=1:size(u_konc, 2)
-    u(1, 1:200) = upp; % U_pp=1
-    u(1, 201:k_konc) = u_konc(i);
+    u(1, 1:k_konc) = upp; % U_pp=1
+    u(1, 15:k_konc) = u_konc(i);
+    y(1, 1:k_konc) = ypp;
     for k=12:k_konc
         y(k) = symulacja_obiektu8y_p1(u(k-10), u(k-11), y(k-1), y(k-2));
     end
@@ -106,7 +107,7 @@ for i=1:size(u_konc, 2)
     if skok_u == i
         for k=1:D
             % Realizacja zadania 3
-            s(k) = (y(k+200) - ypp) / (u_konc(skok_u) - upp);
+            s(k) = (y(k+15) - ypp) / 0.5; % (u_konc(skok_u) - upp);
         end
     end
 
@@ -229,19 +230,20 @@ export_fig('./pliki_wynikowe/regulator_pid_y(k).pdf');
 %% Algorytm regulacji DMC
 
 D = 200;   % Horyzont dynamiki
-N = 100;   % Horyzont predykcji
-N_u = 100;   % Horyzont sterowania
+N = 80;   % Horyzont predykcji
+N_u = N;   % Horyzont sterowania
 lambda = 15;
 Lambda = lambda.*eye(N_u, N_u);
 k_j = 0;
 M = zeros(N, N_u);
 M_p = zeros(N, D-1);
 U_p = zeros(D-1, 1);
+e = zeros(k_konc, 1);
 e_dmc(1:k_konc) = 0; % Błąd średniokwadratowy dla algorytmu DMC
 
 % warunki początkowe
 u = zeros(1, k_konc); y = zeros(1, k_konc);
-u(1:11)=upp; y(1:11)=ypp;
+u(1:k_konc)=upp; y(1:11)=ypp;
 yzad(1:11)=ypp; yzad(12:k_konc)=y_zad;
 
 % Generacja macierzy M
@@ -274,14 +276,17 @@ for k=12:k_konc
     y(k) = symulacja_obiektu8y_p1(u(k-10), u(k-11), y(k-1), y(k-2));
     % wyznaczenie zmiany sterowania
     k_j = 0;
+    e(k) = yzad(k) - y(k);
     for j=1:D-1
-        k_j = k_j + ((K(1, :)*M_p(:, j))*U_p(j));
+        k_j_inc = K(1, :)*M_p(:, j);
+        k_j = k_j + k_j_inc*U_p(j);
     end
-    delta_u = k_e*(yzad(k) - y(k)) - k_j;
+    delta_u = k_e*e(k) - k_j;
     % Ograniczenia zmiany sterowania
     if delta_u < du_min
         delta_u = du_min;
-    elseif delta_u > du_max
+    end
+    if delta_u > du_max
         delta_u = du_max;
     end
     % Zapamiętanie zmiany sterowania do kolejnych iteracji
@@ -294,11 +299,14 @@ for k=12:k_konc
     % Ograniczenia wartości sterowania
     if u(k) < u_min
         u(k) = u_min;
-    elseif u(k) > u_max
+        U_p(1) = u(k)-u(k-1);
+    end
+    if u(k) > u_max
         u(k) = u_max;
+        U_p(1) = u(k)-u(k-1);
     end
 
-    e_dmc(k) = e_dmc(k-1) + (yzad(k) - y(k))^2;
+    e_dmc(k) = e_dmc(k-1) + e(k)^2;
 end
 
 E = e_dmc(k_konc); % Błąd średniokwadratowy algorytmu
@@ -413,8 +421,8 @@ e_min = Inf;
 x0 = 170;
 A = 0.5;
 b = 1000;
-N_test = 100;
-N_u_test = 100;
+N_test = 80;
+N_u_test = 80;
 
 % Wyznaczenie optymalnej wartości lambda dla N_test=200 i N_u_test=200
 f = @(lambda_test)DMC_SE(lambda_test, N_test, N_u_test);
@@ -430,6 +438,7 @@ k_j = 0;
 M = zeros(N, N_u);
 M_p = zeros(N, D-1);
 U_p = zeros(D-1, 1);
+e = zeros(k_konc, 1);
 e_dmc(1:k_konc) = 0; % Błąd średniokwadratowy dla algorytmu DMC
 
 % warunki początkowe
@@ -467,14 +476,17 @@ for k=12:k_konc
     y(k) = symulacja_obiektu8y_p1(u(k-10), u(k-11), y(k-1), y(k-2));
     % wyznaczenie zmiany sterowania
     k_j = 0;
+    e(k) = yzad(k) - y(k);
     for j=1:D-1
-        k_j = k_j + ((K(1, :)*M_p(:, j))*U_p(j));
+        k_j_inc = K(1, :)*M_p(:, j);
+        k_j = k_j + k_j_inc*U_p(j);
     end
-    delta_u = k_e*(yzad(k) - y(k)) - k_j;
+    delta_u = k_e*e(k) - k_j;
     % Ograniczenia zmiany sterowania
     if delta_u < du_min
         delta_u = du_min;
-    elseif delta_u > du_max
+    end
+    if delta_u > du_max
         delta_u = du_max;
     end
     % Zapamiętanie zmiany sterowania do kolejnych iteracji
@@ -487,12 +499,16 @@ for k=12:k_konc
     % Ograniczenia wartości sterowania
     if u(k) < u_min
         u(k) = u_min;
-    elseif u(k) > u_max
-        u(k) = u_max;
+        U_p(1) = u(k)-u(k-1);
     end
-    % Oblicz aktualny błąd średniokwadratowy
-    e_dmc(k) = e_dmc(k-1) + (yzad(k) - y(k))^2;
+    if u(k) > u_max
+        u(k) = u_max;
+        U_p(1) = u(k)-u(k-1);
+    end
+
+    e_dmc(k) = e_dmc(k-1) + e(k)^2;
 end
+
 E = e_dmc(k_konc);
 
 % Narysowanie wykresów
