@@ -521,7 +521,7 @@ title_str = "Algorytm DMC u(k) - optymalizacja: N=" + string(N_test) ...
     + " N_u=" + string(N_u_test) + " λ=" + string(lambda) + " E=" ...
     + string(E);
 title(title_str);
-export_fig('./pliki_wynikowe/regulator_dmc_u(k).pdf');
+export_fig('./pliki_wynikowe/regulator_dmc_u(k)_optymalizacja.pdf');
 
 figure;
 stairs(y); % Dodać wartość błędu średniokwadratowego do tytułu
@@ -535,4 +535,4 @@ title_str = "Algorytm DMC y(k) - optymalizacja: N=" + string(N_test) ...
     + string(E);
 title(title_str);
 legend('y(k)', 'y^{zad}', 'Location', 'southeast');
-export_fig('./pliki_wynikowe/regulator_dmc_y(k).pdf');
+export_fig('./pliki_wynikowe/regulator_dmc_y(k)_optymalizacja.pdf');
