@@ -237,7 +237,6 @@ legend('y(k)', 'y^{zad}', 'Location', 'southeast');
 export_fig('./pliki_wynikowe/regulator_pid_y(k).pdf');
 
 %% Algorytm regulacji DMC
-
 D = 200;   % Horyzont dynamiki
 N = 80;   % Horyzont predykcji
 N_u = N;   % Horyzont sterowania
