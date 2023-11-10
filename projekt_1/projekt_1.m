@@ -155,7 +155,7 @@ title_name = "Odpowiedź skokowa układu dla u_{konc}=" + ...
 title(title_name);
 xlabel('k');
 ylabel('y(k)');
-export_fig('./pliki_wynikowe/odpowiedź_skokowa.pdf');
+export_fig('./pliki_wynikowe/odpowiedz_skokowa.pdf');
 
 %% Realizacja zadania 4
 
