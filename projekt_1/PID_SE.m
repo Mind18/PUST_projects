@@ -1,7 +1,7 @@
 function [sqrd_err] = PID_SE(pid_param)
 
 % Stałe funkcji
-k_konc = 400;
+k_konc = 300;
 T_p = 0.5;
 upp = 1;
 ypp = 1.7;

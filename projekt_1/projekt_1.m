@@ -164,10 +164,10 @@ k_konc = 1200;
 Y_zad = [y_zad 1.8 1.3 2.3];
 
 % Inicjalizacja zmiennych
-K_r = 0.32; T_p = 0.5; T_i = 7.3; T_d = 0.3; 
+K_r = 0.32; T_p = 0.5; T_i = 7.3; T_d = 0.74; 
 % K_r - 0.5 -> 0.35 -> 0.32
 % T_i - 9 -> 8 -> 7.3
-% T_d - 2 -> 0.2
+% T_d - 2 -> 0.2 -> 0.7 -> 0.74
 % warunki początkowe
 u = zeros(1, k_konc); y = zeros(1, k_konc);
 u(1:11)=upp; y(1:11)=ypp;
@@ -356,9 +356,11 @@ export_fig('./pliki_wynikowe/regulator_dmc_y(k).pdf');
 % Optymalizacja parametrów PID
 
 x0 = [K_r, T_i, T_d];
-A = [1, 1, 1];
-b = 100;
-pid_params = fmincon(@PID_SE, x0, A, b);
+A = [1.6, 1, 1.75]; % 22.974, 1, 9.81
+b = 10;
+lb = [0.29, 7, 0.69];
+ub = [0.37, 7.6 0.79];
+pid_params = fmincon(@PID_SE, x0, A, b, [], [], lb, ub);
 
 % Inicjalizacja zmiennych
 K_r = pid_params(1); T_p = 0.5; T_i = pid_params(2); T_d = pid_params(3); 
@@ -441,8 +443,8 @@ e_min = Inf;
 x0 = 15;
 A = 0.5;
 b = 100;
-N_test = 80;
-N_u_test = 80;
+N_test = 98;
+N_u_test = 18;
 
 % Wyznaczenie optymalnej wartości lambda dla N_test=200 i N_u_test=200
 f = @(lambda_test)DMC_SE(lambda_test, N_test, N_u_test);
