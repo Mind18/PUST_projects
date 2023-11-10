@@ -240,8 +240,8 @@ export_fig('./pliki_wynikowe/regulator_pid_y(k).pdf');
 
 %% Algorytm regulacji DMC
 D = 200;   % Horyzont dynamiki
-N = 80;   % Horyzont predykcji
-N_u = N;   % Horyzont sterowania
+N = 98;   % Horyzont predykcji
+N_u = 18;   % Horyzont sterowania
 lambda = 15;
 Lambda = lambda.*eye(N_u, N_u);
 M = zeros(N, N_u);
