@@ -243,7 +243,6 @@ N = 80;   % Horyzont predykcji
 N_u = N;   % Horyzont sterowania
 lambda = 15;
 Lambda = lambda.*eye(N_u, N_u);
-k_j = 0;
 M = zeros(N, N_u);
 M_p = zeros(N, D-1);
 U_p = zeros(D-1, 1);
