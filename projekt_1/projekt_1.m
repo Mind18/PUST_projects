@@ -164,8 +164,10 @@ k_konc = 1200;
 Y_zad = [y_zad 1.8 1.3 2.3];
 
 % Inicjalizacja zmiennych
-K_r = 0.5; T_p = 0.5; T_i = 9; T_d = 2; 
-
+K_r = 0.32; T_p = 0.5; T_i = 7.3; T_d = 0.3; 
+% K_r - 0.5 -> 0.35 -> 0.32
+% T_i - 9 -> 8 -> 7.3
+% T_d - 2 -> 0.2
 % warunki początkowe
 u = zeros(1, k_konc); y = zeros(1, k_konc);
 u(1:11)=upp; y(1:11)=ypp;
@@ -353,9 +355,9 @@ export_fig('./pliki_wynikowe/regulator_dmc_y(k).pdf');
 
 % Optymalizacja parametrów PID
 
-x0 = [0.5, 9, 2];
-A = [1, 0.5, 1];
-b = 20;
+x0 = [K_r, T_i, T_d];
+A = [1, 1, 1];
+b = 100;
 pid_params = fmincon(@PID_SE, x0, A, b);
 
 % Inicjalizacja zmiennych

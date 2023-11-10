@@ -1,7 +1,7 @@
 function [sqrd_err] = DMC_SE(lambda, N, N_u)
 
 % Inicjalizacja zmiennych
-k_konc = 400;
+k_konc = 1200;
 u_konc = 1.5;
 du_max = 1; % 1
 du_min = -du_max;
@@ -9,6 +9,7 @@ u_min = 0.5; % 0.5
 u_max = 1.5; % 1.5
 % Wartość zadana dla regulatora DMC
 y_zad = 1.2;
+Y_zad = [y_zad 1.8 1.3 2.3];
 
 % Punkt pracy według funkcji symulacji obiektu
 upp = 1;
@@ -28,7 +29,12 @@ s = zeros(1, D); % Wektor odpowiedzi skokowej
 % warunki początkowe
 u = zeros(1, k_konc); y = zeros(1, k_konc);
 u(1:11)=upp; y(1:11)=ypp;
-yzad(1:11)=ypp; yzad(12:k_konc)=y_zad;
+% Generacja zmiennej trajektori
+yzad(1:11)=ypp;
+yzad(12:300)=Y_zad(1);
+yzad(301:600)=Y_zad(2);
+yzad(601:900)=Y_zad(3);
+yzad(901:k_konc)=Y_zad(4);
 
 % Generacja odpoweidzi skokowej
 
