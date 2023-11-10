@@ -160,6 +160,8 @@ export_fig('./pliki_wynikowe/odpowiedź_skokowa.pdf');
 %% Realizacja zadania 4
 
 %% Algorytm regulacji PID
+k_konc = 1200;
+Y_zad = [y_zad 1.8 1.3 2.3];
 
 % Inicjalizacja zmiennych
 K_r = 0.5; T_p = 0.5; T_i = 9; T_d = 2; 
@@ -167,7 +169,13 @@ K_r = 0.5; T_p = 0.5; T_i = 9; T_d = 2;
 % warunki początkowe
 u = zeros(1, k_konc); y = zeros(1, k_konc);
 u(1:11)=upp; y(1:11)=ypp;
-yzad(1:11)=0; yzad(12:k_konc)=y_zad;
+% Generacja zmiennej trajektori
+yzad(1:11)=ypp;
+yzad(12:300)=Y_zad(1);
+yzad(301:600)=Y_zad(2);
+yzad(601:900)=Y_zad(3);
+yzad(901:k_konc)=Y_zad(4);
+
 e(1:k_konc)=0; e_pid(1:k_konc) = 0;
 
 % Współczynniki algorytmu
@@ -218,6 +226,7 @@ figure;
 stairs(y); % Dodać wartość błędu średniokwadratowego do tytułu
 hold on;
 stairs(yzad, ':');
+ylim([0.9 2.5]);
 xlabel('k');
 ylabel('y(k)');
 title_str = "Algorytm PID y(k): K_r=" + string(K_r) ...
@@ -244,7 +253,12 @@ e_dmc(1:k_konc) = 0; % Błąd średniokwadratowy dla algorytmu DMC
 % warunki początkowe
 u = zeros(1, k_konc); y = zeros(1, k_konc);
 u(1:k_konc)=upp; y(1:11)=ypp;
-yzad(1:11)=ypp; yzad(12:k_konc)=y_zad;
+% Generacja zmiennej trajektori
+yzad(1:11)=ypp;
+yzad(12:300)=Y_zad(1);
+yzad(301:600)=Y_zad(2);
+yzad(601:900)=Y_zad(3);
+yzad(901:k_konc)=Y_zad(4);
 
 % Generacja macierzy M
 for j=1:N_u % dla każdej kolumny macierzy M
@@ -327,7 +341,7 @@ figure;
 stairs(y); % Dodać wartość błędu średniokwadratowego do tytułu
 hold on;
 stairs(yzad, ':');
-ylim([1.1 1.8]);
+ylim([0.9 2.5]);
 xlabel('k');
 ylabel('y(k)');
 title_str = "Algorytm DMC y(k): N=" + string(N) ...
@@ -352,7 +366,13 @@ K_r = pid_params(1); T_p = 0.5; T_i = pid_params(2); T_d = pid_params(3);
 % warunki początkowe
 u = zeros(1, k_konc); y = zeros(1, k_konc);
 u(1:11)=upp; y(1:11)=ypp;
-yzad(1:11)=0; yzad(12:k_konc)=y_zad;
+% Generacja zmiennej trajektori
+yzad(1:11)=ypp;
+yzad(12:300)=Y_zad(1);
+yzad(301:600)=Y_zad(2);
+yzad(601:900)=Y_zad(3);
+yzad(901:k_konc)=Y_zad(4);
+
 e(1:k_konc)=0; e_pid_fmincon(1:k_konc) = 0;
 
 % Współczynniki algorytmu
@@ -403,14 +423,14 @@ figure;
 stairs(y); % Dodać wartość błędu średniokwadratowego do tytułu
 hold on;
 stairs(yzad, ':');
-stairs(e_pid_fmincon);
+ylim([0.9 2.5]);
 xlabel('k');
 ylabel('y(k)');
 title_str = "PID y(k) - optymalizacja: K_r=" + string(K_r) ...
     + " T_i=" + string(T_i) + " T_D=" + string(T_d) + " E=" ...
     + string(E);
 title(title_str);
-legend('y(k)', 'y^{zad}', 'e_{pid}', 'Location', 'southeast');
+legend('y(k)', 'y^{zad}', 'Location', 'southeast');
 export_fig('./pliki_wynikowe/regulator_pid_y(k)_optymalizacja.pdf');
 
 % Optymalizacja parametrów DMC
@@ -418,9 +438,9 @@ export_fig('./pliki_wynikowe/regulator_pid_y(k)_optymalizacja.pdf');
 % Inicjalizacja parametrów
 e_min = Inf;
 
-x0 = 170;
+x0 = 15;
 A = 0.5;
-b = 1000;
+b = 100;
 N_test = 80;
 N_u_test = 80;
 
@@ -444,7 +464,12 @@ e_dmc(1:k_konc) = 0; % Błąd średniokwadratowy dla algorytmu DMC
 % warunki początkowe
 u = zeros(1, k_konc); y = zeros(1, k_konc);
 u(1:11)=upp; y(1:11)=ypp;
-yzad(1:11)=ypp; yzad(12:k_konc)=y_zad;
+% Generacja zmiennej trajektori
+yzad(1:11)=ypp;
+yzad(12:300)=Y_zad(1);
+yzad(301:600)=Y_zad(2);
+yzad(601:900)=Y_zad(3);
+yzad(901:k_konc)=Y_zad(4);
 
 % Generacja macierzy M
 for j=1:N_u % dla każdej kolumny macierzy M
@@ -527,7 +552,7 @@ figure;
 stairs(y); % Dodać wartość błędu średniokwadratowego do tytułu
 hold on;
 stairs(yzad, ':');
-ylim([1.1 1.8]);
+ylim([0.9 2.5]);
 xlabel('k');
 ylabel('y(k)');
 title_str = "Algorytm DMC y(k) - optymalizacja: N=" + string(N_test) ...
