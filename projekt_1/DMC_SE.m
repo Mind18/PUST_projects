@@ -97,8 +97,10 @@ for k=12:k_konc
     % Ograniczenia wartości sterowania
     if u(k) < u_min
         u(k) = u_min;
+        U_p(1) = u(k)-u(k-1)
     elseif u(k) > u_max
         u(k) = u_max;
+        U_p(1) = u(k)-u(k-1);
     end
 
     e_dmc(k) = e_dmc(k-1) + (yzad(k) - y(k))^2;
