@@ -16,7 +16,7 @@ u_max = 1.5; % 1.5
 % warunki początkowe
 u = zeros(1, k_konc); y = zeros(1, k_konc);
 u(1:11)=upp; y(1:11)=ypp;
-yzad(1:11)=0; yzad(12:k_konc)=y_zad;
+yzad(1:11)=ypp; yzad(12:k_konc)=y_zad;
 e(1:k_konc)=0; e_pid(1:k_konc) = 0;
 
 % Współczynniki algorytmu PID
