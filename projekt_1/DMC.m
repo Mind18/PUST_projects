@@ -1,8 +1,8 @@
 %% Algorytm regulacji DMC
-o = 3; % Nazwa wykresu 49,5995
+o = 2; % Nazwa wykresu
 D = 200;   % Horyzont dynamiki
 N = 98;   % Horyzont predykcji 98
-N_u = 18;   % Horyzont sterowania 18
+N_u = 80;   % Horyzont sterowania 18
 lambda = 15;
 Lambda = lambda.*eye(N_u, N_u);
 M = zeros(N, N_u);
@@ -97,7 +97,7 @@ title_str = "Algorytm DMC u(k): N=" + string(N) ...
     + " N_u=" + string(N_u) + " λ=" + string(lambda) + " E=" ...
     + string(E);
 title(title_str);
-filenameu = "./pliki_wynikowe/"+"regulator_dmc_u(k)"+string(o)+".pdf";
+filenameu = "./PIDDMC/"+"regulator_dmc_u(k)"+string(o)+".pdf";
 export_fig(filenameu);
 
 figure;
@@ -112,5 +112,5 @@ title_str = "Algorytm DMC y(k): N=" + string(N) ...
     + string(E);
 title(title_str);
 legend('y(k)', 'y^{zad}', 'Location', 'southeast');
-filenamey = "./pliki_wynikowe/"+"regulator_dmc_y(k)"+string(o)+".pdf";
+filenamey = "./PIDDMC/"+"regulator_dmc_y(k)"+string(o)+".pdf";
 export_fig(filenamey);
