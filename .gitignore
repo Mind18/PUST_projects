@@ -4,3 +4,4 @@ projekt_1/*.asv
 projekt_2/*.asv
 projekt_1/DMC_dawida.m
 .DS_Store
+*.pdf
