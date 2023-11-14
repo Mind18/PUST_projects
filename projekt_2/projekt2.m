@@ -36,4 +36,5 @@ end
 
 if strcmp(zad(2), 'Y')
     odpowiedz_skokowa;
+    charakterystyka_stat
 end
