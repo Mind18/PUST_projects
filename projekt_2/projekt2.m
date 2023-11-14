@@ -8,6 +8,7 @@ print = 'Y'; % Czy generować wykresy
 u = zeros(k_konc, 1); % Sterowanie
 z = zeros(k_konc, 1); % Zakłócenie
 y = zeros(k_konc, 1); % Wyjście procesu
+y_z = zeros(k_konc, 1); % Wyjście procesu
 
 % Ograniczenia regulatorów
 du_max = 1;
@@ -20,9 +21,12 @@ upp = 0; zpp = 0; ypp = 0;
 u_konc = [0.3 0.7 1 1.2 1.5]; % u dla których wyznaczana jest odp.skokowa
 
 % Inicjalizacja zmiennych algorytmu DMC z zakłóceniem
-D = 200; % Horyzont dynamiki D
+D = 229; % Horyzont dynamiki sterowania D
+D_z = 56; % Horyzont dynamiki zakłócenia D_z
 s = zeros(1, D);
+s_z = zeros(1, D_z);
 skok_u = 5; % Wybrana odpowiedź skokowa do wyznaczenia wektora s;
+skok_z = 3;
 
 zad = ['Y' 'Y']; % Zadanie, które będzie wykonywane
 
