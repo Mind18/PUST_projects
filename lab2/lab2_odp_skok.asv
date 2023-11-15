@@ -1,0 +1,46 @@
+import sendControlsToG1AndDisturbance.*
+
+%clear;
+
+W1 = 50;
+G1 = 28;    %15, 35, 50
+Z = 0;
+
+figure
+k =1;
+
+Z=0;
+
+while (1)
+    addpath ('D:\SerialCommunication') ; % add a path
+    initSerialControl COM9 % initialise com port
+    %% obtaining measurements
+    measurements = readMeasurements (1) ; % read measurements
+    y10(k) = measurements;
+    x(k) = k;
+    %% processing of the measurements
+    disp ("T1 " +  measurements ) ; % process measurements
+
+    %% sending new values of control signals
+    sendControls ([ 1 , 2, 3, 4, 5, 6] , [W1, 0 , 0 , 0 , G1, 0]) ;
+    sendControlsToG1AndDisturbance(G1, Z);
+    
+    
+    if k==30
+        Z = 10;
+    end
+    z10(k) = Z;
+    
+    %% synchronising with the control process
+    plot(x,y10, 'Color', '#0072BD'	
+);
+    hold on;
+    plot(x, z10, 'Color', );
+    xaxis('k');
+    yaxis('y(k) | z(k)');
+    drawnow;
+    
+    waitForNewIteration () ; % wait for new iteration
+    
+    k = k+1;
+end
