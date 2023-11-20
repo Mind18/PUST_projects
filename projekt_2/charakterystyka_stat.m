@@ -1,29 +1,39 @@
+clear all;
+close all;
+
+n=300;
+U(1:n)=0;
+Z(1:n)=0;
+Y(1:7)=0;
+Y(8:n)=1;
+Ystat3D=zeros(101);
+Ustat=zeros(1, 101);
+Zstat=zeros(1, 101);
+    
+
+%Wyznaczanie charakterystki statycznej y(u,z)
+for i=1:101
+    dU=(i-1)*0.01;
+    U(10:n)=dU;
+    for j=1:101
+        dZ=(j-1)*0.01;
+        Z(10:n)=dZ;
+        for k=8:n
+            Y(k)=symulacja_obiektu8y_p2(U(k-6),U(k-7),Z(k-1),Z(k-2),Y(k-1),Y(k-2));
+        end
+        Zstat(j)=Z(n);
+        Ystat3D(i,j)=Y(n);
+    end
+    Ustat(i)=U(n);
+end
+
 figure;
-[u_stat, sortIndex] = sort(u_stat);
-y_stat = y_stat(sortIndex);
-y_z_stat = y_z_stat(sortIndex);
-
-subplot(2, 1, 1)
-hold on;
-xlabel('u');
-ylabel('y(u)');
-plot(u_stat, y_stat, '.', 'MarkerSize',12);
-plot(u_stat, y_stat);
-legend("Interpolacja danych statycznych", "Dane statyczne y(u)", 'Location', 'southeast');
-title('Dane statyczne y(u)');
-hold off
-
-subplot(2, 1, 2)
-hold on
-plot(u_stat, y_z_stat, '.', 'MarkerSize',12);
-plot(u_stat, y_z_stat);
-xlabel('u');
-ylabel('y(z)');
-legend("Interpolacja danych statycznych", "Dane statyczne y(z)", 'Location', 'southeast');
-k_stat = rdivide(y_stat, u_stat);
-xlabel('u');
-ylabel('y(z)');
-title('Dane statyczne y(z)');
-hold off;
+surf(Ustat,Zstat,Ystat3D); % Utworzenie wykresu 3D
+xlabel('U');
+ylabel('Z');
+zlabel('Y');
+title('Charakterystyka statyczna y(u,z)');
+axes.SortMethod='ChildOrder';
 export_fig('./pliki_wynikowe/zad2_y(u,z)_char_stat.pdf');
+
 
