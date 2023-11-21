@@ -39,7 +39,7 @@ s_z = zeros(1, D_z);
 skok_u = 5; % Wybrana odpowiedź skokowa do wyznaczenia wektora s;
 skok_z = 3;
 
-zad = ['Y' 'Y' 'N' 'Y']; % Zadanie, które będzie wykonywane
+zad = ['Y' 'Y' 'N' 'Y' 'Y']; % Zadania, które będą wykonywane
 
 if strcmp(zad(1), 'Y')
     punkt_pracy;
@@ -51,6 +51,10 @@ end
 
 if strcmp(zad(4), 'Y')
     DMC_bez_zaklocen;
+end
+
+if strcmp(zad(5), 'Y')
+    DMC_z_zakloceniami_bez_kompensacji;
 end
 
 if strcmp(zad(3), 'Y')
