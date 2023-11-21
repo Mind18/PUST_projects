@@ -139,6 +139,13 @@ for k=1:D
     s(k) = y(k+15); % ypp=0 i upp=0 - pomijamy
 end
 
+figure;
+stairs(1:D, s);
+title("Odp. skokowa sygnału wyjściowego s(k)")
+xlabel('k');
+ylabel('s(k)');
+export_fig('./pliki_wynikowe/zad3_s(k)_od_u.pdf');
+
 % Inicjacja danych dla skoku zakłócenia
 u(1:k_konc) = 0;
 z(1:14) = 0;
@@ -153,3 +160,10 @@ end
 for k=1:D_z
     s_z(k) = y_z(k+15); % ypp=0 i upp=0 - pomijamy
 end
+
+figure;
+stairs(1:D_z, s_z);
+title("Odp. skokowa sygnału wyjściowego s^z(k)")
+xlabel('k');
+ylabel('s^z(k)');
+export_fig('./pliki_wynikowe/zad3_s_z(k)_od_z.pdf');
