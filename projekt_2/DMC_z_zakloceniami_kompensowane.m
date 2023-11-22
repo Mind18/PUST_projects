@@ -1,12 +1,34 @@
 %% Algorytm regulacji DMC
 
+%tryb zakłócenia
+% 3 oznacza brak zakłócenia
+% 2 oznacza skok
+% 1 oznacza zakłócenie z sinusem
+% 0 oznacza zakłócenie szumem
+zaklocenie = 2; 
+
 % warunki początkowe
 u = zeros(1, k_konc); z = zeros(1,k_konc); y = zeros(1, k_konc);
 u(1:k_konc)=upp; y(1:11)=ypp;
 % Generacja zmiennej trajektori
 yzad(1:11)=ypp;
 yzad(12:k_konc)=Y_zad(1);
-z(91:k_konc) = 1;
+
+%% Zakłócenia
+for i=91:k_konc
+    if (zaklocenie==0) %szum
+        z(i) = 0.85 + (2.15)*rand(1,1);
+    elseif (zaklocenie==1) %sinusoidalne
+        zakres_sin = 0:0.1:13*pi;
+        a = 0.1*sin(zakres_sin);
+        z(i) = a(i);
+    elseif (zaklocenie==2) %skok
+        z(i)=1;
+    elseif (zaklocenie==3) %brak zakłócenia
+        z(i)=0;
+    end
+end
+
 % yzad(301:600)=Y_zad(2);
 % yzad(601:900)=Y_zad(3);
 % yzad(901:k_konc)=Y_zad(4);
@@ -30,26 +52,26 @@ for j=1:D-1 % dla każdej kolumny macierzy M_p
     end
 end
 
-% % Generacja macierzy M_p_z
-% for j=1:D_z % dla każdej kolumny macierzy M_p
-%     for i=1:N % dla każdego wiersza macierzy M_p
-%         if j+i > D_z
-%             p = D_z;
-%         else
-%             p = j+i-1;
-%         end
-%         if j == 1
-%             M_p_z(i, j) = s_z(p);
-%         else
-%             M_p_z(i, j) = s_z(p) - s_z(j);
-%         end
-%     end
-% end
-
-M_p_z=zeros(N,D_z);
-for i=1:(D_z)
-    M_p_z(i:N,i)=s(1:N-i+1);
+% Generacja macierzy M_p_z
+for j=1:D_z % dla każdej kolumny macierzy M_p
+    for i=1:N % dla każdego wiersza macierzy M_p
+        if j+i > D_z
+            p = D_z;
+        else
+            p = j+i-1;
+        end
+        if j == 1
+            M_p_z(i, j) = s_z(p);
+        else
+            M_p_z(i, j) = s_z(p) - s_z(j);
+        end
+    end
 end
+
+% M_p_z=zeros(N,D_z);
+% for i=1:(D_z)
+%     M_p_z(i:N,i)=s(1:N-i+1);
+% end
 
 % Wyznaczenie wektora współczynników K
 K = ((M'*M+Lambda)^(-1))*M';
