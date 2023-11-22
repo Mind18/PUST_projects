@@ -11,7 +11,7 @@ k =1;
 
 while (1)
     addpath ('D:\SerialCommunication') ; % add a path
-    initSerialControl COM9 % initialise com port
+    initSerialControl COM7 % initialise com port
     %% obtaining measurements
     measurements = readMeasurements (1) ; % read measurements
     y(k) = measurements;
