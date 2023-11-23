@@ -1,0 +1,36 @@
+DMC bez zakłóceń
+Etap 1 - Dobór N - N=80 N_u=80 -> E=8.1131, przebiego jakościowy, jedynie wysoki peak sterowania.
+		   N=70 N_u=70 -> E=8.1131, przebiego jakościowy, jedynie wysoki peak sterowania.
+		   N=60 N_u=60 -> E=8.1131, przebiego jakościowy, jedynie wysoki peak sterowania.
+	  	   N=50 N_u=50 -> E=8.1131, przebiego jakościowy, jedynie wysoki peak sterowania.
+		   N=40 N_u=40 -> E=8.1131, przebiego jakościowy, jedynie wysoki peak sterowania.
+		   N=30 N_u=30 -> E=8.1131, przebiego jakościowy, jedynie wysoki peak sterowania.
+		   N=20 N_u=20 -> E=8.1149, przebiego jakościowy, jedynie wysoki peak sterowania , nieznacznie gorszy niż dla N=30 i N_u=30 -> idziemy z wartościami N i N_u w górę
+		   N=22 N_u=22 -> E=8.1129, przebiego jakościowy, jedynie wysoki peak sterowania, nieznacznie wyższy niż przy N=30 i N_u = 30, ale zyskujący na błędzie regulacji.
+		   N=25 N_u=25 -> E=8.113, przebiego jakościowy, jedynie wysoki peak sterowania, różnice w peaku sterowania względem N=30 i N_u=30 tolerowalne z racji na oszczędność obliczeniową.
+		   N=27 N_u=27 -> E=8.1131, przebiego jakościowy, jedynie wysoki peak sterowania, praktycznie to co dla N=30 i N_u=30. STOP - do etapu z doborem N_u wybieram 22 za najoptymalniejszy błąd i nieznaczy peak z ideą zniwelowania go lambdą.
+		   N=21 N_u=21 dla zweryfikowania czy nie lepsza od 21 -> E=8.1135, przebiego jakościowy, jedynie wysoki peak sterowania - NIE, zostajemy przy N=22 gorszy błąd i większy peak sterowania.
+Dla wszystkich testów lambda=1
+
+Etap 2 - Dobór N_u - 
+		     N=22 N_u=22 -> E=8.1129, przebiego jakościowy, jedynie wysoki peak sterowania.
+		     N=22 N_u=20 -> E=8.1129, przebiego jakościowy, jedynie wysoki peak sterowania - brak różnic.
+		     N=22 N_u=18 -> E=8.1129, przebiego jakościowy, jedynie wysoki peak sterowania - brak różnic.
+		     N=22 N_u=16 -> E=8.1129, przebiego jakościowy, jedynie wysoki peak sterowania - brak różnic.
+		     N=22 N_u=14 -> E=8.1127, przebiego jakościowy, jedynie wysoki peak sterowania - zmniejszamy błąd kosztem nieznacznego wzrostu peaku sterowania i y.
+		     N=22 N_u=12 -> E=8.1101, przebiego jakościowy, jedynie wysoki peak sterowania - znowu poprawa błędu w zamian za nieznaczny skok peak'u sterowania i u.
+		     N=22 N_u=10 -> E=8.0985, przebiego jakościowy, jedynie wysoki peak sterowania - wyraźniejszy wzrost peaku sterowania ale niewielka poprawa peaku y i lepszy błąd.
+		     N=22 N_u=8 -> E=8.0702, przebiego jakościowy, jedynie wysoki peak sterowania - wiekszy wzrost peak'u u niż wcześniej ale mniejszy błąd - prowdopodobnie STOP na n_u 10 lub 9, jeszcze pójście w dół dla pewności.
+		     N=22 N_u=7 -> E=8.0546, przebiego jakościowy, jedynie wysoki peak sterowania - trend z N_u=8 zachowany, sprawdzamy czy N_u=9 jest lepsze od N_u=10 na koniec.
+		     N=22 N_u=9 -> E=8.0863, przebiego jakościowy, jedynie wysoki peak sterowania - nieznacznie gorsze sterowanie i y w szczycie do tego gorsza stabilizacja - zostajemy z N_u=10.
+Wszystkie testy dla lambda=1
+
+Etap 3 - Dobór lambda - lambda=2 -> E=8.6607 - znaczna poprawa sterowania (o ok.0,2) i niezauważalne spowolnienie stabilizacji,
+			lambda=4 -> E=9.3866 - znowu poprawa sterowania (z 1.25275 do 1.06724) obiekt stabilizuje się wolniej, ale nadal bez powodów do narzekania, 
+			lambda=4 -> E=9.3866 - znowu poprawa sterowania (z 1.25275 do 1.06724) obiekt stabilizuje się wolniej, ale nadal bez powodów do narzekania, 
+			lambda=10 -> E=10.5364 - znowu poprawa sterowania (z 1.06724 do 0.879) obiekt stabilizuje się wolniej, ale nadal bez powodów do narzekania, waham się czy błąd nie robi się za duży. 
+			lambda=15 -> E=11.088 - poprawa sterowania zwalnia, obiekt stabilizuje się wolniej, ale różnica względem lambda=10 jest mało widoczna, 
+			lambda=30 -> E=12.115 - niby sterowanie się poprawia, ale coraz wolniej, a błąd rośnie w podobnym tempie, pozatym stabilizacja robi się faktycznie już wolna (peak y w okolicy k=47 a wcześniej bliżej k=40)
+			lambda=100 -> E=14.7495 - niby sterowanie się poprawiło do zadowalającego stanu, ale kosztem znacznie gorszej regulacji - osobiście zostałbym na lambda=15. STOP moich badań.
+
+
