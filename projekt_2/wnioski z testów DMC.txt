@@ -31,6 +31,6 @@ Etap 3 - Dobór lambda - lambda=2 -> E=8.6607 - znaczna poprawa sterowania (o ok
 			lambda=10 -> E=10.5364 - znowu poprawa sterowania (z 1.06724 do 0.879) obiekt stabilizuje się wolniej, ale nadal bez powodów do narzekania, waham się czy błąd nie robi się za duży. 
 			lambda=15 -> E=11.088 - poprawa sterowania zwalnia, obiekt stabilizuje się wolniej, ale różnica względem lambda=10 jest mało widoczna, 
 			lambda=30 -> E=12.115 - niby sterowanie się poprawia, ale coraz wolniej, a błąd rośnie w podobnym tempie, pozatym stabilizacja robi się faktycznie już wolna (peak y w okolicy k=47 a wcześniej bliżej k=40)
-			lambda=100 -> E=14.7495 - niby sterowanie się poprawiło do zadowalającego stanu, ale kosztem znacznie gorszej regulacji - osobiście zostałbym na lambda=15. STOP moich badań.
+			lambda=100 -> E=14.7495 - niby sterowanie się poprawiło do zadowalającego stanu, ale kosztem znacznie gorszej regulacji - osobiście zostałbym na lambda=15 jako kompromis między szybkością stabilizacji i błędem, a peakiem sterowania. STOP moich badań.
 
 

@@ -4,6 +4,8 @@ T_p = 0.5;
 k_konc = 400;
 print = 'Y'; % Czy generować wykresy
 
+zaklocenie = 0;
+
 % Wektory zmiennych procesowych
 u = zeros(k_konc, 1); % Sterowanie
 z = zeros(k_konc, 1); % Zakłócenie
@@ -22,7 +24,7 @@ u_konc = [0.3 0.7 1 1.2 1.5]; % u dla których wyznaczana jest odp.skokowa
 
 % Inicjalizacja zmiennych algorytmu DMC z zakłóceniem
 D = 229; % Horyzont dynamiki sterowania D
-D_z = 56; % Horyzont dynamiki zakłócenia D_z
+D_z = 30; % Horyzont dynamiki zakłócenia D_z domyślnie=56
 N = 22;   % Horyzont predykcji
 N_u = 9;   % Horyzont sterowania
 lambda = 15;
@@ -41,7 +43,7 @@ s_z = zeros(1, D_z);
 skok_u = 5; % Wybrana odpowiedź skokowa do wyznaczenia wektora s;
 skok_z = 3;
 
-zad = ['N' 'Y' 'N' 'Y' 'N' 'N']; % Zadania, które będą wykonywane
+zad = ['N' 'Y' 'N' 'N' 'Y' 'Y']; % Zadania, które będą wykonywane
 
 if strcmp(zad(1), 'Y')
     punkt_pracy;
