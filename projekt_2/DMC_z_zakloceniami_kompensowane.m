@@ -17,7 +17,10 @@ yzad(12:k_konc)=Y_zad(1);
 %% Zakłócenia
 for i=90:k_konc
     if (zaklocenie==0) %szum
-        z(i) = 0.85 + (2.15)*rand(1,1);
+        % Do uzyskania zakresu szumu <0.85, 1>
+        % z(i) = 0.85 + (0.15)*rand(1,1);
+        % Do uzyskania następnych
+        z(i) = -1 + (2)*rand(1, 1);
     elseif (zaklocenie==1) %sinusoidalne
         zakres_sin = 0:0.1:13*pi;
         a = 0.05*sin(zakres_sin);
