@@ -1,11 +1,11 @@
-%% Algorytm regulacji DMC
+%% Algorytm regulacji DMC z kompensacją
 
 %tryb zakłócenia
 % 3 oznacza brak zakłócenia
 % 2 oznacza skok
 % 1 oznacza zakłócenie z sinusem
 % 0 oznacza zakłócenie szumem
-% zaklocenie = 2; 
+%zaklocenie = 1; 
 
 % warunki początkowe
 u = zeros(1, k_konc); z = zeros(1,k_konc); y = zeros(1, k_konc);
@@ -18,12 +18,12 @@ yzad(12:k_konc)=Y_zad(1);
 for i=90:k_konc
     if (zaklocenie==0) %szum
         % Do uzyskania zakresu szumu <0.85, 1>
-        % z(i) = 0.85 + (0.15)*rand(1,1);
+         %z(i) = 0.85 + (0.15)*rand(1,1);
         % Do uzyskania następnych
         z(i) = -1 + (2)*rand(1, 1);
     elseif (zaklocenie==1) %sinusoidalne
         zakres_sin = 0:0.1:13*pi;
-        a = 0.05*sin(zakres_sin);
+        a = 0.5*sin(zakres_sin);
         z(i) = a(i);
     elseif (zaklocenie==2) %skok
         z(i)=1;
