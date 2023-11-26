@@ -25,9 +25,9 @@ u_konc = [0.3 0.7 1 1.2 1.5]; % u dla których wyznaczana jest odp.skokowa
 % Inicjalizacja zmiennych algorytmu DMC z zakłóceniem
 D = 229; % Horyzont dynamiki sterowania D
 D_z = 30; % Horyzont dynamiki zakłócenia D_z domyślnie=56
-N = 22;   % Horyzont predykcji
-N_u = 9;   % Horyzont sterowania
-lambda = 15;
+N = 229;   % Horyzont predykcji 22
+N_u = 229;   % Horyzont sterowania 9
+lambda = 1;
 Lambda = lambda.*eye(N_u, N_u);
 M = zeros(N, N_u);
 M_p = zeros(N, D-1);
@@ -41,9 +41,9 @@ Y_zad = [1 1 1 1];
 s = zeros(1, D);
 s_z = zeros(1, D_z);
 skok_u = 5; % Wybrana odpowiedź skokowa do wyznaczenia wektora s;
-skok_z = 3;
+skok_z = 3; % Wybrana odpowiedź skokowa do wyznaczenia wektora s_z;
 
-zad = ['N' 'Y' 'N' 'N' 'Y' 'Y']; % Zadania, które będą wykonywane
+zad = ['N' 'Y' 'N' 'Y' 'N' 'N']; % Zadania, które będą wykonywane
 
 if strcmp(zad(1), 'Y')
     punkt_pracy;
