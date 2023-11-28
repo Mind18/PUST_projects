@@ -1,4 +1,11 @@
-%% Algorytm regulacji DMC
+%% Algorytm regulacji DMC bez kompensacji
+
+%tryb zakłócenia
+% 3 oznacza brak zakłócenia
+% 2 oznacza skok
+% 1 oznacza zakłócenie z sinusem
+% 0 oznacza zakłócenie szumem
+%zaklocenie = 0; 
 
 % warunki początkowe
 u = zeros(1, k_konc); z = zeros(1,k_konc); y = zeros(1, k_konc);
@@ -6,7 +13,25 @@ u(1:k_konc)=upp; y(1:11)=ypp;
 % Generacja zmiennej trajektori
 yzad(1:11)=ypp;
 yzad(12:k_konc)=Y_zad(1);
-z(91:k_konc) = 1;
+
+%% Zakłócenia
+for i=90:k_konc
+    if (zaklocenie==0) %szum
+        % Do uzyskania zakresu szumu <0.85, 1>
+         %z(i) = 0.85 + (0.15)*rand(1,1);
+        % Do uzyskania następnych
+        z(i) = -1 + (2)*rand(1, 1);
+    elseif (zaklocenie==1) %sinusoidalne
+        zakres_sin = 0:0.1:13*pi;
+        a = 0.5*sin(zakres_sin);
+        z(i) = a(i);
+    elseif (zaklocenie==2) %skok
+        z(i)=1;
+    elseif (zaklocenie==3) %brak zakłócenia
+        z(i)=0;
+    end
+end
+
 % yzad(301:600)=Y_zad(2);
 % yzad(601:900)=Y_zad(3);
 % yzad(901:k_konc)=Y_zad(4);
@@ -80,11 +105,10 @@ E = e_dmc(k_konc); % Błąd średniokwadratowy algorytmu
 % Narysowanie wykresów
 figure;
 stairs(u); % Dodać wartość błędu średniokwadratowego do tytułu
-ylim([0 1.6]);
 xlabel('k');
 ylabel('u(k)');
 title_str = "Algorytm DMC u(k): N=" + string(N) ...
-    + " N_u=" + string(N_u) + " λ=" + string(lambda) + " E=" ...
+    + " N_u=" + string(N_u) + " λ=" + string(lambda)+ " E=" ...
     + string(E);
 title(title_str);
 export_fig('./pliki_wynikowe/regulator_dmc_u(k)_zak.pdf');

@@ -144,6 +144,7 @@ stairs(1:D, s);
 title("Odp. skokowa sygnału wyjściowego s(k)")
 xlabel('k');
 ylabel('s(k)');
+ylim([0 2.6])
 export_fig('./pliki_wynikowe/zad3_s(k)_od_u.pdf');
 
 % Inicjacja danych dla skoku zakłócenia

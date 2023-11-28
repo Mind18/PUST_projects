@@ -1,11 +1,11 @@
-%% Algorytm regulacji DMC
+%% Algorytm regulacji DMC z kompensacją
 
 %tryb zakłócenia
 % 3 oznacza brak zakłócenia
 % 2 oznacza skok
 % 1 oznacza zakłócenie z sinusem
 % 0 oznacza zakłócenie szumem
-zaklocenie = 0; 
+%zaklocenie = 1; 
 
 % warunki początkowe
 u = zeros(1, k_konc); z = zeros(1,k_konc); y = zeros(1, k_konc);
@@ -15,12 +15,15 @@ yzad(1:11)=ypp;
 yzad(12:k_konc)=Y_zad(1);
 
 %% Zakłócenia
-for i=91:k_konc
+for i=90:k_konc
     if (zaklocenie==0) %szum
-        z(i) = 0.85 + (0.15)*rand(1,1);
+        % Do uzyskania zakresu szumu <0.85, 1>
+         %z(i) = 0.85 + (0.15)*rand(1,1);
+        % Do uzyskania następnych
+        z(i) = -1 + (2)*rand(1, 1);
     elseif (zaklocenie==1) %sinusoidalne
         zakres_sin = 0:0.1:13*pi;
-        a = 0.1*sin(zakres_sin);
+        a = 0.5*sin(zakres_sin);
         z(i) = a(i);
     elseif (zaklocenie==2) %skok
         z(i)=1;
@@ -81,9 +84,6 @@ k_e = sum(K(1,:));
 
 for k=12:k_konc
     % symulacja obiektu
-    if k==91
-        k;
-    end
     y(k) = symulacja_obiektu8y_p2(u(k-6), u(k-7), z(k-1), z(k-2), ...
         y(k-1), y(k-2));
     % Aktualizacja wektora zmian zakłócenia
@@ -136,12 +136,11 @@ E = e_dmc(k_konc); % Błąd średniokwadratowy algorytmu
 % Narysowanie wykresów
 figure;
 stairs(u); % Dodać wartość błędu średniokwadratowego do tytułu
-ylim([0 1.6]);
 xlabel('k');
 ylabel('u(k)');
-title_str = "Algorytm DMC u(k): N=" + string(N) ...
-    + " N_u=" + string(N_u) + " λ=" + string(lambda) + " E=" ...
-    + string(E);
+title_str = "DMC z kompensacją u(k): N=" + string(N) ...
+    + " N_u=" + string(N_u) + " λ=" + string(lambda) + " D_z=" ...
+    + string(D_z) + " E=" + string(E);
 title(title_str);
 export_fig('./pliki_wynikowe/regulator_dmc_komp_u(k)_zak.pdf');
 
@@ -152,9 +151,9 @@ stairs(yzad, ':');
 ylim([0 2.4]);
 xlabel('k');
 ylabel('y(k)');
-title_str = "Algorytm DMC y(k): N=" + string(N) ...
-    + " N_u=" + string(N_u) + " λ=" + string(lambda) + " E=" ...
-    + string(E);
+title_str = "DMC z kompensacją y(k): N=" + string(N) ...
+    + " N_u=" + string(N_u) + " λ=" + string(lambda) + " D_z=" ...
+    + string(D_z) + " E=" + string(E);
 title(title_str);
 legend('y(k)', 'y^{zad}', 'Location', 'southeast');
 export_fig('./pliki_wynikowe/regulator_dmc_komp_y(k)_zak.pdf');

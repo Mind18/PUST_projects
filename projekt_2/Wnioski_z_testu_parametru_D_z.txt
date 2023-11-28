@@ -1,0 +1,42 @@
+DMC - testy D_z - zakłócenie skokowe
+
+D_z=70 - (bez kompensacji) E=16.2709 (z kompensacją) E=13.7857 - bez zaskoczeń to samo (nic dziwnego, bo próbki 57 i kolejne są takie same co do wartości co 56 - nic to nie zmieni)
+D_z=56 (wartość wyjściowa z analizy odpoweidzi skokowej - dla tej próbki odpowiedź się stabilizuje) - (bez kompensacji) E=16.2709 (z kompensacją) E=13.7857 - nieiwelkie różnice w kompensacji, głównie widoczne w wartości E
+D_z=45 - (bez kompensacji) E=16.2709 (z kompensacją) E=13.7856 - brak różnic
+D_z=30 - (bez kompensacji) E=16.2709 (z kompensacją) E=13.785 - brak zauważalnych różnic
+D_z=20 - (bez kompensacji) E=16.2709 (z kompensacją) E=13.8149 - nieznacznie niższy peak y względem D_z=30
+D_z=10 - (bez kompensacji) E=16.2709 (z kompensacją) E=14.405 - zaczynamy widzieć zmiany w działaniu algorytmu, wyższe sterowanie i większy błąd STOP
+
+Wnioski - Dla zakłócenia skokowego możemy obniżyć wartość D_z=30 lub nawet D_z=20 jeśli kładlibyśmy bardzo duży priorytet na koszty obliczeniowe algorytmu, jednakowoż należy pamiętać, że w kolejnych testach zakłóceń, gdzie stanie się on zmienny konieczne może się okazać, aby podnieść wartość D_z nawet do wyjściwej wartości D_z=56. Widać, że stosowanie kompensacji zdecydowanie poprawia jakość sterowania z zakłóceniem.
+
+zakłócenie sinusoidalne
+
+sinus w przedziale <-0.1, 0.1>
+D_z=30 - (bez kompensacji) E=12.3002 (z kompensacją) E=11.5027 - regulacja jest nieskuteczna, ponieważ widzimy, że sygnał sinusoidalny utrzymuje się i nie jest bliski dobrej kompensacji -> przejdziemy do D_z=56
+D_z=56 - (bez kompensacji) E=12.3002 (z kompensacją) E=11.4904 - co ciekawe regulacja jest minimalnie gorsza od tej dla D_z=30 
+D_z=40 - (bez kompensacji) E=12.3002 (z kompensacją) E=11.5013 - regulacja pozostaje gorsza niż dla D_z=30. Zostaniemy z D_z=30 dla testów z różną wartością sinusa
+
+WAŻNE Przed tym testem zacząłem zadawać zakłócenie w próbce 90, podczas gdy wcześniej było 80 - trzeba o tym pamiętać
+sinus w przedziale <-0.3, 0.3> - (bez kompensacji) E=21.3961 (z kompensacją) E=15.8126 - widać, że sygnał oscyluje w większym przedziale, zarówno na wykresie sterowania jak i sygnału wyjściowego, można też zauważyć rosnącą różnicę między jakością sterowania z i bez kompensacji na korzyść algorytmu z kompensacją.
+
+sinus w przedziale <-0.5, 0.5> - (bez kompensacji) E=39.7216 (z kompensacją) E=25.0232 - tendencja z poprzedniego przykładu jest zachowana. Regulacja klarownie nie nadąża
+
+sinus w przedziale (-0.05, 0.05) - (bez kompensacji) E=11.3743 (z kompensacją) E=11.1178 - wartość wyjściowa oscyluje w przedziale <0.956, 1.044> bez kompensacji i <0.9688, 1.0312> z kompensacją. Jest to tolerowalna wartość w rzeczywistych warunkach jednak nie zmienia to faktu, że algorytm ma problem z kompensacją sygnału sinusoidalnego
+
+Wnioski - Zakłócenie sinusoidalne sprawia algorytmowi DMC spore problemy. Tolerowalne kompensowanie (w rozumieniu jako odchylenie sygnału wyjściowego nie większe niż 5% wartości zadanej) jest zapewniane tylko dla bardzo małych amplitud sygnału. Daje to podstawy do postawinia hipotezy, że mechanizm kompensowania sygnału źle sprawdza się dla sygnałów okresowych. Nadal jednak warto zwrócić uwagę, że mechanizm kompensacji poprawia jakość
+regulacji względem algorytmu DMC pozbawionego takiego mechanizmu. Dochodzimy więc do wniosku, że pomimo nieidealnego radzenia sobie z sygnałem okresowym implementacja kompensacji w regulacji algorytmem DMC jest dobrą praktyką.
+
+zakłócenie szumem
+
+szum w przedziale <0.85, 1> (sygnał losowy razy 0.15) - (bez kompensacji) E=15.7281 (z kompensacją) E=13.4441 - możemy zaobserwować, że kompensacja poprawia jakość sterowania z racji na lepszą wartość błędu E, warto zauważyć, że zarówno w algorytmie bez kompensacji jak i z kompensacją sygnał wyjściowy waha się w okolicy +- 0.03-0.04 od wartości zadanej. Po sygnale wyjściowym widać, że zakłócenie jest zaszumione - y(k) zmienia się bardzo chaotycznie. Jednakże przebieg sugeruje, że algorytm poradziłby sobie wystarczająco z szumem w takim zakresie.
+
+szum w przedziale <0.7 1.3> - (bez kompensacji) E=17.3979 (z kompensacją) E=13.9737 - ponownie widać, że kompensacja poprawia jakość sterowania, warto jednak zaznaczyć, że w tym zakresie momentami jest już zbyt odchylające się od pożądanego sterowania (odchylenia sięgające -0.13/+0.101 od wartości y_zad).
+
+szum w przedziale <-0.15, 0.15> (próbuje spraawdzić czy istotne jest zarówno to w jakich wartościach operujemy i w jaka jest szerokość przedziału szumu) - (bez kompensacji) E=11.2524 (z kompensacją) E=11.1494 - wnioski na temat sterowania są zasadniczo identyczne jak dla przedziału <0.85, 1>. Tak więc istotne jest tylko to jak szeroki jest przedział zaszumienia. Jedyną wyraźną różnicą w wykresie tym i dla <0.85, 1> jest brak skoku sterowania wynikającego z zadania zakłócenia skokowo. Warto jednak zauważyć, że operowanie w przedziale otaczającym 0 wpłynęło na miarę jakości sterowania E dla obu algorytmów w tym na różnice między nimi, jednak jest to głównie przyczyna braku skoku zakłócenia o którym wspomniałem wcześniej
+
+szum w przedziale <0.5 1.5> - (bez kompensacji) E=19.4556 (z kompensacją) E=14.8917 - widzimy coraz wyraźniejszą różnicę w działaniu algorytmów bez i z kompensacją. Algorytm bez kompensacji oscyluje wokół wartości zadanej w okolicach -0.22 i +0.23 co jest już napradę poważnym odstępcstwem. Kompensacja oscyluje natomiast w okolicach -0.14 +0.15 co nadal nie jest już niedokładnością regulacji, którą można uznać za dopuszczalną, ale nadal jest znacznie lepsza niż w przypadku bez kompensacji. 
+
+szum w przedziale <-1, 1> - (bez kompensacji) E=17.8917 (z kompensacją) E=16.4344 - W tym przypadku pomimo, iż regulacja z kompensacją sprawuje się nadal lepiej niż w przypadku wersji bez niej to oba algorytmy nie są w stanie już zapawanować nad szumem - odchylenia w skrajnych przypadkach sięgające ponad regularnie 0.3 odejścia od wartości zadanej a w skrajnym przypadku ponad 0.5(!) dla wariantu bez kompensacji a szczytowo odchylenia rzędu 0.33 od wartości zadanej w wariancie z kompensacją od niej sprawia, że algorytm nie realizuje swojego zadania. Ponadto na niekorzyśc w tym przypadku typu bez kompensacji jest to jak gwałtowne jest sterowanie. Przebieg sterowania pokazuje nam ,ze nie tylko algorytm nie radzi sobie z regulacją to jeszcze może zaskodzić obiektowi przez to jak nim steruje (dla kontekstu sterowanie jest bardzo gwałtowne i regularnie wahające się pomiędzy 0.2, a 0.6).
+
+
+WNIOSKI - Warto zauważyć na początku, że algorytm z kompensacją wyróżnia się mocno od wersji bez kompensacji w tym, że jego sterowanie jest znacznie agresywniejsze/gwałtowniejsze. Jest to widoczne wskazanie, że algorytm stara się na bieżąco kompensować wpływ zakłóceń zresztą w przypadku, gdy algorytm jest w stanie skompensować szum do poziomu tolerowalnego. Kolejnym wnioskiem jest stwierdzenie, że pomimo wady wariantu algorytmu DMC z kompensacją przy niwelowaniu zaszumionego zakłócenia to w ostatecznym rozrachunku poprawia on jakość regulacji i pozytywnie wpływa na proces regulacji naszego obiektu. 
