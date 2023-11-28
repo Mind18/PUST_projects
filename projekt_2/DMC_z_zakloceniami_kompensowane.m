@@ -5,7 +5,7 @@
 % 2 oznacza skok
 % 1 oznacza zakłócenie z sinusem
 % 0 oznacza zakłócenie szumem
-zaklocenie = 2; 
+zaklocenie = 0; 
 
 % warunki początkowe
 u = zeros(1, k_konc); z = zeros(1,k_konc); y = zeros(1, k_konc);
@@ -17,7 +17,7 @@ yzad(12:k_konc)=Y_zad(1);
 %% Zakłócenia
 for i=91:k_konc
     if (zaklocenie==0) %szum
-        z(i) = 0.85 + (2.15)*rand(1,1);
+        z(i) = 0.85 + (0.15)*rand(1,1);
     elseif (zaklocenie==1) %sinusoidalne
         zakres_sin = 0:0.1:13*pi;
         a = 0.1*sin(zakres_sin);
