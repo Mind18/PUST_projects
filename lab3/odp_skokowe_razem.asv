@@ -1,0 +1,12 @@
+
+x=1:;
+figure;
+plot(x, y20);
+hold on;
+plot(x, y30);
+plot(x, y40);
+plot(x, y50);
+plot(x, y60);
+plot(x, y70);
+plot(x, y80);
+xlabel();

@@ -1,0 +1,42 @@
+import sendNonlinearControls.*
+
+clear x;
+
+G1_to_set = 80;
+W1 = 50;
+G1 = 28;    % Pkt. pracy 33.81
+      %10, 30, 50
+
+figure
+k = 1;
+
+while (1)
+    addpath ('D:\SerialCommunication') ; % add a path
+    initSerialControl COM3 % initialise com port
+    %% obtaining measurements
+    measurements = readMeasurements (1) ; % read measurements
+    y80(k) = measurements;
+    x(k) = k;
+    %% processing of the measurements
+    disp ("T1 " +  measurements ) ; % process measurements
+
+    %% sending new values of control signals
+    sendControls ([ 1 , 2, 3, 4, 5, 6] , [W1, 0 , 0 , 0 , G1, 0]) ;
+    sendNonlinearControls(G1);
+    
+    if k==20
+        G1 = G1_to_set;
+    end
+    
+    %% synchronising with the control process
+    plot(x, y80, 'Color', '#0072BD');
+    hold on;
+    xlabel('k');
+    ylabel('y(k)');
+    title('Odp. skokowa dla G1=' + string(G1_to_set))
+    drawnow;
+    
+    waitForNewIteration () ; % wait for new iteration
+    
+    k = k+1;
+end
