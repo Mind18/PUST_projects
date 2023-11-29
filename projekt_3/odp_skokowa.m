@@ -6,7 +6,7 @@ u_stat(1) = upp;
 u_stat(2:size(u_konc, 2)+1) = u_konc;
 y_stat = zeros(1, size(u_konc, 2)+1);
 y_stat(1) = ypp;
-y = {};
+s = {};
 
 % Narysowanie wykresów sygnałów
 figure;
@@ -38,16 +38,17 @@ figure;
 for i=1:size(u_konc, 2)
     u(1:14) = upp;
     u(15:k_konc) = u_konc(i);
-    y{i}(1:k_konc) = ypp;
+    y(1:k_konc) = ypp;
 
     for k=12:k_konc
-        y{i}(k) = symulacja_obiektu8y_p3(u(k-5), u(k-6), y{i}(k-1), y{i}(k-2));
+        y(k) = symulacja_obiektu8y_p3(u(k-5), u(k-6), y(k-1), y(k-2));
     end
 
-    plot(1:k_konc, y{i});
+    plot(1:k_konc, y);
     hold on;
   
-    y_stat(i+1) = y{i}(k_konc); % zapis danych dla wektora statycznego y
+    y_stat(i+1) = y(k_konc); % zapis danych dla wektora statycznego y
+    s{i} = y; % Zapisanie odp. skokowej
 end
 
 % Dodanie informacji do wygenerowanego wykresu
