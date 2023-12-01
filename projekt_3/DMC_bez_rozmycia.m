@@ -1,20 +1,11 @@
 %% Algorytm regulacji DMC
 o = 2; % Nazwa wykresu
-D = 200;   % Horyzont dynamiki
-N = 98;   % Horyzont predykcji 98
-N_u = 80;   % Horyzont sterowania 18
-lambda = 15;
-Lambda = lambda.*eye(N_u, N_u);
-M = zeros(N, N_u);
-M_p = zeros(N, D-1);
-U_p = zeros(D-1, 1);
-e = zeros(k_konc, 1);
-e_dmc(1:k_konc) = 0; % Błąd średniokwadratowy dla algorytmu DMC
 
 % warunki początkowe
-u = zeros(1, k_konc); y = zeros(1, k_konc);
-u(1:k_konc)=upp; y(1:11)=ypp;
-s = s{odp_skok};
+u = zeros(1, k_konc); y_dmc = zeros(1, k_konc);
+u(1:k_konc)=upp; y_dmc(1:11)=ypp;
+s_i = s{odp_skok};
+e = zeros(1, k_konc);
 
 % Generacja zmiennej trajektori
 % yzad(1:11)=ypp;
@@ -29,7 +20,7 @@ yzad(15:k_konc)=Y_zad(1);
 % Generacja macierzy M
 for j=1:N_u % dla każdej kolumny macierzy M
     for i=j:N % Dla każdego wiersza kolumny j począwszy od przekątnej
-        M(i, j) = s(i-j+1);
+        M(i, j) = s_i(i-j+1);
     end
 end
 
@@ -41,7 +32,7 @@ for j=1:D-1 % dla każdej kolumny macierzy M_p
         else
             p = j+i;
         end
-        M_p(i, j) = s(p) - s(j);
+        M_p(i, j) = s_i(p) - s_i(j);
     end
 end
 
@@ -53,10 +44,11 @@ k_e = sum(K(1,:));
 
 for k=12:k_konc
     % symulacja obiektu
-    y(k) = symulacja_obiektu8y_p3(u(k-5), u(k-6), y(k-1), y(k-2));
+    y_dmc(k) = symulacja_obiektu8y_p3(u(k-5), u(k-6), y_dmc(k-1), ...
+        y_dmc(k-2));
     % wyznaczenie zmiany sterowania
     k_j = 0;
-    e(k) = yzad(k) - y(k);
+    e(k) = yzad(k) - y_dmc(k);
     for j=1:D-1
         k_j_inc = K(1, :)*M_p(:, j);
         k_j = k_j + k_j_inc*U_p(j);
@@ -107,7 +99,7 @@ filenameu = "./pliki_wynikowe/"+"regulator_dmc_bez_rozmycia_u(k)"+ ...
 export_fig(filenameu);
 
 figure;
-stairs(y); % Dodać wartość błędu średniokwadratowego do tytułu
+stairs(y_dmc); % Dodać wartość błędu średniokwadratowego do tytułu
 hold on;
 stairs(yzad, ':');
 % ylim([0.9 2.5]);

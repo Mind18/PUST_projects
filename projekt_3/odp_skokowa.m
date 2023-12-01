@@ -44,11 +44,13 @@ for i=1:size(u_konc, 2)
         y(k) = symulacja_obiektu8y_p3(u(k-5), u(k-6), y(k-1), y(k-2));
     end
 
+    y_stat(i+1) = y(k_konc); % zapis danych dla wektora statycznego y
+    for k=1:D
+        s{i}(k) = (y(k+15) - ypp) / u_konc(i) - upp;
+    end
+
     plot(1:k_konc, y);
     hold on;
-  
-    y_stat(i+1) = y(k_konc); % zapis danych dla wektora statycznego y
-    s{i} = y; % Zapisanie odp. skokowej
 end
 
 % Dodanie informacji do wygenerowanego wykresu

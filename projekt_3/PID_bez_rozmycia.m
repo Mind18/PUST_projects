@@ -7,8 +7,8 @@ o = 2; % Nazwa wykresu
 % T_i - 9 -> 8 -> 7.3
 % T_d - 2 -> 0.2 -> 0.7 -> 0.74
 % warunki początkowe
-u = zeros(1, k_konc); y = zeros(1, k_konc);
-u(1:14)=upp; y(1:14)=ypp;
+u = zeros(1, k_konc); y_pid = zeros(1, k_konc);
+u(1:14)=upp; y_pid(1:14)=ypp;
 % Generacja zmiennej trajektori
 % yzad(1:14)=ypp;
 % yzad(15:300)=Y_zad(1);
@@ -19,8 +19,6 @@ u(1:14)=upp; y(1:14)=ypp;
 yzad(1:14)=ypp;
 yzad(15:k_konc)=Y_zad(1);
 
-e(1:k_konc)=0; e_pid(1:k_konc) = 0;
-
 % Współczynniki algorytmu
 r2 = (K_r * T_d) / T_p;
 r1 = K_r * (T_p/(2*T_i) - 2*(T_d / T_p) - 1);
@@ -28,9 +26,10 @@ r0 = K_r * (1 + (T_p / (2*T_i)) + (T_d/T_p));
 
 for k=15:k_konc % główna pętla symulacyjna
     % symulacja obiektu
-    y(k)=symulacja_obiektu8y_p3(u(k-5), u(k-6), y(k-1), y(k-2));
+    y_pid(k)=symulacja_obiektu8y_p3(u(k-5), u(k-6), y_pid(k-1), ...
+        y_pid(k-2));
     % uchyb regulacji
-    e(k)=yzad(k) - y(k);
+    e(k)=yzad(k) - y_pid(k);
     % sygnał sterujący regulatora PID
     u(k)=r2*e(k-2)+r1*e(k-1)+r0*e(k)+u(k-1);
     % Ograniczenia zmiany sterowania
@@ -48,7 +47,7 @@ for k=15:k_konc % główna pętla symulacyjna
     end
 
     % Błąd średniokwadratowy dla algorytmu PID
-    e_pid(k) = e_pid(k-1) + (yzad(k) - y(k))^2;
+    e_pid(k) = e_pid(k-1) + (yzad(k) - y_pid(k))^2;
 end
 
 E = e_pid(k_konc);
@@ -56,7 +55,7 @@ E = e_pid(k_konc);
 % Narysowanie wykresów
 figure;
 stairs(u); % Dodać wartość błędu średniokwadratowego do tytułu
-ylim([0.4 1.6]);
+% ylim([0.4 1.6]);
 xlabel('k');
 ylabel('u(k)');
 title_str = "Algorytm PID u(k): K_r=" + string(K_r) ...
@@ -67,7 +66,7 @@ filenameu = "./pliki_wynikowe/"+"regulator_pid_u(k)"+string(o)+".pdf";
 export_fig(filenameu);
 
 figure;
-stairs(y); % Dodać wartość błędu średniokwadratowego do tytułu
+stairs(y_pid); % Dodać wartość błędu średniokwadratowego do tytułu
 hold on;
 stairs(yzad, ':');
 % ylim();
