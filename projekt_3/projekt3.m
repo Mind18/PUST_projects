@@ -12,7 +12,10 @@ u_max = 1;
 du_min = -2;
 du_max = 2;
 
-n_regulatorow = 5; 
+n_regulatorow = 5; % Liczba regulatorów
+% Strefy rozmycia regulatorów
+reg_part = {[-1 -1 -0.6 -0.4], [-0.5 -0.4 -0.3 -0.2], ...
+    [-0.3 -0.2 0.05 0.15], [0.05 0.15 0.4 0.6], [0.4 0.6 1 1]}; 
 u_konc = -1:(2/(n_regulatorow-1)):1;
 
 % Parametry regulatora PID
@@ -35,7 +38,7 @@ e_dmc(1:k_konc) = 0; % Błąd średniokwadratowy dla algorytmu DMC
 s = {}; % Zestaw dostępnych odp.skokowych
 odp_skok = 2; % Odpowiedź skokowa dla nierozmytego regulatora
 
-zad = ['Y' 'Y' 'Y' 'Y']; % Zadania, które będą wykonywane
+zad = ['Y' 'Y' 'N' 'N' 'Y']; % Zadania, które będą wykonywane
 
 if strcmp(zad(1), 'Y')
     punkt_pracy_3;
@@ -51,4 +54,8 @@ end
 
 if strcmp(zad(4), 'Y')
     DMC_bez_rozmycia;
+end
+
+if strcmp(zad(5), 'Y')
+    fuzzy_division;
 end
