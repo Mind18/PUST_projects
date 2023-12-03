@@ -1,0 +1,10 @@
+Regulacja nierozmytego PIDa
+Trajektoria zadan - [-3 0.1 -2.2 -0.2];
+
+Punktem wyjściowym są wyznaczone metodą Zieglera-Nicholsa nastawwy K_r=0.6, T_i=3 i T_d=0.2625 (K_u=1.4 T_u=7.5)
+Dla tych nastaw - E=673.015 - problemy z regulacją dla wartości y_zad=-3 i y_zad=-2.2 podchodzące pod oscylacje, dla y_zad=0.1 regulacja jest wolna, dla y_zad=-0.2 - regulacja jest przyzwoita
+
+K_r=0.8, T_i=3 i T_d=0.2625 - E=833.3588 - Gorsza jakość regulacji i oscylacje występują rownież dla y_zad=0.2
+K_r=0.5, T_i=3 i T_d=0.2625 - E=546.0896 - Ponownie poprawa jakości sterowania dla trajektorii y_zad=0.2. Mniejsze oscylacje dla y_zad=-3 i y_zad=-2.2, podobny przebieg dla y_zad=0.1
+K_r=0.5, T_i=5 i T_d=0.2625 - E=554.8789 - Dalsze problemy z oscylacją dla y_zad=-3 i y_zad=-2.2, regulacja dla y_zad=0.1 nie nadąża z regulacją, jakość regulacji dla y_zad=-0.2 ma dłuższy czas stabilizacji
+K_r=0.5, T_i=5 i T_d=0.2 - E=554.8789 - 

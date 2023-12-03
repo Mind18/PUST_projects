@@ -8,14 +8,14 @@ s_i = s{odp_skok};
 e = zeros(1, k_konc);
 
 % Generacja zmiennej trajektori
-% yzad(1:11)=ypp;
-% yzad(12:300)=Y_zad(1);
-% yzad(301:600)=Y_zad(2);
-% yzad(601:900)=Y_zad(3);
-% yzad(901:k_konc)=Y_zad(4);
+yzad(1:11)=ypp;
+yzad(12:300)=Y_zad(1);
+yzad(301:600)=Y_zad(2);
+yzad(601:900)=Y_zad(3);
+yzad(901:k_konc)=Y_zad(4);
 
-yzad(1:14)=ypp;
-yzad(15:k_konc)=Y_zad(1);
+% yzad(1:14)=ypp;
+% yzad(15:k_konc)=Y_zad(1);
 
 % Generacja macierzy M
 for j=1:N_u % dla każdej kolumny macierzy M
@@ -87,7 +87,7 @@ E = e_dmc(k_konc); % Błąd średniokwadratowy algorytmu
 % Narysowanie wykresów
 figure;
 stairs(u); % Dodać wartość błędu średniokwadratowego do tytułu
-% ylim([0.4 1.6]);
+ylim([min(u)-0.1 max(u)+0.1]);
 xlabel('k');
 ylabel('u(k)');
 title_str = "Algorytm DMC u(k): N=" + string(N) ...
@@ -102,7 +102,7 @@ figure;
 stairs(y_dmc); % Dodać wartość błędu średniokwadratowego do tytułu
 hold on;
 stairs(yzad, ':');
-% ylim([0.9 2.5]);
+ylim([min(y_dmc)-0.1 max(y_dmc)+0.1]);
 xlabel('k');
 ylabel('y(k)');
 title_str = "Algorytm DMC y(k): N=" + string(N) ...

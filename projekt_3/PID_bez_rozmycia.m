@@ -1,5 +1,5 @@
 %% Algorytm regulacji PID
-% k_konc = 1200;
+k_konc = 1200;
 
 % Inicjalizacja zmiennych
 o = 2; % Nazwa wykresu
@@ -10,14 +10,14 @@ o = 2; % Nazwa wykresu
 u = zeros(1, k_konc); y_pid = zeros(1, k_konc);
 u(1:14)=upp; y_pid(1:14)=ypp;
 % Generacja zmiennej trajektori
-% yzad(1:14)=ypp;
-% yzad(15:300)=Y_zad(1);
-% yzad(301:600)=Y_zad(2);
-% yzad(601:900)=Y_zad(3);
-% yzad(901:k_konc)=Y_zad(4);
-
 yzad(1:14)=ypp;
-yzad(15:k_konc)=Y_zad(1);
+yzad(15:300)=Y_zad(1);
+yzad(301:600)=Y_zad(2);
+yzad(601:900)=Y_zad(3);
+yzad(901:k_konc)=Y_zad(4);
+
+% yzad(1:14)=ypp;
+% yzad(15:k_konc)=Y_zad(1);
 
 % Współczynniki algorytmu
 r2 = (K_r * T_d) / T_p;
@@ -55,7 +55,7 @@ E = e_pid(k_konc);
 % Narysowanie wykresów
 figure;
 stairs(u); % Dodać wartość błędu średniokwadratowego do tytułu
-% ylim([0.4 1.6]);
+ylim([min(u)-0.1 max(u)+0.1]);
 xlabel('k');
 ylabel('u(k)');
 title_str = "Algorytm PID u(k): K_r=" + string(K_r) ...
@@ -69,7 +69,7 @@ figure;
 stairs(y_pid); % Dodać wartość błędu średniokwadratowego do tytułu
 hold on;
 stairs(yzad, ':');
-% ylim();
+ylim([min(y_pid)-0.1 max(y_pid)+0.1]);
 xlabel('k');
 ylabel('y(k)');
 title_str = "Algorytm PID y(k): K_r=" + string(K_r) ...
