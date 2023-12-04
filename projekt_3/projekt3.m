@@ -19,7 +19,7 @@ reg_part = {[-1 -1 -0.6 -0.4], [-0.5 -0.4 -0.3 -0.2], ...
 u_konc = -1:(2/(n_regulatorow-1)):1;
 
 % Parametry regulatora PID
-K_r = 0.5; T_i = 5; T_d = 0.2; 
+K_r = 0.22; T_i = 4.75; T_d = 0.45; 
 % Metoda Zieglera-Nicholsa - K_u=1.4 T_u=7.5
 
 % Parametery regulatora DMC
@@ -38,7 +38,7 @@ e_dmc(1:k_konc) = 0; % Błąd średniokwadratowy dla algorytmu DMC
 s = {}; % Zestaw dostępnych odp.skokowych
 odp_skok = 2; % Odpowiedź skokowa dla nierozmytego regulatora
 
-zad = ['Y' 'Y' 'Y' 'Y' 'N']; % Zadania, które będą wykonywane
+zad = ['Y' 'Y' 'Y' 'N' 'N']; % Zadania, które będą wykonywane
 
 if strcmp(zad(1), 'Y')
     punkt_pracy_3;
