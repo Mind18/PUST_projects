@@ -9,9 +9,6 @@ print = 'Y'; % Czy generować wykresy
 u = zeros(k_konc, 1); % Sterowanie
 y = zeros(k_konc, 1); % Wyjście procesu
 
-% Punkt pracy
-upp = 0; ypp = 0;
-
 %% Sprawdzenie punktu pracy - zadanie 1
 
 for k=8:k_konc
