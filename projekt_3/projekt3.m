@@ -23,6 +23,13 @@ reg_part = {[-1 -1 -0.6 -0.4], [-0.5 -0.4 -0.3 -0.2], ...
     [-0.3 -0.2 0.05 0.15], [0.05 0.15 0.4 0.6], [0.4 0.6 1 1]}; 
 u_konc = -1:(2/(n_regulatorow-1)):1;
 
+% Wyeliminowanie przypadku w którym mamy zerową odp. skokową
+for step=1:size(u_konc, 2)
+    if u_konc(step) == 0
+        u_konc(step) = 0.01;
+    end
+end
+
 % Parametry regulatora PID
 K_r = 0.22; T_i = 4.75; T_d = 0.45; 
 % Metoda Zieglera-Nicholsa - K_u=1.4 T_u=7.5
@@ -42,6 +49,22 @@ M = zeros(N, N_u);
 M_p = zeros(N, D-1);
 U_p = zeros(D-1, 1);
 
+% Parametry rozmytego regulatora DMC
+D_fuz = [100 100 100 100 100]; % Horyzonty dynamiki
+N_fuz = [90 90 90 90 90];   % Horyzonty predykcji
+N_u_fuz = [80 80 80 80 80];   % Horyzonty sterowania
+lambda_fuz = [0.5 0.5 0.5 0.5 0.5]; % Parametry lambda lokalnych 
+                                    % regulatorów
+Lambda_fuz = {zeros(N_u, N_u), zeros(N_u, N_u), zeros(N_u, N_u), ...
+    zeros(N_u, N_u), zeros(N_u, N_u)}; % Alokacja pamięci na macierze
+                                       % lambda lokalnych regulatorów
+M_fuz = {zeros(N, N_u), zeros(N, N_u), zeros(N, N_u), ...
+    zeros(N, N_u), zeros(N, N_u)}; % Macierze M lokalnych regulatorów
+M_p_fuz = {zeros(N, D-1), zeros(N, D-1), zeros(N, D-1), ...
+    zeros(N, D-1), zeros(N, D-1)}; % Macierze M_p lokalnych regulatorów
+U_p_fuz = {zeros(D-1, 1), zeros(D-1, 1), zeros(D-1, 1), ...
+    zeros(D-1, 1), zeros(D-1, 1)}; % Wektory U_p lokalnych regulatorów
+
 e = zeros(1, k_konc);
 e_pid(1:k_konc) = 0; % Błąd średniokwadratowy dla algorytmu PID
 e_pid_fuz(1:k_konc) = 0; % Błąd średniokwadratowy dla rozmytego PID
@@ -53,7 +76,7 @@ w = zeros(1, n_regulatorow);
 s = {}; % Zestaw dostępnych odp.skokowych
 odp_skok = 2; % Odpowiedź skokowa dla nierozmytego regulatora
 
-zad = ['N' 'Y' 'Y' 'N' 'N' 'Y' 'N']; % Zadania, które będą wykonywane
+zad = ['N' 'Y' 'N' 'Y' 'Y' 'N' 'Y']; % Zadania, które będą wykonywane
 
 if strcmp(zad(1), 'Y')
     punkt_pracy_3;
@@ -62,6 +85,8 @@ end
 if strcmp(zad(2), 'Y')
     odp_skokowa;
 end
+
+k_konc = 1200; % Zmiana k_konc na potrzebę wydłużenia testu regulacji
 
 if strcmp(zad(3), 'Y')
     PID_bez_rozmycia;

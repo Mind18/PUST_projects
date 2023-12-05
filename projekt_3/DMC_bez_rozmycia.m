@@ -9,7 +9,7 @@ e = zeros(1, k_konc);
 
 % Generacja zmiennej trajektori
 yzad(1:11)=ypp;
-yzad(12:300)=Y_zad(1);
+yzad(15:300)=Y_zad(1);
 yzad(301:600)=Y_zad(2);
 yzad(601:900)=Y_zad(3);
 yzad(901:k_konc)=Y_zad(4);
@@ -42,7 +42,12 @@ K = ((M'*M+Lambda)^(-1))*M';
 % Wyznaczenie współczynnika k_e
 k_e = sum(K(1,:));
 
-for k=12:k_konc
+for k=15:k_konc
+
+    if k == 17
+        u;
+    end
+
     % symulacja obiektu
     y_dmc(k) = symulacja_obiektu8y_p3(u(k-5), u(k-6), y_dmc(k-1), ...
         y_dmc(k-2));
@@ -82,7 +87,6 @@ for k=12:k_konc
 end
 
 E = e_dmc(k_konc); % Błąd średniokwadratowy algorytmu
-
 
 % Narysowanie wykresów
 figure;

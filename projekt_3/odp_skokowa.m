@@ -46,7 +46,11 @@ for i=1:size(u_konc, 2)
 
     y_stat(i+1) = y(k_konc); % zapis danych dla wektora statycznego y
     for k=1:D
-        s{i}(k) = (y(k+15) - ypp) / u_konc(i) - upp;
+        if u_konc(i) ~= upp
+            s{i}(k) = (y(k+15) - ypp) / u_konc(i) - upp;
+        else
+            s{i}(k) = 0;
+        end
     end
 
     plot(1:k_konc, y);

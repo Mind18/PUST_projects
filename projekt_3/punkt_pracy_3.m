@@ -2,7 +2,6 @@ import symulacja_obiektu8y_p2.*
 
 % Inicjalizacja danych
 T_p = 0.5;
-k_konc = 400;
 print = 'Y'; % Czy generować wykresy
 
 % Wektory zmiennych procesowych

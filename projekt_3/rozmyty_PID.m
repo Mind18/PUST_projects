@@ -17,6 +17,8 @@ u_w = {zeros(1, k_konc), zeros(1, k_konc), zeros(1, k_konc), ...
     zeros(1, k_konc), zeros(1, k_konc)};
 u_part = zeros(1, n_regulatorow); % Wektor do trzymania częściowych
                                   % Obliczeń sterowania
+e = zeros(1, k_konc);
+
 y_pid_fuz = zeros(1, k_konc);
 u(1:14)=upp; y_pid_fuz(1:14)=ypp;
 
@@ -92,9 +94,8 @@ stairs(u); % Dodać wartość błędu średniokwadratowego do tytułu
 ylim([min(u)-0.1 max(u)+0.1]);
 xlabel('k');
 ylabel('u(k)');
-title_str = "Algorytm rozmyty PID u(k): K_r=" + string(K_r) ...
-    + " T_i=" + string(T_i) + " T_D=" + string(T_d) + " E=" ...
-    + string(E);
+title_str = "Algorytm rozmyty PID u(k): Liczba regulatorów: " + ...
+    string(n_regulatorow) + " E=" + string(E);
 title(title_str);
 filenameu = "./pliki_wynikowe/"+"regulator_pid_rozmyty_u(k)"+ ...
     string(o)+".pdf";
@@ -107,9 +108,8 @@ stairs(yzad, ':');
 ylim([min(y_pid_fuz)-0.1 max(y_pid_fuz)+0.1]);
 xlabel('k');
 ylabel('y(k)');
-title_str = "Algorytm rozmyty PID rozmyty y(k): K_r=" + string(K_r) ...
-    + " T_i=" + string(T_i) + " T_D=" + string(T_d) + " E=" ...
-    + string(E);
+title_str = "Algorytm rozmyty PID y(k): Liczba regulatorów: " + ...
+    string(n_regulatorow) + " E=" + string(E);
 title(title_str);
 legend('y(k)', 'y^{zad}', 'Location', 'southeast');
 filenamey = "./pliki_wynikowe/"+"regulator_pid_rozmyty_y(k)"+ ...

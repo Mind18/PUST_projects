@@ -1,5 +1,6 @@
 import trapezoid_assign.*
 
+figure;
 % Sprawdzenie poprawności danych
 if n_regulatorow == size(reg_part, 2)
     lin = -1:0.01:1;

@@ -1,5 +1,4 @@
 %% Algorytm regulacji PID
-k_konc = 1200;
 
 % Inicjalizacja zmiennych
 o = 2; % Nazwa wykresu
