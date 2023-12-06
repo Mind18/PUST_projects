@@ -10,7 +10,6 @@ u_min = 0;
 
 upp = 28;
 ypp = 31.7;
-y_s = y35;
 yzad = ypp;
 
 % Inicjalizacja zmiennych

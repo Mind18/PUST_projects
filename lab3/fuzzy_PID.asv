@@ -1,0 +1,137 @@
+clear x y k Yzad;
+
+kryterium = 'u';
+n_regulatorow = 3;
+
+k = 1;
+initial_size = 1e4;
+
+reg_part = {[20, 20, 40, 45], [40, 45, 60, 65], ...
+    [60, 65, 80, 80]};
+u_w = {};
+
+% Ograniczenia
+du_max = 100;
+du_min = -du_max;
+u_max = 100;
+u_min = 0;
+
+upp = 28;
+ypp = 31.7;
+yzad = ypp;
+
+% Inicjalizacja zmiennych
+T_p = 1;
+K_r_lok = [0.28173, 0.54, 0.3];
+T_i_lok = [15.1 18.8296 18];
+T_d_lok = [0.2 0.5 0.4];
+
+du = 0;
+e = zeros(initial_size, 1);
+e_pid(1:initial_size) = 0; % Błąd średniokwadratowy dla algorytmu DMC
+
+% Współczynniki algorytmu
+r2_fuz = zeros(1, n_regulatorow);
+r1_fuz = zeros(1, n_regulatorow);
+r0_fuz = zeros(1, n_regulatorow);
+for i=1:n_regulatorow
+    r2_fuz(i) = (K_r_lok(i) * T_d_lok(i)) / T_p;
+    r1_fuz(i) = K_r_lok(i) * (T_p/(2*T_i_lok(i)) - 2*(T_d_lok(i) / T_p) - 1);
+    r0_fuz(i) = K_r_lok(i) * (1 + (T_p / (2*T_i_lok(i))) + (T_d_lok(i)/T_p));
+end
+
+while (1)
+    addpath ('D:\SerialCommunication') ; % add a path
+    initSerialControl COM7 % initialise com port
+    % Uzyskanie sygnału wyjściowego
+    measurements = readMeasurements (1);
+    y(k) = measurements;
+    x(k) = k;
+    e(k) = yzad - y(k);
+    % sygnał sterujący regulatora PID
+    
+    % Wybranie kryterium dla funkcji przynależności
+    if strcmp(kryterium, 'u') % Jeżeli kryterium jest sterowanie
+        if k~=1
+            x_w = u(k-1); % Wykorzystaj poprzednią wartość sterowania
+        else
+            x_w = upp;
+        end
+    elseif strcmp(kryterium, 'y') % Jeżeli kryterium jest sygnał wyjściowy
+        x_w = y(k); % Wykorzystaj aktualną wartość sygnału wyjściowego
+    end
+    
+    for i=1:n_regulatorow % dla każdego z regulatorów lokalnych
+        % Wyznaczenie wartości funkcji przynależności
+        w(i) = trapezoid_assign(x_w, reg_part{i});
+
+        % sygnał sterujący regulatora lokalnego PID
+        if k==1
+            u_w{i}(k)=r0_fuz(i)*e(k)+upp;
+        elseif k==2
+            u_w{i}(k)=r1_fuz(i)*e(k-1)+r0_fuz(i)*e(k)+u(k-1);
+        else
+            u_w{i}(k)=r2_fuz(i)*e(k-2)+r1_fuz(i)*e(k-1)+r0_fuz(i)*e(k)+u(k-1);
+        end
+        
+        % Ograniczenia zmiany sterowania
+        if k~=1
+            du = u_w{i}(k) - u(k-1);
+        else
+            du = u_w{i}(k);
+        end
+        if du < du_min
+            u_w{i}(k) = u(k-1) + du_min;
+        elseif du > du_max
+            u_w{i}(k) = u(k-1) + du_max;
+        end
+        % Ograniczenia wartości sterowania
+        if u_w{i}(k) < u_min
+            u_w{i}(k) = u_min;
+        elseif u_w{i}(k) > u_max
+            u_w{i}(k) = u_max;
+        end
+
+        u_part(i) = w(i)*u_w{i}(k);
+    end
+    
+    % Wyznaczenie sterowania regulatora
+    u(k) = sum(u_part) / sum(w);
+
+    % Błąd średniokwadratowy dla algorytmu PID
+    if k == 1
+        e_pid(k) = (e(k))^2;
+    else
+        e_pid(k) = e_pid(k-1) + (e(k))^2;
+    end
+    sendControls ([ 1 , 2, 3, 4, 5, 6] , [W1, 0 , 0 , 0 ,u(k), 0]) ;
+    
+    %% synchronising with the control process
+%    plot(x, u);
+    plot(x,y , 'b');
+    hold on;
+    Yzad(k) = yzad;
+    E = e_pid(k);
+    plot(x, Yzad, 'r');
+    title('E=' + string(E));
+    %hold off;
+
+    drawnow;
+    
+    waitForNewIteration () ; % wait for new iteration
+ 
+    disp(u(k))
+    k = k+1;
+    
+   if k == 200
+        yzad = 38.81;
+    end
+    
+    if k == 600
+        yzad = 48.81;
+    end
+    
+    if k == 1000
+       yzad = 33.81;
+    end
+end
