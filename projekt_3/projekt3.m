@@ -40,10 +40,10 @@ T_i_lok = [4.75 4.75 4.75 4.75 4.75];
 T_d_lok = [0.45 0.45 0.45 0.45 0.45];
 
 % Parametery regulatora DMC
-D = 100; % Horyzont dynamiki
-N = 90;   % Horyzont predykcji 98
-N_u = 80;   % Horyzont sterowania 18
-lambda = 0.5;
+D = 88; % Horyzont dynamiki
+N = 30;   % Horyzont predykcji 98
+N_u = 5;   % Horyzont sterowania 18
+lambda = 1.8;
 Lambda = lambda.*eye(N_u, N_u);
 M = zeros(N, N_u);
 M_p = zeros(N, D-1);
@@ -74,9 +74,9 @@ e_dmc_fuz(1:k_konc) = 0; % Błąd średniokwadratowy dla rozmytego DMC
 w = zeros(1, n_regulatorow);
 
 s = {}; % Zestaw dostępnych odp.skokowych
-odp_skok = 2; % Odpowiedź skokowa dla nierozmytego regulatora
+odp_skok = 1; % Odpowiedź skokowa dla nierozmytego regulatora
 
-zad = ['N' 'Y' 'N' 'Y' 'Y' 'N' 'Y']; % Zadania, które będą wykonywane
+zad = ['N' 'Y' 'Y' 'Y' 'N' 'N' 'N']; % Zadania, które będą wykonywane
 
 if strcmp(zad(1), 'Y')
     punkt_pracy_3;

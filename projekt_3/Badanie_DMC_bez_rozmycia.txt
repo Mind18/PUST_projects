@@ -1,0 +1,57 @@
+Regulacja nierozmytego DMC
+
+Za punkt wyjściowy posłużą nam parametry: D=N=N_u=88 lambda=1, tajektoria badana - [-3 0.1 -2.2 -0.2]. Algorytm w tetach wykorzystuje odpowiedź skokową dla u=-0.5 
+
+1 Etap strojenia - Dobranie parametru N
+
+D=88, N=88, N_u=88, lambda=1 - E=398.5172 - Przebieg ze skokami, ale ostatecznie regulujący w punkcie pracy y_zad=0.1, w y_zad=-0.2 występuje przesterowanie i po drobnych oscylacjach również osiągamy stabilizację.
+					    W punktach y_zad=-2.2 i y_zad=-3 mamy znaczące oscylacje
+D=88, N=50, N_u=50, lambda=1 - E=398.5172 - Przebieg identyczny jak dla przypadku D=N=N_u=88, lambda=1
+D=88, N=20, N_u=20, lambda=1 - E=398.5755 - Przebieg wygląda identycznie jak dla przypadku D=N=N_u=88, lambda=1, różnica jedynie jest widoczna w mierze jakości E.
+D=88, N=15, N_u=15, lambda=1 - E=399.0578 - Przebieg wygląda identycznie jak dla przypadku D=N=N_u=88, lambda=1, różnica jedynie jest widoczna w mierze jakości E.
+D=88, N=22, N_u=22, lambda=1 - E=398.5244 - Przebieg wygląda identycznie jak dla przypadku D=N=N_u=88, lambda=1, różnica jedynie jest widoczna w mierze jakości E.
+D=88, N=25, N_u=25, lambda=1 - E=398.52 - Przebieg wygląda identycznie jak dla przypadku D=N=N_u=88, lambda=1, różnica jedynie jest widoczna w mierze jakości E.
+D=88, N=28, N_u=28, lambda=1 - E=398.5175 - Przebieg wygląda identycznie jak dla przypadku D=N=N_u=88, lambda=1, różnica jedynie jest widoczna w mierze jakości E.
+D=88, N=30, N_u=30, lambda=1 - E=398.5173 - Przebieg wygląda identycznie jak dla przypadku D=N=N_u=88, lambda=1, różnica jedynie jest widoczna w mierze jakości E.
+D=88, N=32, N_u=32, lambda=1 - E=398.5173 - Przebieg wygląda identycznie jak dla przypadku D=N=N_u=88, lambda=1, różnica jedynie jest widoczna w mierze jakości E.
+
+Zostaniemy przy N=30, ponieważ różnica 0.0001 jest na tyle mała, że preferuje wybrać niższą wartość horyzontu, niż walczyć o tą różnicę, szczególnie, że przebieg zasadniczo jest identyczny.
+
+2 Etap strojenia - Dobranie parametru N_u
+
+D=88, N=30, N_u=25, lambda=1 - E=398.5173 - Przebieg wygląda identycznie jak dla przypadku D=N=N_u=88, lambda=1, różnica jedynie jest widoczna w mierze jakości E.
+D=88, N=30, N_u=15, lambda=1 - E=398.5058 - Przebieg wygląda identycznie jak dla przypadku D=N=N_u=88, lambda=1, różnica jedynie jest widoczna w mierze jakości E, która co ciekawe jest niższa.
+D=88, N=30, N_u=8, lambda=1 - E=398.5173 - Wnioski podobne jak w poprzednim przypadku.
+D=88, N=30, N_u=5, lambda=1 - E=379.6225 - Wnioski podobne jak w poprzednim przypadku, widzimy zanik oscylacj przy regulacji do y_zad=-0.2.
+D=88, N=30, N_u=2, lambda=1 - E=378.0453 - Wnioski podobne jak w poprzednim przypadku, widzimy zanik oscylacj przy regulacji do y_zad=-0.2.
+
+Wybieram na razie N_u=5, ponieważ zniwelowanie lambdą oscylacji może pokazać, że potrzebujemy jednak wiekszego horyzontu
+
+3 Etap strojenia - Dobranie parametru lambda
+
+D=88, N=30, N_u=5, lambda=2 - E=383.0722 - Widzimy spowolnienie regulacji dla y_zad=0.1, ale poprawę oscylacji dla y_zad=-0.2. Ponadto widzimy drobną poprawę oscylacji dla y_zad=-3 i y_zad=-2.2
+D=88, N=30, N_u=5, lambda=4 - E=407.8245 - Widzimy poprawę jakości regulacji dla y_zad=0.1. Dla y_zad=-0.2 widzimy natomiast pogorszenie się sygnału wyjściowego - przypomina on przypadek z lambda=1, choć szczyty sterowania są niższe tutaj. Ponadto widzimy nieznaczą poprawę apmplitudy oscylacji dla y_zad=-2.2 i nieznaczne pogorszenie dla y_zad=-3
+D=88, N=30, N_u=5, lambda=0.5 - E=365.0666 - Sygnał wyjściowy dla y_zad=-3 i y_zad=-2.2 ma mniejsze oscylacje, natomiast dla y_zad=-0.2 zaczynają się kształtować oscylacje, natomiast sygnał wyjściowy dla y_zad=0.1 nie odnotowuje znaczących zmian
+D=88, N=30, N_u=5, lambda=0.25 - E= -376.1205 - Widzimy łagodzenie się oscylacji dla y_zad=-3, pogorszenie się dla y_zad=-2.2, dodatkowo widzimy pogorszenie się początkowej fazy stabilizacji sygnału dla y_zad=0.1, a dla y_zad=-0.2 widzimy podobny sygnał do przypadku lambda=1
+D=88, N=30, N_u=5, lambda=3 - E=408.0426 - Widzimy pogarszanie się oscylacji w y_zad=-3 i y_zad=-2.2. Ponadto dla y_zad=-0.2 widzimy pogarszanie się przebiegu (zamiast ładnych oscylacji mamy szarpany przebieg)
+D=88, N=30, N_u=5, lambda=1.8 - E=384.1533 - Widzimy wieksze oscylacje dla y_zad=-0.2, y_zad=-2.2, y_zad=-3 niż dla lambda=2, natomiast dla y_zad=0.1 nie obserwujemy znacznych różnic.
+D=88, N=30, N_u=5, lambda=2.2 - E=384.7499 - Widzimy wyraźną poprawę oscylacji dla y_zad=-0.2 i nieznaczą poprawę amplitud oscylacji dla y_zad=-3 i y_zad=-2.2, ponownie dla y_zad=0.1 widzimy brak znacznych zmian.
+D=88, N=30, N_u=5, lambda=2.3 - E=387.9696 - Oscylacje y_zad=-0.2 robią się gwałtowne i nieregularne, dla y_zad=-2.2 i y_zad=-3 mamy pogorszenie amplitud oscylacji
+
+Wybieram lambda=2.2 - ostateczne nastawy: D=88, N=30, N_u=5, lambda=2.2
+
+Dodatkowe badania dla różnych odpowiedzi skokowych:
+u=-1 - E=233.592 - Regulacja poprawiła się pod względem tego, że dla y_zad=-3 i y_zad=-2.2 oscylacje zbiegają do wartości zadanej, proces jednak jest bardzo powolny, a kosztem tego pogarszamy oscylacje dla pozostałych y_zad i otrzymujemy załamanie się sygnału dla przejścia 0.1->(-2.2)
+u=0.5 - E=1567.4899 - Regulacja dla y_zad=0.1 jest satysfakcjonująca, jednak pozostałe sygnały są w bardzo złych oscylacjach.
+
+Z racji, że eksperyment dla u=-1 dał znaczną poprawę wskaźnika jakości spróbuje doregulować regulator dla niego
+
+D=88, N=30, N_u=5, lambda=1.8 - E=233.1813 - Nieznaczna poprawa wskaźnika jakości, do tego nie poprawiająca załamującego się sygnału wyjściowego dla przejścia wartości sygnału zadanego 0.1->(-2.2)
+D=88, N=30, N_u=5, lambda=2.5 - E=233.9027 - Również sygnał się załamuje przy przejściu wartości zadanej 0.1->(-2.2)
+D=88, N=30, N_u=5, lambda=1.5 - E=232.6882 - sygnał dla y_zad=0.1 szybciej się stabilizuje, tak bez większych zmian, jednakże zaczynamy widzieć narastanie wolniejsze stabilizowanie się oscylacji dla y_zad=-2.2 i y_zad=-3. STOP
+
+Wybieram lambda=1.8 - ostateczne nastawy: D=88, N=30, N_u=5, lambda=1.8 - skok jednostkowy dla u=-1.
+
+WNIOSEK
+Generalnie pomimo dobrania nastaw widzimy, że regulator nie spełnia swojej roli optymalnie. Wszelkie próby działania nie wyeliminowały kompletnie oscylacji i nie zapewniają optymalnej regulacji dla całego zbioru wartości sygnału wyjsciwoego naraz. Widac więc, że obiekty nieliniowe znacząco pogarszają skuteczność nierozmytego algorytmu regulacji DMC. Co więcej ocena jakościowa regulacji sugeruje, że algorytm PID lepiej reguluje takie obiekty.
+Przyczną tego jest fakt, że regulator DMC w swoim algorytmie wykorzystuje jeden wybrany model odp. skokowej co w przypadku modeli nieliniowych dla których jedna odpowiedź skokowa nie ma opcji dobrze odwzorować obiekt w całej dziedzinie możliwych sterowań. W przypadku regulatorów nierozmytych regulacja PID jest skuteczniejsza dla obiektów nieliniowych.
