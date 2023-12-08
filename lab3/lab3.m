@@ -1,7 +1,7 @@
 import sendNonlinearControls.*
 
 % Wyznaczony w zad.1 pkt. pracy - T1=33.81
-clear x, y;
+clear x y;
 
 W1 = 50;
 G1 = 28;    %15, 35, 50
@@ -12,7 +12,7 @@ k = 1;
 
 while (1)
     addpath ('D:\SerialCommunication') ; % add a path
-    initSerialControl COM3 % initialise com port
+    initSerialControl COM7 % initialise com port
     %% obtaining measurements
     measurements = readMeasurements (1) ; % read measurements
     y(k) = measurements;
