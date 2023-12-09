@@ -76,7 +76,7 @@ w = zeros(1, n_regulatorow);
 s = {}; % Zestaw dostępnych odp.skokowych
 odp_skok = 1; % Odpowiedź skokowa dla nierozmytego regulatora
 
-zad = ['N' 'Y' 'Y' 'Y' 'N' 'N' 'N']; % Zadania, które będą wykonywane
+zad = ['N' 'Y' 'N' 'N' 'N' 'N' 'N']; % Zadania, które będą wykonywane
 
 if strcmp(zad(1), 'Y')
     punkt_pracy_3;
