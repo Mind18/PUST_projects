@@ -4,24 +4,24 @@ Trajektoria zadan - [-3 0.1 -2.2 -0.2];
 Punktem wyjściowym są wyznaczone metodą Zieglera-Nicholsa nastawwy K_r=0.6, T_i=3 i T_d=0.2625 (K_u=1.4 T_u=7.5)
 Dla tych nastaw - E=673.015 - problemy z regulacją dla wartości y_zad=-3 i y_zad=-2.2 podchodzące pod oscylacje, dla y_zad=0.1 regulacja jest wolna, dla y_zad=-0.2 - regulacja jest przyzwoita
 
-K_r=0.8, T_i=3 i T_d=0.2625 - E=833.3588 - Gorsza jakość regulacji i oscylacje występują rownież dla y_zad=0.2
-K_r=0.5, T_i=3 i T_d=0.2625 - E=546.0896 - Ponownie poprawa jakości sterowania dla trajektorii y_zad=0.2. Mniejsze oscylacje dla y_zad=-3 i y_zad=-2.2, podobny przebieg dla y_zad=0.1
-K_r=0.5, T_i=5 i T_d=0.2625 - E=554.8789 - Dalsze problemy z oscylacją dla y_zad=-3 i y_zad=-2.2, regulacja dla y_zad=0.1 nie nadąża z regulacją, jakość regulacji dla y_zad=-0.2 ma dłuższy czas stabilizacji
-K_r=0.5, T_i=5 i T_d=0.2 - E=598.59 - dla y_zad=0.1 istnieje dalej uchyb ustalony. Nadal dla y_zad=-3 i y_zad=-2.2 pojawiają się problemy z oscylacją, dla y_zad=-0.2 regulacja posiada duże przeregulowanie ale czas regulacji jest przyzwoity.
-K_r=0.5, T_i=2 i T_d=0.2625 - E=671.9417 - poprawione sterowanie dla y_zad=-0.2, zniwelowany uchyb ustalony dla y_zad=0.1 - większe oscyalcje dla pozostałych. Spróbujemy podnieść T_i
-K_r=0.5, T_i=6 i T_d=0.2625 - E=589.7984 - poprawione sterowanie dla y_zad=-0.2, gorszy uchyb ustalony dla y_zad=0.1 i lekkie polepszenie się oscylacji dla y_zad=-3 i y_zad=-2.2
-K_r=0.5, T_i=6 i T_d=0.3 - E=579.8099 - Niewielkie różnice względem poprzedniego testu
-K_r=0.5, T_i=6.5 i T_d=0.35 - E=584.441 - Pogłębianie się uchybu ustalonego dla y_zad=0.1 i większe przesterowanie dla y_zad=-0.2, ale z drugiej strony widać stopniową poprawę jakości sterowania dla y_zad=-3 i y_zad=-2.2
-K_r=0.8, T_i=6.5 i T_d=0.35 - E=1609.691 - Kompletne pogorszenie oscyalcji dla y_zad=-3 i y_zad=-2.2, ponadto następuje pojawianie się nieznacznych oscyalcji dla y_zad=-0.2 
-K_r=0.4, T_i=6.5 i T_d=0.35 - E=394.812 - poprawa oscylacji dla y_zad=-3 i y_zad=-2.2, sterowanie dla y_zad=0.1 dalej obarczone uchybem ustalonym, dla y_zad=-0.2 następuje wyraźne przeregulowanie, ale czas regulacji jest przyzwoity - ogólnie sterowanie jest tolerowalne. 
-K_r=0.35, T_i=6.5 i T_d=0.35 - E=321.1973 - niewielkie różnice w przebiegu dla y_zad=0.1, spowolnienie czasu regulacji dla y_zad=-0.2, ale następuje poprawa przeregulowania. Natomiast dla y_zad=-3 i y_zad=-2.2 widzimy dalszą poprawę amplitudy oscylacji.
-K_r=0.25, T_i=6.5 i T_d=0.35 - E=279.672 - widzimy zauważalne pogorszenie uchybu ustalonego dla y_zad=0.1 i ponowne spowolnienie czasu regulacji dla y_zad=-0.2. Jednakże znacząco ograniczyliśmy oscylację dla y_zad=-3 i regulacje dla y_zad=-2.2
-K_r=0.22, T_i=6.5 i T_d=0.35 - E=289.8144 - Widzimy poprawę miary jakości, ale ponadto uzyskaliśmy regulację dla y_zad=-3. Pozostałe miejsca trajektorii są bez znaczących zmian.
-K_r=0.22, T_i=6 i T_d=0.35 - E=279.0039 - Drone zmniejszenie pozostałych oscylacji w y_zad=-3
-K_r=0.22, T_i=6 i T_d=0.45 - E=294.1849 - Większa wartość wskaźnika jakości jest wynikiem faktu, że regulacja dla y_zad=-3 jest wolniejsza, jednak jednocześnie nieoscylujące sterowanie w tym miejscu trajektorii. 
-K_r=0.22, T_i=6 i T_d=0.5 - E=303.3293 - Płynniejsza regulacja w y_zad=-3, poza tym zmiany nieznaczne
-K_r=0.22, T_i=7 i T_d=0.45 - E=319.5418 - Pogorszenie uchybu ustalonego dla y_zad=0.1, dodatkowo spowolnienie czasu stabilizacji dla 
-K_r=0.22, T_i=5.5 i T_d=0.45 - E=281.7087 - poprawa wartości uchybu ustalonego dla y_zad=0.1, pogorszenie się przebiegu przy regulacji dla y_zad=-3
-K_r=0.22, T_i=5 i T_d=0.45 - E=269.5725 - dalsza poprawa uchybu ustalonego dla y_zad=0.1 i dalsze pogorszenie się stabilizacji dla y_zad=-3
-K_r=0.22, T_i=4.5 i T_d=0.45 - E=258.1723 - poprawa uchybu ustalonego dla y_zad=0.1, oscyalacje dla y_zad=-3 robią się poważniejsze, ponadto zaczynamy obserwować początek oscylacji dla y_zad=-2.2
-K_r=0.22, T_i=4.75 i T_d=0.45 - E=263.7383 - poprawa uchybu ustalonego y_zad=0.1 względem T_i=5, ponadto oscylacje dla y_zad=-3 zaczynają się wzmacniać, ale nadal nie widzimy oscylacji dla y_Zad=-2.2 jak w poprzednim teście. Tutaj robimy STOP z racji na najlepszy kompromis między oceną jakościową i ilosciową.
+1.	K_r=0.8, T_i=3 i T_d=0.2625 - E=833.3588 - Gorsza jakość regulacji i oscylacje występują rownież dla y_zad=0.2
+2.	K_r=0.5, T_i=3 i T_d=0.2625 - E=546.0896 - Ponownie poprawa jakości sterowania dla trajektorii y_zad=0.2. Mniejsze 	oscylacje dla y_zad=-3 i y_zad=-2.2, podobny przebieg dla y_zad=0.1
+3.	K_r=0.5, T_i=5 i T_d=0.2625 - E=554.8789 - Dalsze problemy z oscylacją dla y_zad=-3 i y_zad=-2.2, regulacja dla y_zad=0.1 nie nadąża z regulacją, jakość regulacji dla y_zad=-0.2 ma dłuższy czas stabilizacji
+4.	K_r=0.5, T_i=5 i T_d=0.2 - E=598.59 - dla y_zad=0.1 istnieje dalej uchyb ustalony. Nadal dla y_zad=-3 i y_zad=-2.2 	pojawiają się problemy z oscylacją, dla y_zad=-0.2 regulacja posiada duże przeregulowanie ale czas regulacji jest 	przyzwoity.
+5.	K_r=0.5, T_i=2 i T_d=0.2625 - E=671.9417 - poprawione sterowanie dla y_zad=-0.2, zniwelowany uchyb ustalony dla y_zad=0.1 - większe oscyalcje dla pozostałych. Spróbujemy podnieść T_i
+6.	K_r=0.5, T_i=6 i T_d=0.2625 - E=589.7984 - poprawione sterowanie dla y_zad=-0.2, gorszy uchyb ustalony dla y_zad=0.1 i lekkie polepszenie się oscylacji dla y_zad=-3 i y_zad=-2.2
+7.	K_r=0.5, T_i=6 i T_d=0.3 - E=579.8099 - Niewielkie różnice względem poprzedniego testu
+8.	K_r=0.5, T_i=6.5 i T_d=0.35 - E=584.441 - Pogłębianie się uchybu ustalonego dla y_zad=0.1 i większe przesterowanie dla y_zad=-0.2, ale z drugiej strony widać stopniową poprawę jakości sterowania dla y_zad=-3 i y_zad=-2.2
+9.	K_r=0.8, T_i=6.5 i T_d=0.35 - E=1609.691 - Kompletne pogorszenie oscyalcji dla y_zad=-3 i y_zad=-2.2, ponadto następuje pojawianie się nieznacznych oscyalcji dla y_zad=-0.2 
+10.	K_r=0.4, T_i=6.5 i T_d=0.35 - E=394.812 - poprawa oscylacji dla y_zad=-3 i y_zad=-2.2, sterowanie dla y_zad=0.1 dalej obarczone uchybem ustalonym, dla y_zad=-0.2 następuje wyraźne przeregulowanie, ale czas regulacji jest przyzwoity - ogólnie sterowanie jest tolerowalne. 
+11.	K_r=0.35, T_i=6.5 i T_d=0.35 - E=321.1973 - niewielkie różnice w przebiegu dla y_zad=0.1, spowolnienie czasu regulacji dla y_zad=-0.2, ale następuje poprawa przeregulowania. Natomiast dla y_zad=-3 i y_zad=-2.2 widzimy dalszą poprawę amplitudy oscylacji.
+12.	K_r=0.25, T_i=6.5 i T_d=0.35 - E=279.672 - widzimy zauważalne pogorszenie uchybu ustalonego dla y_zad=0.1 i ponowne spowolnienie czasu regulacji dla y_zad=-0.2. Jednakże znacząco ograniczyliśmy oscylację dla y_zad=-3 i regulacje dla y_zad=-2.2
+13.	K_r=0.22, T_i=6.5 i T_d=0.35 - E=289.8144 - Widzimy poprawę miary jakości, ale ponadto uzyskaliśmy regulację dla y_zad=-3. Pozostałe miejsca trajektorii są bez znaczących zmian.
+14.	K_r=0.22, T_i=6 i T_d=0.35 - E=279.0039 - Drone zmniejszenie pozostałych oscylacji w y_zad=-3
+15.	K_r=0.22, T_i=6 i T_d=0.45 - E=294.1849 - Większa wartość wskaźnika jakości jest wynikiem faktu, że regulacja dla y_zad=-3 jest wolniejsza, jednak jednocześnie nieoscylujące sterowanie w tym miejscu trajektorii. 
+16.	K_r=0.22, T_i=6 i T_d=0.5 - E=303.3293 - Płynniejsza regulacja w y_zad=-3, poza tym zmiany nieznaczne
+17.	K_r=0.22, T_i=7 i T_d=0.45 - E=319.5418 - Pogorszenie uchybu ustalonego dla y_zad=0.1, dodatkowo spowolnienie czasu stabilizacji dla 
+18.	K_r=0.22, T_i=5.5 i T_d=0.45 - E=281.7087 - poprawa wartości uchybu ustalonego dla y_zad=0.1, pogorszenie się przebiegu przy regulacji dla y_zad=-3
+19.	K_r=0.22, T_i=5 i T_d=0.45 - E=269.5725 - dalsza poprawa uchybu ustalonego dla y_zad=0.1 i dalsze pogorszenie się stabilizacji dla y_zad=-3
+20.	K_r=0.22, T_i=4.5 i T_d=0.45 - E=258.1723 - poprawa uchybu ustalonego dla y_zad=0.1, oscyalacje dla y_zad=-3 robią się poważniejsze, ponadto zaczynamy obserwować początek oscylacji dla y_zad=-2.2
+21.	K_r=0.22, T_i=4.75 i T_d=0.45 - E=263.7383 - poprawa uchybu ustalonego y_zad=0.1 względem T_i=5, ponadto oscylacje dla y_zad=-3 zaczynają się wzmacniać, ale nadal nie widzimy oscylacji dla y_Zad=-2.2 jak w poprzednim teście. Tutaj robimy STOP z racji na najlepszy kompromis między oceną jakościową i ilosciową.
