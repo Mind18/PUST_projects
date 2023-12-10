@@ -24,20 +24,26 @@ kryterium = 'u'; % Wybieramy między u lub y - warunek do ustalenia
 
 if n_regulatorow == 2 % Dla n_regulatorow=2
     reg_part = {[-1 -1 -0.2 0.1], [-0.1 0.2 1 1]};
+    u_konc = [-0.8 0.71];
 elseif n_regulatorow == 3 % Dla n_regulatorow=3
     reg_part = {[-1 -1 -0.5 -0.4], [-0.45 -0.3 -0.05 0.1], [0 0.2 1 1]};
+    u_konc = [-0.8 -0.2 0.71];
 elseif n_regulatorow == 4
     reg_part = {[-1 -1 -0.5 -0.4], [-0.5 -0.4 -0.2 -0.1], ...
         [-0.25 -0.15 0 0.05], [0 0.05 1 1]};
+    u_konc = [-0.8 -0.2 -0.1 0.71];
 elseif n_regulatorow == 5
     reg_part = {[-1 -1 -0.6 -0.5], [-0.6 -0.5 -0.3 -0.2], ...
         [-0.3 -0.25 -0.15 -0.1], [-0.25 -0.15 0 0.2], [0 0.2 1 1]};
+    u_konc = [-0.8 -0.4 -0.2 -0.1 0.71];
 elseif n_regulatorow == 6
     reg_part = {[-1 -1 -0.7 -0.6], [-0.7 -0.6 -0.5 -0.4], ...
         [-0.55 -0.45 -0.35 -0.25], [-0.35 -0.25 -0.15 -0.1], ...
         [-0.2 -0.15 0 0.05], [0 0.2 1 1]};
+    u_konc = [-0.8 -0.55 -0.4 -0.2 -0.1 0.71];
 end
-u_konc = -1:(2/(n_regulatorow-1)):1;
+
+% u_konc = -1:(2/(n_regulatorow-1)):1;
 
 % Wyeliminowanie przypadku w którym mamy zerową odp. skokową
 for step=1:size(u_konc, 2)
@@ -91,7 +97,7 @@ elseif n_regulatorow == 5
 
     D_fuz = [88 88 88 88 88]; % Horyzonty dynamiki
     N_fuz = [30 30 30 30 30];   % Horyzonty predykcji
-    N_u_fuz = [5 5 5 5 5];   % Horyzonty sterowania
+    N_u_fuz = [5 5 10 15 5];   % Horyzonty sterowania
     lambda_fuz = [1 1 1 1 1]; % Parametry lambda lokalnych 
                                     % regulatorów
 elseif n_regulatorow == 6
@@ -109,7 +115,7 @@ end
 % Parametery regulatora DMC
 D = 88; % Horyzont dynamiki
 N = 30;   % Horyzont predykcji 98
-N_u = 5;   % Horyzont sterowania 18
+N_u = 15;   % Horyzont sterowania 18
 lambda = 1;
 Lambda = lambda.*eye(N_u, N_u);
 M = zeros(N, N_u);
@@ -137,7 +143,7 @@ e_dmc_fuz(1:k_konc) = 0; % Błąd średniokwadratowy dla rozmytego DMC
 w = zeros(1, n_regulatorow);
 
 s = {}; % Zestaw dostępnych odp.skokowych
-odp_skok = 2; % Odpowiedź skokowa dla nierozmytego regulatora
+odp_skok = 4; % Odpowiedź skokowa dla nierozmytego regulatora
 
 zad = ['N' 'Y' 'N' 'N' 'N' 'N' 'Y']; % Zadania, które będą wykonywane
 

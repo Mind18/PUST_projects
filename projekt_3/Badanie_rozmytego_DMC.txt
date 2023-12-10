@@ -40,7 +40,7 @@ test - E=240.3279 - REgulator rozmyty działa nieznacznie lepiej niż jego niero
 Przypadek 2: 3 regulatory
 Dla regulatorów lokalnych 1 i 3 przenosimy parametry z poprzedniego przypadku
 
-Regulator lokalny 2 - [-0.4 -0.3 0 0.2] - pkt. pracy y_zad=-0.16 (y(u)=-0.16 dla około u=-0.2, które jest w sterie gdzie dla pierwszego regulatora lokalnego funkcja przynależności=1) - Nastawami wyjściowymi są nastawy dla regulatora loklanego 1
+Regulator lokalny 2 - [-0.4 -0.3 0 0.2] - pkt. pracy y_zad=-0.16 (y(u)=-0.16 dla około u=-0.2, które jest w sterie gdzie dla pierwszego regulatora lokalnego funkcja przynależności=1)
 
 1. D=88, N=30, N_u=5, lambda=1 - E=8.966 - Pojawiają się znaczące oscylacje
 2. D=88, N=30, N_u=3, lambda=1 - E=9.1652 - Oscylacje się pogorszyły
@@ -54,5 +54,60 @@ Test - E=230.168 - Widzimy lepszą miarę jakości E jednak sterowanie dla y_zad
 
 Przypadek 3: 4 regulatory
 Dla regulatorów lokalnych 1 i 4 parametry z pierwszego przypadku
+
+Regulator lokalny 2 - [-0.5 -0.4 -0.2 -0.1] - pkt. pracy y_zad=-0.16 (y(u)=-0.16 dla około u=-0.2, które jest w sterie gdzie dla pierwszego regulatora lokalnego funkcja przynależności=1)
+
+1. (wykres 11) D=88, N=30, N_u=5, lambda=1 - E=0.21657 - Regulacja jest poprawna.
+
+Zostawiamy D=88, N=30, N_u=5, lambda=1
+
+Regulator lokalny 3 - [-0.25 -0.15 0 0.05] - pkt. pracy y_zad=-0.06 (y(u)=-0.06 dla około u=-0.1, które jest w strefie gdzie dla drugiego regulatora lokalnego funkcja przynależności=1)
+
+1. (wykres 12) D=88, N=30, N_u=5, lambda=1 - E=4.7753 - Wykres oscyluje
+2. (wykres 13) D=88, N=30, N_u=10, lambda=1 - E=4.1397 - Oscylacje nieznacznie się poprawiły
+3. (wykres 14) D=88, N=30, N_u=15, lambda=1 - E=4.0665 - Oscylacje nieznacznie się poprawiły. Brak wyraźnego postępu
+
+Zostawiamy D=88, N=30, N_u=15, lambda=1
+
+Etap sklejenia regulatorów dla n_regulatorów=4
+Test (wykres 4) - E=229.856 - Widzimy, że względem regulatora nierozmytego mamy poprawę regulacji dla y_zad=0.1, a pogorszenie się działania dla pozostałych y_zad w trajektorii ze szczególnym uwzględnieniem pogorszenia się oscylacji dla y_zad=-2.2 i y_zad=-0.2
+
+Przypadek 4: 5 regulatorów
+Dla regulatorów lokalnych 1 i 5 parametry z pierwszego przypadku
+
+Regulator lokalny 2 - [-0.6 -0.5 -0.3 -0.2] - pkt. pracy y_zad=-0.55 (y(u)=-0.55 dla około u=-0.4, które jest w strefie gdzie dla drugiego regulatora lokalnego funkcja przynależności=1)
+
+1. (wykres 15) D=88, N=30, N_u=5, lambda=1 - E=2.5329 - Widzimy występowanie oscylacji, ale gasną i osiągamy regulację
+
+Zostawiamy D=88, N=30, N_u=5, lambda=1
+
+Regulator lokalny 3 - [-0.3 -0.25 -0.15 -0.1] - pkt. pracy y_zad=-0.16 (y(u)=-0.16 dla około u=-0.2, które jest w sterie gdzie dla pierwszego regulatora lokalnego funkcja przynależności=1) - Nastawami wyjściowymi są nastawy dla regulatora loklanego 1
+
+1. (wykres 16) D=88, N=30, N_u=5, lambda=1 - E=8.966 - Mamy do czynienia z oscylacjami
+2. (wykres 17) D=88, N=30, N_u=10, lambda=1 - E=8.8863 - Oscyalcje nieznacznie się poprawiły
+
+Zostawiamy D=88, N=30, N_u=10, lambda=1
+
+Regulator lokalny 4 - [-0.25 -0.15 0 0.2] - pkt. pracy y_zad=-0.06 (y(u)=-0.06 dla około u=-0.1, które jest w strefie gdzie dla drugiego regulatora lokalnego funkcja przynależności=1)
+
+1. (wykres 18) D=88, N=30, N_u=5, lambda=1 - E=8.4 - Pojawiają się ponownie oscylacje
+2. (wykres 19) D=88, N=30, N_u=10, lambda=1 - E=6.7406 - Znacznie poprawiły się oscylacje
+3. (wykres 20) D=88, N=30, N_u=15, lambda=1 - E=6.4692 - Poprawa oscylacji znacząco spowolniła
+
+Zostawiamy D=88, N=30, N_u=15, lambda=1
+
+Etap sklejenia regulatorów dla n_regulatorów=5
+Test (wykres 5) - E=256.8179 - Widzimy znaczące pogorszenie sterowania dla wsyzstkich wartości oprócz y_zad=0.1. Pozostałe sterowania popadają w oscylacje
+
+Wyniki testów dla n_regulatorów=5 skłoniły mnie do zmiany strategii dobierania odp. skokowej dla regulatorów. Zamiast przyznawać równomiernie rozstawione przyznaje im odp. skokowe pasujące pkt. pracy w który celujemy (ten, który jest wspomniany na początku notatek dla danego regulatora lokalnego)
+
+Test (wykres 51) - E=242.5486 - Widzimy poprawę sterowania dla y_zad=-0.2
+
+Na bazie pozytywnego wyniku tego testu postanowiłem sprawdzić poprzednie regulatory od tego z 3 regulatorami lokalnymi (dla 2 wyznaczone poprzendią metodą odp. skokowe powinny również działać)
+
+dla n_regulatorow=3 (wykres 31) - E=251.3739 - wnioski z poprzedniego eksperymentu są podtrzymane
+dla n_regulatorow=4 (wykres 41) - E=254.6954 - widzimy, że dla y_zad=-2.2 mamy spore oscylację, dla y_zad=-0.2 osiągamy regulację po dużym przesterowaniu, a y_zad=-3 ma oscylacje
+
+
 
 

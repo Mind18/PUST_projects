@@ -1,5 +1,5 @@
 %% Algorytm regulacji DMC
-o = 15; % Nazwa wykresu
+o = 20; % Nazwa wykresu
 
 % warunki początkowe
 u = zeros(1, k_konc); y_dmc = zeros(1, k_konc);
@@ -20,7 +20,7 @@ e = zeros(1, k_konc);
 % Generacja trajektorii do testu regulatorów lokalnych
 
 yzad(1:14)=ypp;
-yzad(15:k_konc)=-0.16;
+yzad(15:k_konc)=-0.06;
 
 % Generacja macierzy M
 for j=1:N_u % dla każdej kolumny macierzy M
