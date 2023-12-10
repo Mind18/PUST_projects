@@ -1,5 +1,5 @@
 %% Algorytm regulacji DMC
-o = 2; % Nazwa wykresu
+o = 15; % Nazwa wykresu
 
 % warunki początkowe
 u = zeros(1, k_konc); y_dmc = zeros(1, k_konc);
