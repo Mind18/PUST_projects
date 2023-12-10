@@ -60,11 +60,49 @@ Regulator lokalny 2 - [-0.4 0 1 1] - pkt. pracy y_zad=0.09 (y(u)=0.09 dla około
 7. K_r=2, T_i=3 i T_d=0.4 - E=0.78763 - Jak wyżej
 8. K_r=1.75, T_i=3 i T_d=0.4 - E=0.86966 - Jak wyżej
 
-Zostajemy przy K_r=1.5, T_i=3 i T_d=0.4
+Zostajemy przy K_r=1.75, T_i=3 i T_d=0.4 (po fakcie zauważyłem, że dobrałem jednak K_r=1.75, ale wyniki są git, więc trudno :P)
 
 Etap sklejenia regulatorów dla n_regulatorow=2
 1 test - E=313.9599 - Występowanie oscylacji dla y_zad=-0.2 sprawia, że jakość regulacji jest gorsza niż w regulatorze nie rozmytym. Spróbujemy przestawić funkcje przynależności bardziej w prawo - [-1 -1 -0.1 0.1], [0 0.2 1 1]
 2 test - E=298.435 - Regulacja działa już przyzwoicie. Sprawdzimy jednak lekkie przesunięcie f. przynależności drugiego regulatora w lewo w celu sprawdzenia czy mozemy poprawić regulację dla y_zad=0.1 [-1 -1 -0.2 0.1], [-0.1 0.2 1 1]
 3 test -  E=278.3156 - Udalo się poprawić czas regulacji dla y_zad=0.1. Regulacja działa bardzo zadowalająco, mamy zagwarantowane sterowanie w całej trajektorii.
 
+Ostateczne f. przynależności - [-1 -1 -0.2 0.1], [-0.1 0.2 1 1]
+
 2 przypadek: 3 regulatory
+Regulatory lokalne dla f. przynależności [-1 -1 -0.4 -0.3] i [0 0.2 1 1] będą miały nastawy identyczne jak odpowiednio pierwszy i drugi regulator lokalny z przypadku dla 2 regulatorów
+
+Regulator lokalny 2 - [-0.4 -0.3 0 0.2] - pkt. pracy y_zad=-0.16 (y(u)=-0.16 dla około u=-0.2, które jest w sterie gdzie dla pierwszego regulatora lokalnego funkcja przynależności=1)
+
+1. K_r=0.13, T_i=4.75 i T_d=0.45 - E=1.0513 - Regulator nie nadąża z regulacją, znacznie podnoszę K_r
+2. K_r=1, T_i=4.75 i T_d=0.45 - E=0.20214 - Wyraźna poprawa regulacji, ale regulator nadal nie nadąża z regulacją
+3. K_r=1, T_i=4.2 i T_d=0.45 - E=0.18224 - Drobna poprawa czasu regulacji
+4. K_r=1.2, T_i=4 i T_d=0.45 - E=0.1475 - Obiekt już reguluje się, jednak nadal jest ona całkiem wolna, występuje drobne zniekształcenie
+5. K_r=1.2, T_i=4 i T_d=0.42 - E=0.14763 - Drobne złagodzenie zniekształcenia na początku przebiegu
+6. K_r=1.2, T_i=3.75 i T_d=0.42 - E=0.14024 - Poprawa czasu regulacji
+7. K_r=1.5, T_i=3.75 i T_d=0.42 - E=0.11495 - Regulacja jest bardzo ładna. Do tego nie chcemy przesadzać z jej szybkością, ponieważ regulator lokalny odpowiada za strefę przejściową między dwoma liniowymi odcinakami, mam obawę, że przy zbyt dobrej regulacji dla wartości zadanych bliższych trzeciego regulatora, gdzie ch-ka statyczna jest bardziej płaska moglibyśmy mieć problem ze znacznym przeregulowaniem.
+
+Zostawiamy K_r=1.5, T_i=3.75 i T_d=0.42
+
+Etap sklejenia regulatorów dla n_regulatorow=3
+1 test - E=429.0428 - Widzimy poprawę regulacji dla y_zad=-3 i y_zad=0.1, pogorszenie się sterowania dla y_zad=-2.2 oraz wpadanie w oscylację dla y_zad=-0.2, przyczyna tego leży w f. przynależności prez które dla tych dwóch sterowań regulator skacze po regulatorach co szkodzi sterowaniu. Nowe f. przynależności - [-1 -1 -0.4 -0.3], [-0.35 -0.2 -0.05 0.1], [0 0.2 1 1]
+2 test - E=419.5404 - Generalna poprawa, ale nadal regulator dla y_zad=-0.2 popada w oscylację - spróbujemy skorygować regulator lokalny nowe nastawy - K_r=1.5, T_i=4.25, T_d=0.42
+3 test - E=419.5029 - Niwielka poprawa, spróbujemy odsunąć skrócić zakres działania dla pierwszej funkcji przynależności - nowa f. przynalezności - [-1 -1 -0.5 -0.4], [-0.45 -0.3 -0.05 0.1], [0 0.2 1 1]
+4 test - E=457.5428 - Zmiany pogroszyły oscylacje, musimy wyregulować nastawy drugiego regulatora - K_r=0.9, T_i=4.25, T_d=0.42
+5 test - E=411.7327 - Widzimy poprawę oscylacji - trop jest dobry. Nowe nastawy regulatora lokalnego nr 2 - K_r=0.9, T_i=4.6, T_d=0.42
+6 test - E=412.0332 - Lekkie pogrszenie się oscylacji. Nowe nastawy regulatora lokalnego nr 2 - K_r=0.9, T_i=3.5, T_d=0.42
+7 test - E=411.4862 - Delikatna poprawa oscylacji. Nowe nastawy regulatora lokalnego nr 2 - K_r=0.8, T_i=2.75, T_d=0.42
+8 test - E=408.3962 - Widzimy, że oscylacje są już gasnące. Nowe nastawy regulatora lokalnego nr 2 - K_r=0.8, T_i=2, T_d=0.42
+9 test - E=411.1184 - Oscylacje pogorszyły się, wrócimy T_i do wartości 2.75 i obiżymy K_r do 0.6
+10 test - E=407.2029 - Obiekt się stabilizuje, jednak można poprawić lekko stabilizowanie -> T_i=2.5
+11 test - E=407.0301 - Nie widzimy poprawy działania, zostaniemy z tym co było w poprzednim teście
+
+Ostateczne f. przynależności - [-1 -1 -0.5 -0.4], [-0.45 -0.3 -0.05 0.1], [0 0.2 1 1]
+Ostateczny regulator lokalny nr 2 - K_r=1, T_i=2.75, T_d=0.42
+
+3 przypadek: 4 regulatory
+Tak jak w poprzednim przypadku wykorzystamy nastawy regulatorów z porzedniego regulatora rozmytego - nastawy z pierwszego dla poprzedniego regulatora wykorzystamy w pierwszym lokalnym regulatorze dla tego przypadku, drugi regulator lokalny wykorzystamy w drugim regulatorze loklanym dla tego przypadku i nastawy z trzeciego regulatora z poprzedniego przypadku wykorzystamy dla czwartego z tego
+
+Regulator lokalny 3 - [-0.25 -0.15 0 0.05] - pkt. pracy y_zad=-0.06 (y(u)=-0.06 dla około u=0.1, które jest w sterie gdzie dla drugiego regulatora lokalnego funkcja przynależności=1)
+
+1. K_r=1.5, T_i=3.75 i T_d=0.42 - E= - 

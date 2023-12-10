@@ -24,7 +24,7 @@ u(1:14)=upp; y_pid(1:14)=ypp;
 % Generacja trajektorii do testu regulatorów lokalnych
 
 yzad(1:14)=ypp;
-yzad(15:k_konc)=0.09;
+yzad(15:k_konc)=-0.06;
 
 % Współczynniki algorytmu
 r2 = (K_r * T_d) / T_p;
