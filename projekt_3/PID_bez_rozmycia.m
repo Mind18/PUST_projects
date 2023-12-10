@@ -8,15 +8,23 @@ o = 2; % Nazwa wykresu
 % warunki początkowe
 u = zeros(1, k_konc); y_pid = zeros(1, k_konc);
 u(1:14)=upp; y_pid(1:14)=ypp;
+
 % Generacja zmiennej trajektori
-yzad(1:14)=ypp;
-yzad(15:300)=Y_zad(1);
-yzad(301:600)=Y_zad(2);
-yzad(601:900)=Y_zad(3);
-yzad(901:k_konc)=Y_zad(4);
+% yzad(1:14)=ypp;
+% yzad(15:300)=Y_zad(1);
+% yzad(301:600)=Y_zad(2);
+% yzad(601:900)=Y_zad(3);
+% yzad(901:k_konc)=Y_zad(4);
+
+% Generacja trajektorii do testów
 
 % yzad(1:14)=ypp;
 % yzad(15:k_konc)=Y_zad(1);
+
+% Generacja trajektorii do testu regulatorów lokalnych
+
+yzad(1:14)=ypp;
+yzad(15:k_konc)=0.09;
 
 % Współczynniki algorytmu
 r2 = (K_r * T_d) / T_p;
@@ -75,6 +83,6 @@ title_str = "Algorytm PID y(k): K_r=" + string(K_r) ...
     + " T_i=" + string(T_i) + " T_D=" + string(T_d) + " E=" ...
     + string(E);
 title(title_str);
-legend('y(k)', 'y^{zad}', 'Location', 'southeast');
+legend('y(k)', 'y^{zad}', 'Location', 'best');
 filenamey = "./pliki_wynikowe/"+"regulator_pid_y(k)"+string(o)+".pdf";
 export_fig(filenamey);
