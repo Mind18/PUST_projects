@@ -105,4 +105,17 @@ Tak jak w poprzednim przypadku wykorzystamy nastawy regulatorów z porzedniego r
 
 Regulator lokalny 3 - [-0.25 -0.15 0 0.05] - pkt. pracy y_zad=-0.06 (y(u)=-0.06 dla około u=0.1, które jest w sterie gdzie dla drugiego regulatora lokalnego funkcja przynależności=1)
 
-1. K_r=1.5, T_i=3.75 i T_d=0.42 - E= - 
+1. K_r=1.5, T_i=3.75 i T_d=0.42 - E=0.14695 - Uzyskujemy stabilne oscylacje
+2. K_r=1.5, T_i=2.25 i T_d=0.42 - E=0.80515 - Oscylacje wzrosły
+3. K_r=0.6, T_i=3.75 i T_d=0.42 - E=0.042909 - Uzyskaliśmy przyzwoitą regulację
+4. K_r=0.6, T_i=4 i T_d=0.42 - E=0.44932 - Uzyskaliśmy wolniejszy czas regulacji. Zostaniemy przy porzednej wartości
+
+Zostawiamy K_r=0.6, T_i=3.75 i T_d=0.42
+
+Etap sklejenia regulatorów dla n_regulatorow=4
+1 test - E=399.5578 - Regulacja jest przyzwoita dla y_zad=-3 i y_zad=0.1, dla y_zad=-2.2 mamy gwałtowne przebiegi na przejściach z racji na zmiany sterowania wchodzące na różne funkcje przynależności. Ciężko jednak znaleźć znaczące problemy, które możemy poprawić bez dostosowywania regulatora pod trajektorię (moglibyśmy poprawić f. przynależności lub nastawy regulatora pod ten przypadek). Warto jednak podkreślić, że w przeciwieństwie do PIDa nierozmytego wyregulowujemy wszystkie wartośc izadane w trajektorii (PID nierozmyty miał przy optymalnych nastawach uchyb ustalony dla y_zad=0.1)
+
+Ostateczne f. przynależności - [-1 -1 -0.5 -0.4], [-0.5 -0.4 -0.2 -0.1], [-0.25 -0.15 0 0.05], [0 0.05 1 1]
+Ostateczny regulator lokalny nr 3 - K_r=0.6, T_i=3.75, T_d=0.42
+
+4 przypadek: 5 regulatorów
