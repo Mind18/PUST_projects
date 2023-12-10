@@ -11,7 +11,7 @@ Wyjściowe funkcje przynależności będą zaczerpnięte z doboru parametrów ro
 (Legenda - [początek przyrostu trapezoidu, pkt. gdzie trapezoid osiąga 1, koniec strefy, gdzie trapezoid osiąga 1, pkt. gdzie trapezoid osiąga 0])
 
 Dla 2 regulatorów - [-1 -1 -0.4 0], [-0.4 0 1 1]
-Dla 3 regulatorów - [-1 -1 -0.4 -0.3], [-0.4 -0.3 0 0.2], [0 0.2 1 1]
+Dla 3 regulatorów - [-1 -1 -0.5 -0.4], [-0.45 -0.3 -0.05 0.1], [0 0.2 1 1]
 Dla 4 regulatorów - [-1 -1 -0.5 -0.4], [-0.5 -0.4 -0.2 -0.1], [-0.25 -0.15 0 0.05], [0 0.05 1 1]
 Dla 5 regulatorów - [-1 -1 -0.6 -0.5], [-0.6 -0.5 -0.3 -0.2], [-0.3 -0.25 -0.15 -0.1], [-0.25 -0.15 0 0.2], [0 0.2 1 1]
 Dla 6 regulatorów - [-1 -1 -0.7 -0.6], [-0.7 -0.6 -0.5 -0.4], [-0.55 -0.45 -0.35 -0.25], [-0.35 -0.25 -0.15 -0.1], [-0.2 -0.15 0 0.05], [0 0.2 1 1]
@@ -137,16 +137,24 @@ n_regulatorow=2
 4. (wykres 2_4) [6.5 1] - E=216.2529 - Wnioski podobne do poprzednich
 5. (wykres 2_5) [3.5 1] - E=206.774 - Oscylacje dla y_zad=-3 i y_zad=-2.2 zbliżają się do wygaszenia przed zmianą wartości sterowanej. Nadal jednak nie jest to idealna regulacja. Jednak poprzednie badania wykazują, ze dalsze poszukiwania nie przyniosą znacznej poprawy sytuacji
 
+Zostajemy z lambda_lok=[3.5 1]
+
 n_regulatorow=3
-1. (wykres 3_1) [2 1] - E= - 
-2. (wykres 3_2) [4 1] - E= - 
+1. (wykres 3_1) [3.5 2 1] - E=206.3849 - Widzimy poprawę sterowania dla wszystkich regulacji poza y_zad=0.1, która już jest przyzwoita
+2. (wykres 3_2) [4.2 2.2 1] - E=208.878 - Widzimy nieznaczą poprawę oscylacji w y_zad=-3 i y_zad=-2.2, ale pogorszenie regulacji w y_zad=-0.2
+3. (wykres 3_3) [5 1.6 1] - E=213.8705 - Widzimy kolejne pogorszenie sterowania dla y_zad=-0.2 bez zmian w pozostałych.
+
+Zosatejmy z lambda_lok=[4.2 2.2 1]
 
 n_regulatorow=4
-1. (wykres 4_1) [2 1] - E= - 
-2. (wykres 4_2) [4 1] - E= - 
+1. (wykres 4_1) [3.6 1.8 1 1] - E=208.5978 - Widzimy pogorszenie się sterowania dla y_zad=-0.2, ale polespzenie się oscylacji w y_zad=-3 i y_zad=-2.2
+2. (wykres 4_2) [4 1.4 1.2 1.2] - E=209.535 - Widzimy poprawę oscylacji z niewielką poprawą sterowania dla y_zad=-0.2 na
+3. (wykres 4.3) [4.5 1.6 1.4 1.4] - E=209.7754 - Obserwujemy pogorszenie się oscylacji dla y_zad=-2.2 i także poprawę dla y_zad=-0.2. Naszym priorytetem jest jednak zniwelowanie oscylacji.
+
+Zosatwiamy lambda_lok=[4.5 1.6 1.4 1.4].
 
 n_regulatorow=5
-1. (wykres 5_1) [2 1] - E= - 
+1. (wykres 5_1) [1 1 1 1 1] - E= - 
 2. (wykres 5_2) [4 1] - E= - 
 
 n_regulatorow=6
