@@ -15,7 +15,7 @@ du_max = 2;
 % Punkt pracy
 upp = 0; ypp = 0;
 
-n_regulatorow = 3; % Liczba regulatorów
+n_regulatorow = 4; % Liczba regulatorów
 kryterium = 'u'; % Wybieramy między u lub y - warunek do ustalenia
                 % wartości funkcji przynależności
 % Strefy rozmycia regulatorów
@@ -78,7 +78,7 @@ elseif n_regulatorow == 3
     D_fuz = [88 88 88]; % Horyzonty dynamiki
     N_fuz = [30 30 30];   % Horyzonty predykcji
     N_u_fuz = [5 10 5];   % Horyzonty sterowania
-    lambda_fuz = [1 1 1]; % Parametry lambda lokalnych 
+    lambda_fuz = [5 1.6 1]; % Parametry lambda lokalnych 
                                     % regulatorów
 elseif n_regulatorow ==4
     K_r_lok = [0.13 0.6 0.6 1.75];
