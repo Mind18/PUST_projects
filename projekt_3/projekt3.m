@@ -15,7 +15,7 @@ du_max = 2;
 % Punkt pracy
 upp = 0; ypp = 0;
 
-n_regulatorow = 4; % Liczba regulatorów
+n_regulatorow = 3; % Liczba regulatorów
 kryterium = 'u'; % Wybieramy między u lub y - warunek do ustalenia
                 % wartości funkcji przynależności
 % Strefy rozmycia regulatorów
@@ -58,40 +58,66 @@ if n_regulatorow == 2
     K_r_lok = [0.13 1.75];
     T_i_lok = [4.75 3];
     T_d_lok = [0.45 0.4];
+
+    D_fuz = [88 88]; % Horyzonty dynamiki
+    N_fuz = [30 30];   % Horyzonty predykcji
+    N_u_fuz = [5 5];   % Horyzonty sterowania
+    lambda_fuz = [1 1]; % Parametry lambda lokalnych 
+                                    % regulatorów
 elseif n_regulatorow == 3
     K_r_lok = [0.13 0.6 1.75];
     T_i_lok = [4.75 2.75 3];
     T_d_lok = [0.45 0.42 0.4];
+
+    D_fuz = [88 88 88]; % Horyzonty dynamiki
+    N_fuz = [30 30 30];   % Horyzonty predykcji
+    N_u_fuz = [5 10 5];   % Horyzonty sterowania
+    lambda_fuz = [1 1 1]; % Parametry lambda lokalnych 
+                                    % regulatorów
 elseif n_regulatorow ==4
     K_r_lok = [0.13 0.6 0.6 1.75];
     T_i_lok = [4.75 2.75 3.75 3];
     T_d_lok = [0.45 0.42 0.42 0.4];
+
+    D_fuz = [88 88 88 88]; % Horyzonty dynamiki
+    N_fuz = [30 30 30 30];   % Horyzonty predykcji
+    N_u_fuz = [5 5 5 5];   % Horyzonty sterowania
+    lambda_fuz = [1 1 1 1]; % Parametry lambda lokalnych 
+                                    % regulatorów
 elseif n_regulatorow == 5
     K_r_lok = [0.13 0.3 0.6 0.6 1.75];
     T_i_lok = [4.75 4.75 2.75 3.75 3];
     T_d_lok = [0.45 0.42 0.42 0.42 0.4];
+
+    D_fuz = [88 88 88 88 88]; % Horyzonty dynamiki
+    N_fuz = [30 30 30 30 30];   % Horyzonty predykcji
+    N_u_fuz = [5 5 5 5 5];   % Horyzonty sterowania
+    lambda_fuz = [1 1 1 1 1]; % Parametry lambda lokalnych 
+                                    % regulatorów
 elseif n_regulatorow == 6
     K_r_lok = [0.13 0.22 0.3 0.6 0.6 1.75];
     T_i_lok = [4.75 4.75 4.75 2.75 3.75 3];
     T_d_lok = [0.45 0.42 0.42 0.42 0.42 0.4];
+
+    D_fuz = [88 88 88 88 88 88]; % Horyzonty dynamiki
+    N_fuz = [30 30 30 30 30 30];   % Horyzonty predykcji
+    N_u_fuz = [5 5 5 5 5 5];   % Horyzonty sterowania
+    lambda_fuz = [1 1 1 1 1 1]; % Parametry lambda lokalnych 
+                                    % regulatorów
 end
 
 % Parametery regulatora DMC
 D = 88; % Horyzont dynamiki
 N = 30;   % Horyzont predykcji 98
 N_u = 5;   % Horyzont sterowania 18
-lambda = 1.8;
+lambda = 1;
 Lambda = lambda.*eye(N_u, N_u);
 M = zeros(N, N_u);
 M_p = zeros(N, D-1);
 U_p = zeros(D-1, 1);
 
 % Parametry rozmytego regulatora DMC
-D_fuz = [100 100 100 100 100]; % Horyzonty dynamiki
-N_fuz = [90 90 90 90 90];   % Horyzonty predykcji
-N_u_fuz = [80 80 80 80 80];   % Horyzonty sterowania
-lambda_fuz = [0.5 0.5 0.5 0.5 0.5]; % Parametry lambda lokalnych 
-                                    % regulatorów
+
 Lambda_fuz = {zeros(N_u, N_u), zeros(N_u, N_u), zeros(N_u, N_u), ...
     zeros(N_u, N_u), zeros(N_u, N_u)}; % Alokacja pamięci na macierze
                                        % lambda lokalnych regulatorów
@@ -111,9 +137,9 @@ e_dmc_fuz(1:k_konc) = 0; % Błąd średniokwadratowy dla rozmytego DMC
 w = zeros(1, n_regulatorow);
 
 s = {}; % Zestaw dostępnych odp.skokowych
-odp_skok = 1; % Odpowiedź skokowa dla nierozmytego regulatora
+odp_skok = 2; % Odpowiedź skokowa dla nierozmytego regulatora
 
-zad = ['N' 'Y' 'N' 'N' 'N' 'Y' 'N']; % Zadania, które będą wykonywane
+zad = ['N' 'Y' 'N' 'N' 'N' 'N' 'Y']; % Zadania, które będą wykonywane
 
 if strcmp(zad(1), 'Y')
     punkt_pracy_3;
@@ -123,7 +149,7 @@ if strcmp(zad(2), 'Y')
     odp_skokowa;
 end
 
-k_konc = 1200; % Zmiana k_konc na potrzebę wydłużenia testu regulacji
+k_konc = 400; % Zmiana k_konc na potrzebę wydłużenia testu regulacji
 
 if strcmp(zad(3), 'Y')
     PID_bez_rozmycia;

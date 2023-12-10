@@ -152,7 +152,7 @@ figure;
 stairs(y_dmc_fuz); % Dodać wartość błędu średniokwadratowego do tytułu
 hold on;
 stairs(yzad, ':');
-ylim([min(y_dmc)-0.1 max(y_dmc)+0.1]);
+ylim([min(y_dmc_fuz)-0.1 max(y_dmc_fuz)+0.1]);
 xlabel('k');
 ylabel('y(k)');
 title_str = "Algorytm rozmyty DMC y(k): Liczba regulatorów: " + ...

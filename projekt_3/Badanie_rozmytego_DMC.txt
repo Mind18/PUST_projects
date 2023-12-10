@@ -1,0 +1,58 @@
+Strategia regulacji
+1. Wyznaczenie wyjściowych funkcji przynależności na bazie liczby regulatorow
+2. Dobranie parametrów regulatorów lokalnych DMC na podstawie funkcji przynależności (regulator lokalny możliwie jest jedynym, a przynajmniej najbarzdiej znaczącym regulatorem dla danego u) - symulacja trwa 400 próbek.
+3. Sklejamy lokalne regulatory i dokonuje korekty parametrów/funkcji przynależności do osiągnięcia pożądanych wyników
+
+Badamy przypadki dla 2, 3, 4, 5 i 6 regulatorów lokalnych
+
+Zmienna dokonująca rozmywanie to u(k-1) - uzasadnienie jest w notatkach z badania rozmytego PID
+
+Wyjściowe funkcje przynależności będą zaczerpnięte z doboru parametrów rozmytego PIDa. Powodem jest fakt, że co do idei na funkcje przynależności wpływa kształt ch-ki statycznej, która nie zmienia się w zależności od użytego regulatora. Z tego powodu:
+(Legenda - [początek przyrostu trapezoidu, pkt. gdzie trapezoid osiąga 1, koniec strefy, gdzie trapezoid osiąga 1, pkt. gdzie trapezoid osiąga 0])
+
+Dla 2 regulatorów - [-1 -1 -0.4 0], [-0.4 0 1 1]
+Dla 3 regulatorów - [-1 -1 -0.4 -0.3], [-0.4 -0.3 0 0.2], [0 0.2 1 1]
+Dla 4 regulatorów - [-1 -1 -0.5 -0.4], [-0.5 -0.4 -0.2 -0.1], [-0.25 -0.15 0 0.05], [0 0.05 1 1]
+Dla 5 regulatorów - [-1 -1 -0.6 -0.5], [-0.6 -0.5 -0.3 -0.2], [-0.3 -0.25 -0.15 -0.1], [-0.25 -0.15 0 0.2], [0 0.2 1 1]
+Dla 6 regulatorów - [-1 -1 -0.7 -0.6], [-0.7 -0.6 -0.5 -0.4], [-0.55 -0.45 -0.35 -0.25], [-0.35 -0.25 -0.15 -0.1], [-0.2 -0.15 0 0.05], [0 0.2 1 1]
+
+Przy doborze parametrów algorytmu DMC warto pamiętać, że jako punkt wyjściowy możemy wykorzystać nastawy, które wybraliśmy dla nierozmytego DMC (ponadto z racji na treść zadania 5 projektu początkowo domyślnie ustawiamy każdą lambdę jako 1). Sprwdzimy tą hipotezę:
+
+Przypadek 1: 2 regulatory
+
+Regulator lokalny 1 - [-1 -1 -0.4 0] - pkt. pracy y_zad=-2.2 (y(u)=-2.2 dla około u=-0.8, które jest w strefie gdzie dla pierwszego regulatora lokalnego funkcja przynależności=1)
+
+1. D=88, N=30, N_u=5, lambda=1 - E=46.9246 - Widzimy gasnące oscylacje
+2. D=88, N=30, N_u=10, lambda=1 - E=66.4722 - Oscylacje są teraz niegasnące
+3. D=88, N=30, N_u=3, lambda=1 - E=44.6441 - Oscylacje są bardziej gasnące. Zachowujemy
+
+Zosatwiamy D=88, N=30, N_u=5, lambda=1 (w teście po sklejeniu wyszło, że zadziałał lepiej)
+
+Regulator lokalny 2 - [-0.4 0 1 1] - pkt. pracy y_zad=0.09 (y(u)=0.09 dla około u=0.71, które jest w sterie gdzie dla drugiego regulatora lokalnego funkcja przynależności=1)
+
+1. D=88, N=30, N_u=5, lambda=1 - E=0.062095 - Uzyskujemy bardzo dobrą regulację. Zostawiamy
+
+Zostawiamy D=88, N=30, N_u=5, lambda=1
+
+Etap sklejenia regulatorów dla n_regulatorow=2 (dla lambda=1)
+test - E=240.3279 - REgulator rozmyty działa nieznacznie lepiej niż jego nierozmyty odpowiednik. Wszystko to zasługa dzięki zdolności wyregulowania wartości y_zad=0.1
+
+Przypadek 2: 3 regulatory
+Dla regulatorów lokalnych 1 i 3 przenosimy parametry z poprzedniego przypadku
+
+Regulator lokalny 2 - [-0.4 -0.3 0 0.2] - pkt. pracy y_zad=-0.16 (y(u)=-0.16 dla około u=-0.2, które jest w sterie gdzie dla pierwszego regulatora lokalnego funkcja przynależności=1) - Nastawami wyjściowymi są nastawy dla regulatora loklanego 1
+
+1. D=88, N=30, N_u=5, lambda=1 - E=8.966 - Pojawiają się znaczące oscylacje
+2. D=88, N=30, N_u=3, lambda=1 - E=9.1652 - Oscylacje się pogorszyły
+3. D=88, N=30, N_u=10, lambda=1 - E=8.8863 - Nieznacza poprawa oscylacji
+4. D=88, N=30, N_u=15, lambda=1 - E=8.8852 - Mała poprawa oscylacji
+
+Zosatwiamy D=88, N=30, N_u=10, lambda=1
+
+Etap sklejenia regulatorów dla n_regulatorów=3
+Test - E=230.168 - Widzimy lepszą miarę jakości E jednak sterowanie dla y_zad=-0.2 jest gorsze, ponieważ sygnał wyjściowy wpada w oscylacje, ponadto widzimy poprawną regulacje dla y_zad=0.1, zachowaną regulację dla y_zad=-3 i większe oscylacje dla y_zad=-2.2.
+
+Przypadek 3: 4 regulatory
+Dla regulatorów lokalnych 1 i 4 parametry z pierwszego przypadku
+
+

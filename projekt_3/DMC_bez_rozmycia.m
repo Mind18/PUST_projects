@@ -8,14 +8,19 @@ s_i = s{odp_skok};
 e = zeros(1, k_konc);
 
 % Generacja zmiennej trajektori
-yzad(1:11)=ypp;
-yzad(15:300)=Y_zad(1);
-yzad(301:600)=Y_zad(2);
-yzad(601:900)=Y_zad(3);
-yzad(901:k_konc)=Y_zad(4);
+% yzad(1:11)=ypp;
+% yzad(15:300)=Y_zad(1);
+% yzad(301:600)=Y_zad(2);
+% yzad(601:900)=Y_zad(3);
+% yzad(901:k_konc)=Y_zad(4);
 
 % yzad(1:14)=ypp;
 % yzad(15:k_konc)=Y_zad(1);
+
+% Generacja trajektorii do testu regulatorów lokalnych
+
+yzad(1:14)=ypp;
+yzad(15:k_konc)=-0.16;
 
 % Generacja macierzy M
 for j=1:N_u % dla każdej kolumny macierzy M
