@@ -15,7 +15,7 @@ du_max = 2;
 % Punkt pracy
 upp = 0; ypp = 0;
 
-n_regulatorow = 4; % Liczba regulatorów
+n_regulatorow = 6; % Liczba regulatorów
 kryterium = 'u'; % Wybieramy między u lub y - warunek do ustalenia
                 % wartości funkcji przynależności
 % Strefy rozmycia regulatorów
@@ -107,7 +107,7 @@ elseif n_regulatorow == 6
 
     D_fuz = [88 88 88 88 88 88]; % Horyzonty dynamiki
     N_fuz = [30 30 30 30 30 30];   % Horyzonty predykcji
-    N_u_fuz = [5 5 5 5 5 5];   % Horyzonty sterowania
+    N_u_fuz = [5 3 5 10 15 5];   % Horyzonty sterowania
     lambda_fuz = [1 1 1 1 1 1]; % Parametry lambda lokalnych 
                                     % regulatorów
 end
@@ -115,7 +115,7 @@ end
 % Parametery regulatora DMC
 D = 88; % Horyzont dynamiki
 N = 30;   % Horyzont predykcji 98
-N_u = 15;   % Horyzont sterowania 18
+N_u = 5;   % Horyzont sterowania 18
 lambda = 1;
 Lambda = lambda.*eye(N_u, N_u);
 M = zeros(N, N_u);
@@ -131,8 +131,10 @@ M_fuz = {zeros(N, N_u), zeros(N, N_u), zeros(N, N_u), ...
     zeros(N, N_u), zeros(N, N_u)}; % Macierze M lokalnych regulatorów
 M_p_fuz = {zeros(N, D-1), zeros(N, D-1), zeros(N, D-1), ...
     zeros(N, D-1), zeros(N, D-1)}; % Macierze M_p lokalnych regulatorów
+
+% Wektory U_p lokalnych regulatorów
 U_p_fuz = {zeros(D-1, 1), zeros(D-1, 1), zeros(D-1, 1), ...
-    zeros(D-1, 1), zeros(D-1, 1)}; % Wektory U_p lokalnych regulatorów
+    zeros(D-1, 1), zeros(D-1, 1), zeros(D-1, 1)}; 
 
 e = zeros(1, k_konc);
 e_pid(1:k_konc) = 0; % Błąd średniokwadratowy dla algorytmu PID
@@ -143,7 +145,7 @@ e_dmc_fuz(1:k_konc) = 0; % Błąd średniokwadratowy dla rozmytego DMC
 w = zeros(1, n_regulatorow);
 
 s = {}; % Zestaw dostępnych odp.skokowych
-odp_skok = 4; % Odpowiedź skokowa dla nierozmytego regulatora
+odp_skok = 2; % Odpowiedź skokowa dla nierozmytego regulatora
 
 zad = ['N' 'Y' 'N' 'N' 'N' 'N' 'Y']; % Zadania, które będą wykonywane
 

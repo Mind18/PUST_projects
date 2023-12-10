@@ -108,6 +108,13 @@ Na bazie pozytywnego wyniku tego testu postanowiłem sprawdzić poprzednie regul
 dla n_regulatorow=3 (wykres 31) - E=251.3739 - wnioski z poprzedniego eksperymentu są podtrzymane
 dla n_regulatorow=4 (wykres 41) - E=254.6954 - widzimy, że dla y_zad=-2.2 mamy spore oscylację, dla y_zad=-0.2 osiągamy regulację po dużym przesterowaniu, a y_zad=-3 ma oscylacje
 
+Dla n_regulatorow=6 od razu zastosujemy to podejście
 
+Przypadek 4: 6 regulatorów
 
+Na potrzeby tego przypadku zauważamy, że regulatory lokalne zachowują swoje tendencje (co prawda dla regulatora w pkt. pracy u=-0.2 dla 4 regulatorów lokalnych zastosowaliśmy n_u=10, a nie N_u=5, ale jednak różnica w błędzie była mała). Dlatego pominiemy regulacje wyznaczonych regulatorów i skupimy się na usaleniu nastaw dodawanego regulatora
 
+Regulator lokalny nr 2 - [-0.7 -0.6 -0.5 -0.4] - pkt. pracy y_zad=-1 (y(u)=-1 dla około u=-0.55, które jest w strefie gdzie dla drugiego regulatora lokalnego funkcja przynależności=1)
+
+1. (wykres 21) D=88, N=30, N_u=5, lambda=1 - E=9.0181 - obserwujemy, że występują gasnące oscylacje
+2. (wykres 22) D=88, N=30, N_u=10, lambda=1 - E= - 
