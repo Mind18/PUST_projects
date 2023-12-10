@@ -17,7 +17,7 @@ Dla 6 regulatorów - [-1 -1 -0.7 -0.6], [-0.7 -0.6 -0.5 -0.4], [-0.55 -0.45 -0.3
 
 Przypadek 1: 2 regulatory
 
-Regulator lokalny 1 - [-1 -1 -0.4 0] - pkt. pracy y_zad=-2.2 (y(u)=-2.2 dla około u=-0.8, które jest w sterie gdzie dla pierwszego regulatora lokalnego funkcja przynależności=1)
+Regulator lokalny 1 - [-1 -1 -0.4 0] - pkt. pracy y_zad=-2.2 (y(u)=-2.2 dla około u=-0.8, które jest w strefie gdzie dla pierwszego regulatora lokalnego funkcja przynależności=1)
 
 1. K_r=0.8, T_i=3 i T_d=0.2625 - E=675.6907 - Obiekt znacznie oscyluje
 2. K_r=0.8, T_i=6 i T_d=0.2625 - E=774.2143 - Oscylacje zaczynają zanikać
@@ -72,7 +72,7 @@ Ostateczne f. przynależności - [-1 -1 -0.2 0.1], [-0.1 0.2 1 1]
 2 przypadek: 3 regulatory
 Regulatory lokalne dla f. przynależności [-1 -1 -0.4 -0.3] i [0 0.2 1 1] będą miały nastawy identyczne jak odpowiednio pierwszy i drugi regulator lokalny z przypadku dla 2 regulatorów
 
-Regulator lokalny 2 - [-0.4 -0.3 0 0.2] - pkt. pracy y_zad=-0.16 (y(u)=-0.16 dla około u=-0.2, które jest w sterie gdzie dla pierwszego regulatora lokalnego funkcja przynależności=1)
+Regulator lokalny 2 - [-0.4 -0.3 0 0.2] - pkt. pracy y_zad=-0.16 (y(u)=-0.16 dla około u=-0.2, które jest w sterie gdzie dla pierwszego regulatora lokalnego funkcja przynależności=1) - Nastawami wyjściowymi są nastawy dla regulatora loklanego 1
 
 1. K_r=0.13, T_i=4.75 i T_d=0.45 - E=1.0513 - Regulator nie nadąża z regulacją, znacznie podnoszę K_r
 2. K_r=1, T_i=4.75 i T_d=0.45 - E=0.20214 - Wyraźna poprawa regulacji, ale regulator nadal nie nadąża z regulacją
@@ -103,7 +103,7 @@ Ostateczny regulator lokalny nr 2 - K_r=1, T_i=2.75, T_d=0.42
 3 przypadek: 4 regulatory
 Tak jak w poprzednim przypadku wykorzystamy nastawy regulatorów z porzedniego regulatora rozmytego - nastawy z pierwszego dla poprzedniego regulatora wykorzystamy w pierwszym lokalnym regulatorze dla tego przypadku, drugi regulator lokalny wykorzystamy w drugim regulatorze loklanym dla tego przypadku i nastawy z trzeciego regulatora z poprzedniego przypadku wykorzystamy dla czwartego z tego
 
-Regulator lokalny 3 - [-0.25 -0.15 0 0.05] - pkt. pracy y_zad=-0.06 (y(u)=-0.06 dla około u=0.1, które jest w sterie gdzie dla drugiego regulatora lokalnego funkcja przynależności=1)
+Regulator lokalny 3 - [-0.25 -0.15 0 0.05] - pkt. pracy y_zad=-0.06 (y(u)=-0.06 dla około u=-0.1, które jest w strefie gdzie dla drugiego regulatora lokalnego funkcja przynależności=1) - Nastawami wyjściowymi są nastawy dla regulatora loklanego 2
 
 1. K_r=1.5, T_i=3.75 i T_d=0.42 - E=0.14695 - Uzyskujemy stabilne oscylacje
 2. K_r=1.5, T_i=2.25 i T_d=0.42 - E=0.80515 - Oscylacje wzrosły
@@ -119,3 +119,48 @@ Ostateczne f. przynależności - [-1 -1 -0.5 -0.4], [-0.5 -0.4 -0.2 -0.1], [-0.2
 Ostateczny regulator lokalny nr 3 - K_r=0.6, T_i=3.75, T_d=0.42
 
 4 przypadek: 5 regulatorów
+Regulatory dla których nastawy dobieramy na bazie regulatorów z poprzedniego przypadku (regulator lokalny dla tego przypadku -> regulator z poprzedniego przypadku, którego nastawy dobieramy):
+Regulator nr 1 -> Regulator nr 1
+Regulator nr 3 -> Regulator nr 2
+Regulator nr 4 -> Regulator nr 3
+Regulator nr 5 -> Regulator nr 4
+
+Regulator lokalny 2 - [-0.6 -0.5 -0.3 -0.2] - pkt. pracy y_zad=-0.55 (y(u)=-0.55 dla około u=-0.4, które jest w strefie gdzie dla drugiego regulatora lokalnego funkcja przynależności=1) - Nastawami wyjściowymi są nastawy dla regulatora loklanego 1
+
+1. K_r=0.13, T_i=4.75, T_d=0.45 - E=10.0278 - Sterowanie jest już przyzwoite, jedyne zastrzeżenia to początkowy skok sterowania i wolny czas regulacji
+2. K_r=0.2, T_i=4.75, T_d=0.45 - E=6.4059 - Poprawiliśmy czas regulacji
+3. K_r=0.25, T_i=4.75, T_d=0.45 - E=5.0669 - Kolejna poprawa czasu regulacji
+4. K_r=0.3, T_i=4.75, T_d=0.42 - E=4.1837 - Ponownie poprawiliśmy czas regulacji. Skok sterowania staje się jednak już duży, więc przyjmiemy te parametry za poprawne
+
+Zostawiamy K_r=0.3, T_i=4.75, T_d=0.42
+
+Etap sklejenia regulatorów dla n_regulatorow=5
+1 test - E=363.6793 - Widzimy poprawę jakości sterowania dla wszystkich wartości zadanych  w trajektorii. Różnica w mierze jakości wynika głównie z mniej gwałtownych zmian wartości wyjściowej przy przejściach w trajektorii między y_zad=-3 i y_zad=0.1 oraz przejściu y_zad=-2.2 i y_zad=-0.2. Z drugiej strony skutkuje to mniejszymi szpilkami sterowania w fazie tych przejść co jest dobrym zjawiskiem. Nie dokonujemy zmian w f. przyanleżności
+
+Ostateczne f. przynależności - [-1 -1 -0.6 -0.5], [-0.6 -0.5 -0.3 -0.2], [-0.3 -0.25 -0.15 -0.1], [-0.25 -0.15 0 0.2], [0 0.2 1 1]
+Ostateczny regulator lokalny nr 2 - K_r=0.3, T_i=4.75, T_d=0.42
+
+5 przypadek: 6 regulatorów
+Regulatory dla których nastawy dobieramy na bazie regulatorów z poprzedniego przypadku (regulator lokalny dla tego przypadku -> regulator z poprzedniego przypadku, którego nastawy dobieramy):
+Regulator nr 1 -> Regulator nr 1
+Regulator nr 3 -> Regulator nr 2
+Regulator nr 4 -> Regulator nr 3
+Regulator nr 5 -> Regulator nr 4
+Regulator nr 6 -> Regulator nr 5
+
+Regulator lokalny nr 2 - [-0.7 -0.6 -0.5 -0.4] - pkt. pracy y_zad=-0.55 (y(u)=-1 dla około u=-0.55, które jest w strefie gdzie dla drugiego regulatora lokalnego funkcja przynależności=1) - Nastawami wyjściowymi są nastawy dla regulatora loklanego 3
+1. K_r=0.3, T_i=4.75, T_d=0.42 - E=10.5223 - Widzimy niewielkie i gasnące oscylowanie sygnału wokół wartości zadanej i przez to długi czas regulacji
+2. K_r=0.25, T_i=4.75, T_d=0.42 - E=12.5893 - Pomimo pogorszenia się miary jakości E to regulacja się poprawiła - czas regulacji jest szybszy, a początkowy skok sterowania jest mniejszy
+3. K_r=0.22, T_i=4.75, T_d=0.42 - E=14.3827 - Czas regulacji nieznacznie się pogorszył, ale w zamian poprawił się skok sterowania a początku regulacji
+
+Zostawiamy K_r=0.22, T_i=4.75, T_d=0.42
+
+Etap sklejenia regulatorów dla n_regulatorow=6
+1 test - E=375.2508 - Przebieg regulacji przypomina wartości dla przypadku z n_regulatorow=5, jednak posiada on wyraźniejsze fluktuacje wartości w miejscach w których regulatory lokalne sie przełączają. Jak widzimy pomimo, iż regulacja jest lepsza niż dla regulatora nirozmytego (w oparcie głównie faktu, że osiąga on wartość zadaną dla całej trajektorii zmian) to nadal nie działa on tak dobrze jak przypadki o mniejszej liczbie regulatorów lokalnych. Nie dokonujemy jednak zmian w konfiguracji regulacji rozmytej.
+
+Ostateczne f. przynależności - [-1 -1 -0.7 -0.6], [-0.7 -0.6 -0.5 -0.4], [-0.55 -0.45 -0.35 -0.25], [-0.35 -0.25 -0.15 -0.1], [-0.2 -0.15 0 0.05], [0 0.2 1 1]
+Ostateczny regulator lokalny nr 2 - K_r=0.22, T_i=4.75, T_d=0.42
+
+WNIOSKI (Można je wkleić do sprawka)
+
+Jak widzimy z analizy badań regulacja rozmyta generalnie lepiej realizuje dane jej zadanie regulacji o zmiennej trajektorii niż algorytm nierozmytej regulacji PID. Najlepiej działa regulacja dla przypadku n_regulatorow=5. Warto jednak zauważyć, że dwa najgorzej działające przypadki to te w których mamy 3 i 4 regulatory lokalne. To w połączeniu z faktem, że regulacja rozmyta o 2 regulatorach lokalnych funckjonuje lepiej od tej z trzema i czterema regulatorami oraz to, że regulacja dla 6 regulatorów losowych nie jest najlepszą pokazuje, że nie możemy mówić o relacji proporcjonalnej między liczbą regulatorów lokalnych, a jakością działania regulacji rozmytej. Najważniejszy wniosek to, że przy doborze liczby regulatorów lokalnych najważniejsza jest dobra analiza charakterystyki statycznej obiektu. Dobre wyznaczenie funkcji przynależności tak, aby każdy pokrywał jak różne przedziały liniowości charakterystyki pozwala zapewnić najlepszą jakość regulacji. Ponadto ważne jest dobre wyznaczenie stref przejściowych w których na sterowanie wpływa więcej niż jeden regulator lokalny, ponieważ dobra realizacja tego zadania pozwala znaleźć najlepszy kompromis pomiędzy uniknięciem gwałtownych skoków sterowań spowodowanych natychmiastowym (w znaczeniu bez przechodzenia przez strefę przejściową funkcji przynależności) przełączaniem się między regulatorami, a jakością regulacji z racji na uniknięcie wpływu regulatorów z nastawami nie będącymi optymalnymi dla danej wartości zadanej.

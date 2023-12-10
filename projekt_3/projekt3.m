@@ -29,6 +29,13 @@ elseif n_regulatorow == 3 % Dla n_regulatorow=3
 elseif n_regulatorow == 4
     reg_part = {[-1 -1 -0.5 -0.4], [-0.5 -0.4 -0.2 -0.1], ...
         [-0.25 -0.15 0 0.05], [0 0.05 1 1]};
+elseif n_regulatorow == 5
+    reg_part = {[-1 -1 -0.6 -0.5], [-0.6 -0.5 -0.3 -0.2], ...
+        [-0.3 -0.25 -0.15 -0.1], [-0.25 -0.15 0 0.2], [0 0.2 1 1]};
+elseif n_regulatorow == 6
+    reg_part = {[-1 -1 -0.7 -0.6], [-0.7 -0.6 -0.5 -0.4], ...
+        [-0.55 -0.45 -0.35 -0.25], [-0.35 -0.25 -0.15 -0.1], ...
+        [-0.2 -0.15 0 0.05], [0 0.2 1 1]};
 end
 u_konc = -1:(2/(n_regulatorow-1)):1;
 
@@ -40,7 +47,7 @@ for step=1:size(u_konc, 2)
 end
 
 % Parametry regulatora PID
-K_r = 0.6; T_i = 4; T_d = 0.42;
+K_r = 0.22; T_i = 4.75; T_d = 0.45;
 % Metoda Zieglera-Nicholsa - K_u=1.4 T_u=7.5
 
 % Uzyskane nastawy dla regulatora nierozmytego
@@ -59,6 +66,14 @@ elseif n_regulatorow ==4
     K_r_lok = [0.13 0.6 0.6 1.75];
     T_i_lok = [4.75 2.75 3.75 3];
     T_d_lok = [0.45 0.42 0.42 0.4];
+elseif n_regulatorow == 5
+    K_r_lok = [0.13 0.3 0.6 0.6 1.75];
+    T_i_lok = [4.75 4.75 2.75 3.75 3];
+    T_d_lok = [0.45 0.42 0.42 0.42 0.4];
+elseif n_regulatorow == 6
+    K_r_lok = [0.13 0.22 0.3 0.6 0.6 1.75];
+    T_i_lok = [4.75 4.75 4.75 2.75 3.75 3];
+    T_d_lok = [0.45 0.42 0.42 0.42 0.42 0.4];
 end
 
 % Parametery regulatora DMC
@@ -108,7 +123,7 @@ if strcmp(zad(2), 'Y')
     odp_skokowa;
 end
 
-k_konc = 400; % Zmiana k_konc na potrzebę wydłużenia testu regulacji
+k_konc = 1200; % Zmiana k_konc na potrzebę wydłużenia testu regulacji
 
 if strcmp(zad(3), 'Y')
     PID_bez_rozmycia;
