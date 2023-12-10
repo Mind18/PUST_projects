@@ -148,7 +148,7 @@ Regulator nr 4 -> Regulator nr 3
 Regulator nr 5 -> Regulator nr 4
 Regulator nr 6 -> Regulator nr 5
 
-Regulator lokalny nr 2 - [-0.7 -0.6 -0.5 -0.4] - pkt. pracy y_zad=-0.55 (y(u)=-1 dla około u=-0.55, które jest w strefie gdzie dla drugiego regulatora lokalnego funkcja przynależności=1) - Nastawami wyjściowymi są nastawy dla regulatora loklanego 3
+Regulator lokalny nr 2 - [-0.7 -0.6 -0.5 -0.4] - pkt. pracy y_zad=-1 (y(u)=-1 dla około u=-0.55, które jest w strefie gdzie dla drugiego regulatora lokalnego funkcja przynależności=1) - Nastawami wyjściowymi są nastawy dla regulatora loklanego 3
 1. K_r=0.3, T_i=4.75, T_d=0.42 - E=10.5223 - Widzimy niewielkie i gasnące oscylowanie sygnału wokół wartości zadanej i przez to długi czas regulacji
 2. K_r=0.25, T_i=4.75, T_d=0.42 - E=12.5893 - Pomimo pogorszenia się miary jakości E to regulacja się poprawiła - czas regulacji jest szybszy, a początkowy skok sterowania jest mniejszy
 3. K_r=0.22, T_i=4.75, T_d=0.42 - E=14.3827 - Czas regulacji nieznacznie się pogorszył, ale w zamian poprawił się skok sterowania a początku regulacji

@@ -9,7 +9,7 @@ import trapezoid_assign.*
 k_konc = 1200;
 
 % Inicjalizacja zmiennych
-o = 6; % Nazwa wykresu
+o = '2_5'; % Nazwa wykresu
 
 % warunki początkowe
 u = zeros(1, k_konc);
