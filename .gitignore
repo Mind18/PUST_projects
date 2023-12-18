@@ -1,9 +1,11 @@
 projekt_1/pliki_wynikowe/*
 projekt_2/pliki_wynikowe/*
 projekt_3/pliki_wynikowe/*
+projekt_4/pliki_wynikowe/*
 projekt_1/*.asv
 projekt_2/*.asv
 projekt_3/*.asv
+projekt_4/*.asv
 projekt_1/DMC_dawida.m
 .DS_Store
 *.pdf

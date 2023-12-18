@@ -1,4 +1,4 @@
-import symulacja_obiektu8y_p2.*
+import symulacja_obiektu8y_p3.*
 
 % Inicjalizacja danych
 T_p = 0.5;
