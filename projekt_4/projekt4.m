@@ -5,8 +5,12 @@ clear;
 T_p = 0.5;
 k_konc = 400;
 
-zad = ['Y']; % Zadania, które będą wykonywane
+zad = ['Y', 'Y']; % Zadania, które będą wykonywane
 
 if strcmp(zad(1), 'Y')
     punkt_pracy_4;
+end
+
+if strcmp(zad(2), 'Y')
+    odp_skokowa_4;
 end
