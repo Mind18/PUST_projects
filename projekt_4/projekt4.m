@@ -4,12 +4,16 @@ clear;
 % Inicjalizacja danych
 T_p = 0.5;
 k_konc = 400;
+u_konc = 1;
 
 wejscia = 4;
 wyjscia = 3;
 
 u = cell(1, wejscia); % Sterowania obiektu
 y = cell(1, wyjscia); % Wyjścia obiektu
+
+% Punkt pracy
+upp = 0; ypp = 0;
 
 for j=1:wejscia
     u{j} = zeros(k_konc, 1);
@@ -19,7 +23,7 @@ for i=1:wyjscia
     y{i} = zeros(k_konc, 1);
 end
 
-zad = ['Y', 'Y']; % Zadania, które będą wykonywane
+zad = ['N', 'Y']; % Zadania, które będą wykonywane
 
 if strcmp(zad(1), 'Y')
     punkt_pracy_4;
