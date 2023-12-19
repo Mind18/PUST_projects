@@ -2,10 +2,14 @@
 
 % Inicjalizacja macierzy odpowiedzi skokowych
 
-s = cell(3, 4);
-for i=1:3
-    for j=1:4
+s = cell(wyjscia, wejscia);
+for i=1:wyjscia
+    for j=1:wejscia
         s{i,j} = zeros(k_konc, 1);
     end
 end
 
+figure;
+for i=1:wejscia
+    subplot(3, 1, i);
+end
