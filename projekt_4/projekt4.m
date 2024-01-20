@@ -23,7 +23,7 @@ for i=1:wyjscia
     y{i} = zeros(k_konc, 1);
 end
 
-zad = ['N', 'Y']; % Zadania, które będą wykonywane
+zad = ['Y', 'Y']; % Zadania, które będą wykonywane
 
 if strcmp(zad(1), 'Y')
     punkt_pracy_4;
