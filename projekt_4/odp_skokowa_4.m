@@ -2,11 +2,16 @@
 
 % Inicjalizacja macierzy odpowiedzi skokowych
 
-s = cell(wyjscia, wejscia);
+s = cell(wyjscia, wejscia); % Odp. skokowe do rysowania wykresu
+S = cell(1, D);             % Odp. skokowe do DMC
 for i=1:wyjscia
     for j=1:wejscia
         s{i,j} = zeros(k_konc, 1);
     end
+end
+
+for k=1:D
+    S{k} = zeros(wyjscia, wejscia);
 end
 
 figure;
@@ -28,9 +33,9 @@ end
 export_fig("./pliki_wynikowe/odp_skokowe_u(k).pdf")
 
 figure;
-for j=1:wejscia
-    u{j}(1:k_konc, 1) = upp;
-    u{j}(15:k_konc, 1) = u_konc;
+for n_u=1:wejscia
+    u{n_u}(1:k_konc, 1) = upp;
+    u{n_u}(15:k_konc, 1) = u_konc;
 
     for i=1:wyjscia
         y{i}(1:k_konc) = ypp;
@@ -43,19 +48,25 @@ for j=1:wejscia
         u{4}(k-2), u{4}(k-3), u{4}(k-4), y{1}(k-1), y{1}(k-2), y{1}(k-3), ...
         y{1}(k-4), y{2}(k-1), y{2}(k-2), y{2}(k-3), y{2}(k-4), y{3}(k-1), ...
         y{3}(k-2), y{3}(k-3), y{3}(k-4));
+        
+        if k > 15
+            for n_y=1:wyjscia
+                S{k-15}(n_y, n_u) = y{n_y}(k);
+            end
+        end
     end
 
-    for i=1:wyjscia
-        s{i, j} = y{i};
-        subplot(wejscia, wyjscia, wyjscia*(j-1) + i);
-        plot(1:k_konc, s{i, j});
+    for n_y=1:wyjscia
+        s{n_y, n_u} = y{n_y};
+        subplot(wejscia, wyjscia, wyjscia*(n_u-1) + n_y);
+        plot(1:k_konc, s{n_y, n_u});
         xlabel('k');
-        ylabel('y_{' + string(wyjscia*(j-1) + i) + '}^{' + string(i) + ...
-            ',' + string(j) + '}');
+        ylabel('y_{' + string(wyjscia*(n_u-1) + n_y) + '}^{' + string(n_y) + ...
+            ',' + string(n_u) + '}');
         ylim padded;
     end
 
-    u{j}(1:k_konc, 1) = upp;
+    u{n_u}(1:k_konc, 1) = upp;
 end
 export_fig("./pliki_wynikowe/odp_skokowe_s(k).pdf")
 

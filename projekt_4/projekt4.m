@@ -31,6 +31,12 @@ T_d = [0.2 0.1 0.02];
 % Sparowanie dla regulatora PID wejść obiektu do jego wyjść
 u_dla_y = [4 1 3];
 
+% Parametery regulatora DMC
+D = 400; % Horyzont dynamiki
+N = D;   % Horyzont predykcji 98
+N_u = D;   % Horyzont sterowania 18
+lambda = 1;
+
 for j=1:wejscia
     u{j} = zeros(k_konc, 1);
 end
@@ -39,7 +45,7 @@ for i=1:wyjscia
     y{i} = zeros(k_konc, 1);
 end
 
-zad = ['N', 'N', 'Y']; % Zadania, które będą wykonywane
+zad = ['N', 'Y', 'N']; % Zadania, które będą wykonywane
 
 if strcmp(zad(1), 'Y')
     punkt_pracy_4;
