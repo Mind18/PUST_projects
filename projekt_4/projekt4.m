@@ -33,9 +33,10 @@ u_dla_y = [4 1 3];
 
 % Parametery regulatora DMC
 D = 400; % Horyzont dynamiki
-N = D;   % Horyzont predykcji 98
-N_u = D;   % Horyzont sterowania 18
-lambda = 1;
+N = 10;   % Horyzont predykcji 98
+N_u = 15;   % Horyzont sterowania 18
+psi = [1 2 3];
+lambda = [4 5 6];
 
 for j=1:wejscia
     u{j} = zeros(k_konc, 1);
@@ -45,7 +46,7 @@ for i=1:wyjscia
     y{i} = zeros(k_konc, 1);
 end
 
-zad = ['N', 'Y', 'N']; % Zadania, które będą wykonywane
+zad = ['N', 'N', 'N', 'Y']; % Zadania, które będą wykonywane
 
 if strcmp(zad(1), 'Y')
     punkt_pracy_4;
@@ -58,4 +59,8 @@ end
 if strcmp(zad(3), 'Y')
     k_konc = 1200;
     PID;
+end
+
+if strcmp(zad(4), 'Y')
+    DMC_oszczedny;
 end
