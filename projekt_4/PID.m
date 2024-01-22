@@ -78,6 +78,7 @@ end
 title('u(k)');
 legend('u_1', 'u_2', 'u_3', 'u_4');
 hold off;
+export_fig("./pliki_wynikowe/uzad.pdf")
 
 figure;
 hold on;
@@ -88,4 +89,5 @@ end
 title('y(k)');
 legend('y_1', 'y^{zad}_1', 'y_2', 'y^{zad}_2', 'y_3', 'y^{zad}_3');
 hold off;
+export_fig("./pliki_wynikowe/yzad.pdf")
     
