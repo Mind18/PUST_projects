@@ -65,7 +65,7 @@ if n_regulatorow == 2
     T_i_lok = [4.75 3];
     T_d_lok = [0.45 0.4];
 
-    D_fuz = [88 88]; % Horyzonty dynamiki
+    D_fuz = [88 88];   % Horyzonty dynamiki
     N_fuz = [30 30];   % Horyzonty predykcji
     N_u_fuz = [5 5];   % Horyzonty sterowania
     lambda_fuz = [3.5 1]; % Parametry lambda lokalnych 
@@ -75,7 +75,7 @@ elseif n_regulatorow == 3
     T_i_lok = [4.75 2.75 3];
     T_d_lok = [0.45 0.42 0.4];
 
-    D_fuz = [88 88 88]; % Horyzonty dynamiki
+    D_fuz = [88 88 88];   % Horyzonty dynamiki
     N_fuz = [30 30 30];   % Horyzonty predykcji
     N_u_fuz = [5 10 5];   % Horyzonty sterowania
     lambda_fuz = [5 1.6 1]; % Parametry lambda lokalnych 
