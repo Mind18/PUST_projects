@@ -27,16 +27,38 @@ for i=1:wejscia*N_u
     end
 end
 
-M = zeros(wyjscia*N, wejscia*N_u);
-i = 0;
-for n=1:size(S{1}, 2):size(M, 2)
-    k = 1;
-    for m=(size(S{1}, 1)*i)+1:size(S{1}, 1):size(M, 1)
-        M(m:m+wyjscia-1, n:n+wejscia-1) = S{k};
-        k = k + 1;
+M_cell = cell(N, N_u);
+for j=1:N_u
+    for i=1:N
+        M_cell{i, j} = zeros(wyjscia, wejscia);
     end
-    i = i + 1;
 end
+
+for n=1:N_u
+    for m=n:N
+        M_cell{m, n} = S{m-n+1};
+    end
+end
+M = cell2mat(M_cell);
+
+M_p_cell = cell(N, (D-1));
+for j=1:(D-1)
+    for i=1:N
+        M_p_cell{i, j} = zeros(wyjscia, wejscia);
+    end
+end
+
+for j=1:(D-1)
+    for i=1:N
+        if j+i > D
+            p = D;
+        else
+            p = j+i;
+        end
+        M_p_cell{i, j} = S{p} - S{j};
+    end
+end
+M_p = cell2mat(M_p_cell);
 
 for i=1:wyjscia
     e{i}(1:k_konc) = 0;
