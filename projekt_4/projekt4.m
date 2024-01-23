@@ -24,12 +24,16 @@ y = zeros(wyjscia, k_konc); % Wyjścia obiektu
 upp = 0; ypp = 0;
 
 % Parametry regulatora PID
-K_r = [0.1 0.02 0.5];  % [0.1 0.02 0.002], [0.1 0.02 0.006]
-T_i = [0.3 0.1 2];   % [0.3 0.05 0.02], [0.3 0.05 0.02]
-T_d = [0.2 0.1 1e-6];    % [0.2 0.1 0.02], [0.2 0.1 0.015]
+K_r = [1 1 1];  % [0.1 0.02 0.002], [0.1 0.02 0.006], [0.1 0.02 0.5]
+T_i = [1 1 1];   % [0.3 0.05 0.02], [0.3 0.05 0.02], [0.3 0.1 2]
+T_d = [1 1 1];    % [0.2 0.1 0.02], [0.2 0.1 0.015], [0.2 0.1 1e-6]
 
 % Sparowanie dla regulatora PID wejść obiektu do jego wyjść
 u_dla_y = [4 1 3];
+
+wykres = 1; %numer wykresu
+parameters = sprintf('Kr=%s, Ti=%s, Td=%s', mat2str(K_r), mat2str(T_i), mat2str(T_d)); %Zmienna parametrów do tytułu wykresu
+linia = 1.25;
 
 % Parametery regulatora DMC
 D = 400; % Horyzont dynamiki

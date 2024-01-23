@@ -90,24 +90,49 @@ end
 
 E = e_pid(k_konc); % Zapamiętanie błędu średniokwadratowego E symulacji
 
-figure;
-hold on;
-for i=1:wejscia
-    plot(1:k_konc, u(i, :));
-end
-title('u(k) - PID optymalizacja');
-legend('u_1', 'u_2', 'u_3', 'u_4');
-hold off;
-export_fig("./pliki_wynikowe/PIDOPT_uzad.pdf")
 
+% Tworzenie wykresu u(k)
 figure;
 hold on;
-for i=1:wyjscia
-    plot(1:k_konc, y(i, :));
-    plot(1:k_konc, yzad(i, 1:k_konc));
+for i = 1:wejscia
+    plot(1:k_konc, u(i, :), 'LineWidth', linia); % Dostosowanie grubości linii
 end
-title('y(k) - PID optymalizacja E=' + string(E));
-legend('y_1', 'y^{zad}_1', 'y_2', 'y^{zad}_2', 'y_3', 'y^{zad}_3');
+title(['u(k) - PID optymalizacja ' parameters]);
+legend('u_1', 'u_2', 'u_3', 'u_4', 'Location', 'Best');
 hold off;
-export_fig("./pliki_wynikowe/PIDOPT_yzad.pdf")
+export_fig("./pliki_wynikowe/"+string(wykres)+"PIDOPT_uzad.pdf");
+
+% Tworzenie wykresu y(k) i yzad(k)
+figure;
+hold on;
+for i = 1:wyjscia
+    plot(1:k_konc, y(i, :), 'LineWidth', linia); % Dostosowanie grubości linii
+    plot(1:k_konc, yzad(i, 1:k_konc), 'LineWidth', linia); % Dostosowanie grubości linii
+end
+title(['y(k) - PID optymalizacja E=' num2str(E) ' ' parameters]);
+legend('y_1', 'y^{zad}_1', 'y_2', 'y^{zad}_2', 'y_3', 'y^{zad}_3', 'Location', 'Best');
+hold off;
+export_fig("./pliki_wynikowe/"+string(wykres)+"PIDOPT_yzad.pdf");
+
+% figure;
+% hold on;
+% for i=1:wejscia
+%     plot(1:k_konc, u(i, :));
+% end
+% parameters = sprintf('Kr=%s, Ti=%s, Td=%s', mat2str(K_r), mat2str(T_i), mat2str(T_d));
+% title('u(k) - PID optymalizacja' + parameters);
+% legend('u_1', 'u_2', 'u_3', 'u_4');
+% hold off;
+% export_fig("./pliki_wynikowe/PIDOPT_uzad.pdf")
+% 
+% figure;
+% hold on;
+% for i=1:wyjscia
+%     plot(1:k_konc, y(i, :));
+%     plot(1:k_konc, yzad(i, 1:k_konc));
+% end
+% title('y(k) - PID optymalizacja E=' + string(E) + parameters );
+% legend('y_1', 'y^{zad}_1', 'y_2', 'y^{zad}_2', 'y_3', 'y^{zad}_3');
+% hold off;
+% export_fig("./pliki_wynikowe/PIDOPT_yzad.pdf")
     
