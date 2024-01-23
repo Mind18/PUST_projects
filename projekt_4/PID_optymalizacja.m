@@ -106,7 +106,7 @@ for i=1:wyjscia
     plot(1:k_konc, y(i, :));
     plot(1:k_konc, yzad(i, 1:k_konc));
 end
-title('y(k) - DMC optymalizacja E=' + string(E));
+title('y(k) - PID optymalizacja E=' + string(E));
 legend('y_1', 'y^{zad}_1', 'y_2', 'y^{zad}_2', 'y_3', 'y^{zad}_3');
 hold off;
 export_fig("./pliki_wynikowe/PIDOPT_yzad.pdf")
