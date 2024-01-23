@@ -11,6 +11,17 @@ e = cell(1, wyjscia);
 e_tmp = 0;
 e_pid(1:k_konc) = 0;
 
+K_r = [0.1 0.02 0.002];
+T_i = [0.3 0.01 0.02];
+T_d = [0.2 0.1 0.02];
+
+x0 = [K_r(1), T_i(1), T_d(1), K_r(2), T_i(2), T_d(2), K_r(3), T_i(3), T_d(3)];
+A = [10, 7, 3, 5, 1, 1, 2, 0.5, 1]; % 22.974, 1, 9.81
+b = 10;
+lb = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+ub = [2, 2, 2, 2, 2, 2, 2, 2, 2];
+pid_params = fmincon(@PID_SE, x0, A, b, [], [], lb, ub);
+
 % Warunki początkowe
 for j=1:wejscia
     u(j, :) = zeros(k_konc, 1);
@@ -21,9 +32,11 @@ for i=1:wyjscia
     y(i, :) = zeros(k_konc, 1);
 
     % Współczynniki algorytmu
-    r2(i) = (K_r(i) * T_d(i)) / T_p;
-    r1(i) = K_r(i) * (T_p/(2*T_i(i)) - 2*(T_d(i) / T_p) - 1);
-    r0(i) = K_r(i) * (1 + (T_p / (2*T_i(i))) + (T_d(i)/T_p));
+    r2(i) = (pid_params(1+(i-1)*3) * pid_params(3+(i-1)*3)) / T_p;
+    r1(i) = pid_params(1+(i-1)*3) * (T_p/(2*pid_params(2+(i-1)*3)) - ...
+        2*(pid_params(3+(i-1)*3) / T_p) - 1);
+    r0(i) = pid_params(1+(i-1)*3) * ...
+        (1 + (T_p / (2*pid_params(2+(i-1)*3))) + (pid_params(3+(i-1)*3)/T_p));
 
     % Generacja zmiennej trajektori
     yzad(i, 1:9)=ypp;
@@ -82,7 +95,7 @@ hold on;
 for i=1:wejscia
     plot(1:k_konc, u(i, :));
 end
-title('u(k) - PID');
+title('u(k) - PID optymalizacja');
 legend('u_1', 'u_2', 'u_3', 'u_4');
 hold off;
 export_fig("./pliki_wynikowe/uzad.pdf")
@@ -93,7 +106,7 @@ for i=1:wyjscia
     plot(1:k_konc, y(i, :));
     plot(1:k_konc, yzad(i, 1:k_konc));
 end
-title('y(k) - PID E=' + string(E));
+title('y(k) - DMC optymalizacja E=' + string(E));
 legend('y_1', 'y^{zad}_1', 'y_2', 'y^{zad}_2', 'y_3', 'y^{zad}_3');
 hold off;
 export_fig("./pliki_wynikowe/yzad.pdf")

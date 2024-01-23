@@ -1,7 +1,26 @@
-import symulacja_obiektu8y_p4.*
+function [sqrd_error] = PID_SE(pid_param)
+wejscia = 4;
+wyjscia = 3;
+
+% Punkt pracy
+upp = 0; ypp = 0;
+
+du_min = -2;
+du_max = 2;
+
+u_min = -20;
+u_max = 20;
+
+T_p = 0.5;
+k_konc = 1500;
+y_zad = 1.2;
+Y_zad = {[y_zad 1.8 1 2], [y_zad 1 0.3 0.8], [y_zad 0.8 1.9 0.0]};
 
 % Alokacja wektora sterowań w odpowiednim rozmiarze
 u = zeros(wejscia, k_konc);
+
+% Sparowanie dla regulatora PID wejść obiektu do jego wyjść
+u_dla_y = [4 1 3];
 
 % Inicjacja macierzy trajektorii zadanej
 yzad = zeros(wyjscia, k_konc);
@@ -21,9 +40,11 @@ for i=1:wyjscia
     y(i, :) = zeros(k_konc, 1);
 
     % Współczynniki algorytmu
-    r2(i) = (K_r(i) * T_d(i)) / T_p;
-    r1(i) = K_r(i) * (T_p/(2*T_i(i)) - 2*(T_d(i) / T_p) - 1);
-    r0(i) = K_r(i) * (1 + (T_p / (2*T_i(i))) + (T_d(i)/T_p));
+    r2(i) = (pid_param(1+(i-1)*wyjscia) * pid_param(3+(i-1)*wyjscia)) / T_p;
+    r1(i) = pid_param(1+(i-1)*wyjscia) * (T_p/(2*pid_param(2+(i-1)*wyjscia)) - ...
+        2*(pid_param(3+(i-1)*wyjscia) / T_p) - 1);
+    r0(i) = pid_param(1+(i-1)*wyjscia) * ...
+        (1 + (T_p / (2*pid_param(2+(i-1)*wyjscia))) + (pid_param(3+(i-1)*wyjscia)/T_p));
 
     % Generacja zmiennej trajektori
     yzad(i, 1:9)=ypp;
@@ -75,26 +96,6 @@ for k=10:k_konc
     e_tmp = 0;
 end
 
-E = e_pid(k_konc); % Zapamiętanie błędu średniokwadratowego E symulacji
-
-figure;
-hold on;
-for i=1:wejscia
-    plot(1:k_konc, u(i, :));
+sqrd_error = e_pid(k_konc); % Zapamiętanie błędu średniokwadratowego E symulacji
 end
-title('u(k) - PID');
-legend('u_1', 'u_2', 'u_3', 'u_4');
-hold off;
-export_fig("./pliki_wynikowe/uzad.pdf")
 
-figure;
-hold on;
-for i=1:wyjscia
-    plot(1:k_konc, y(i, :));
-    plot(1:k_konc, yzad(i, 1:k_konc));
-end
-title('y(k) - PID E=' + string(E));
-legend('y_1', 'y^{zad}_1', 'y_2', 'y^{zad}_2', 'y_3', 'y^{zad}_3');
-hold off;
-export_fig("./pliki_wynikowe/yzad.pdf")
-    

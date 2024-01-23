@@ -11,8 +11,8 @@ u_konc = 1;
 du_min = -2;
 du_max = 2;
 
-u_min = -10;
-u_max = 10;
+u_min = -20;
+u_max = 20;
 
 wejscia = 4;
 wyjscia = 3;
@@ -24,9 +24,9 @@ y = zeros(wyjscia, k_konc); % Wyjścia obiektu
 upp = 0; ypp = 0;
 
 % Parametry regulatora PID
-K_r = [0.1 0.02 0.002];  
-T_i = [0.3 0.01 0.02];
-T_d = [0.2 0.1 0.02];
+K_r = [0.1 0.02 0.5];  % [0.1 0.02 0.002], [0.1 0.02 0.006]
+T_i = [0.3 0.1 2];   % [0.3 0.05 0.02], [0.3 0.05 0.02]
+T_d = [0.2 0.1 1e-6];    % [0.2 0.1 0.02], [0.2 0.1 0.015]
 
 % Sparowanie dla regulatora PID wejść obiektu do jego wyjść
 u_dla_y = [4 1 3];
@@ -46,7 +46,7 @@ for i=1:wyjscia
     y(i, :) = zeros(k_konc, 1);
 end
 
-zad = ['Y', 'Y', 'N', 'Y']; % Zadania, które będą wykonywane
+zad = ['Y', 'Y', 'Y', 'N', 'Y']; % Zadania, które będą wykonywane
 
 if strcmp(zad(1), 'Y')
     punkt_pracy_4;
@@ -57,11 +57,16 @@ if strcmp(zad(2), 'Y')
 end
 
 if strcmp(zad(3), 'Y')
-    k_konc = 1200;
+    k_konc = 2000;
     PID;
 end
 
 if strcmp(zad(4), 'Y')
-    k_konc = 1200;
+    k_konc = 2000;
     DMC_oszczedny;
+end
+
+if strcmp(zad(5), 'Y')
+    k_konc = 2000;
+    PID_optymalizacja;
 end

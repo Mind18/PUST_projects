@@ -77,10 +77,10 @@ for i=1:wyjscia
 
     % Generacja zmiennej trajektori
     yzad(i, 1:9)=ypp;
-    yzad(i, 10:300)=Y_zad{i}(1);
-    yzad(i, 301:600)=Y_zad{i}(2);
-    yzad(i, 601:900)=Y_zad{i}(3);
-    yzad(i, 901:k_konc)=Y_zad{i}(4);
+    yzad(i, 10:500)=Y_zad{i}(1);
+    yzad(i, 501:1000)=Y_zad{i}(2);
+    yzad(i, 1001:1500)=Y_zad{i}(3);
+    yzad(i, 1501:k_konc)=Y_zad{i}(4);
 end
 
 % Wyznaczenie wektora współczynników K
