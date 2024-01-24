@@ -31,7 +31,7 @@ Lambda = zeros(wejscia*N_u, wejscia*N_u);
 lambda_inputed = 1;
 for i=1:wejscia*N_u
     Lambda(i, i) = lambda(lambda_inputed);
-    if lambda_inputed == wyjscia
+    if lambda_inputed == wejscia
         lambda_inputed = 1;
     else
         lambda_inputed = lambda_inputed + 1;
@@ -163,7 +163,7 @@ for i=1:wyjscia
     plot(1:k_konc, y(i, :));
     plot(1:k_konc, yzad(i, 1:k_konc));
 end
-title('y(k)');
+title('y(k) - DMC E=' + string(E));
 legend('y_1', 'y^{zad}_1', 'y_2', 'y^{zad}_2', 'y_3', 'y^{zad}_3');
 hold off;
 export_fig("./pliki_wynikowe/DMC_yzad.pdf")

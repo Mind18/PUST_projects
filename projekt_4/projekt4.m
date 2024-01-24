@@ -3,7 +3,7 @@ clear;
 
 % Inicjalizacja danych
 T_p = 0.5;
-k_konc = 400;
+k_konc = 600;
 y_zad = 1.2;
 Y_zad = {[y_zad 1.8 1 2], [y_zad 1 0.3 0.8], [y_zad 0.8 1.9 0.0]};
 u_konc = 1;
@@ -37,10 +37,10 @@ linia = 1.25;
 
 % Parametery regulatora DMC
 D = 400; % Horyzont dynamiki
-N = D;   % Horyzont predykcji 98
-N_u = D;   % Horyzont sterowania 18
-psi = [1 1 1];
-lambda = [5.4 8.7 6.1 25]; % 12 9 6 20
+N = 80;   % Horyzont predykcji 400 -> 80
+N_u = 8;   % Horyzont sterowania 400 -> 80 -> 8
+psi = [5.5 1 2]; % [1 1 1] -> [5.5 1 3.5]
+lambda = [20 10 5 0.1]; % [1 1 1 1] -> [20 10 5 0.1] - przed psi
 
 for j=1:wejscia
     u(j, :) = zeros(k_konc, 1);
@@ -50,7 +50,7 @@ for i=1:wyjscia
     y(i, :) = zeros(k_konc, 1);
 end
 
-zad = ['Y', 'Y', 'Y', 'N', 'Y']; % Zadania, które będą wykonywane
+zad = ['Y', 'Y', 'N', 'Y', 'N']; % Zadania, które będą wykonywane
 
 if strcmp(zad(1), 'Y')
     punkt_pracy_4;
