@@ -16,10 +16,10 @@ T_i = [0.3 0.01 0.02];
 T_d = [0.2 0.1 0.02];
 
 x0 = [K_r(1), T_i(1), T_d(1), K_r(2), T_i(2), T_d(2), K_r(3), T_i(3), T_d(3)];
-A = [10, 7, 3, 5, 1, 1, 2, 0.5, 1]; % 22.974, 1, 9.81
-b = 10;
+A = [1, 0.7, 0.3, 5, 1, 1, 1, 0.01, 1]; % 22.974, 1, 9.81
+b = 100;
 lb = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-ub = [2, 2, 2, 2, 2, 2, 2, 2, 2];
+ub = [4, 4, 4, 4, 4, 4, 1, 4, 1];
 pid_params = fmincon(@PID_SE, x0, A, b, [], [], lb, ub);
 
 % Warunki początkowe
@@ -90,24 +90,49 @@ end
 
 E = e_pid(k_konc); % Zapamiętanie błędu średniokwadratowego E symulacji
 
-figure;
-hold on;
-for i=1:wejscia
-    plot(1:k_konc, u(i, :));
-end
-title('u(k) - PID optymalizacja');
-legend('u_1', 'u_2', 'u_3', 'u_4');
-hold off;
-export_fig("./pliki_wynikowe/uzad.pdf")
 
+% Tworzenie wykresu u(k)
 figure;
 hold on;
-for i=1:wyjscia
-    plot(1:k_konc, y(i, :));
-    plot(1:k_konc, yzad(i, 1:k_konc));
+for i = 1:wejscia
+    plot(1:k_konc, u(i, :), 'LineWidth', linia); % Dostosowanie grubości linii
 end
-title('y(k) - DMC optymalizacja E=' + string(E));
-legend('y_1', 'y^{zad}_1', 'y_2', 'y^{zad}_2', 'y_3', 'y^{zad}_3');
+title(['u(k) - PID optymalizacja ' parameters]);
+legend('u_1', 'u_2', 'u_3', 'u_4', 'Location', 'Best');
 hold off;
-export_fig("./pliki_wynikowe/yzad.pdf")
+export_fig("./pliki_wynikowe/"+string(wykres)+"PIDOPT_uzad.pdf");
+
+% Tworzenie wykresu y(k) i yzad(k)
+figure;
+hold on;
+for i = 1:wyjscia
+    plot(1:k_konc, y(i, :), 'LineWidth', linia); % Dostosowanie grubości linii
+    plot(1:k_konc, yzad(i, 1:k_konc), 'LineWidth', linia); % Dostosowanie grubości linii
+end
+title(['y(k) - PID optymalizacja E=' num2str(E) ' ' parameters]);
+legend('y_1', 'y^{zad}_1', 'y_2', 'y^{zad}_2', 'y_3', 'y^{zad}_3', 'Location', 'Best');
+hold off;
+export_fig("./pliki_wynikowe/"+string(wykres)+"PIDOPT_yzad.pdf");
+
+% figure;
+% hold on;
+% for i=1:wejscia
+%     plot(1:k_konc, u(i, :));
+% end
+% parameters = sprintf('Kr=%s, Ti=%s, Td=%s', mat2str(K_r), mat2str(T_i), mat2str(T_d));
+% title('u(k) - PID optymalizacja' + parameters);
+% legend('u_1', 'u_2', 'u_3', 'u_4');
+% hold off;
+% export_fig("./pliki_wynikowe/PIDOPT_uzad.pdf")
+% 
+% figure;
+% hold on;
+% for i=1:wyjscia
+%     plot(1:k_konc, y(i, :));
+%     plot(1:k_konc, yzad(i, 1:k_konc));
+% end
+% title('y(k) - PID optymalizacja E=' + string(E) + parameters );
+% legend('y_1', 'y^{zad}_1', 'y_2', 'y^{zad}_2', 'y_3', 'y^{zad}_3');
+% hold off;
+% export_fig("./pliki_wynikowe/PIDOPT_yzad.pdf")
     

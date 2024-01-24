@@ -3,7 +3,7 @@ clear;
 
 % Inicjalizacja danych
 T_p = 0.5;
-k_konc = 400;
+k_konc = 600;
 y_zad = 1.2;
 Y_zad = {[y_zad 1.8 1 2], [y_zad 1 0.3 0.8], [y_zad 0.8 1.9 0.0]};
 u_konc = 1;
@@ -24,19 +24,33 @@ y = zeros(wyjscia, k_konc); % Wyjścia obiektu
 upp = 0; ypp = 0;
 
 % Parametry regulatora PID
-K_r = [0.1 0.02 0.5];  % [0.1 0.02 0.002], [0.1 0.02 0.006]
-T_i = [0.3 0.1 2];   % [0.3 0.05 0.02], [0.3 0.05 0.02]
-T_d = [0.2 0.1 1e-6];    % [0.2 0.1 0.02], [0.2 0.1 0.015]
+K_r = [0.1 0.02 0.5];  % [0.1 0.02 0.002], [0.1 0.02 0.006], [0.1 0.02 0.5]
+T_i = [0.3 0.1 2];   % [0.3 0.05 0.02], [0.3 0.05 0.02], [0.3 0.1 2]
+T_d = [0.2 0.1 1e-6];    % [0.2 0.1 0.02], [0.2 0.1 0.015], [0.2 0.1 1e-6]
+
+% Dla konfiguracji u_dla_y = [2 1 4]
+% K_r = [0.1 0.02 0.5];
+% T_i = [0.3 0.1 2];
+% T_d = [0.2 0.1 0.0001];
+
+% Dla konfiguracji u_dla_y = [2 1 4]
+% K_r = [0.1 0.02 0.5];
+% T_i = [0.3 0.1 2];
+% T_d = [0.2 0.1 0.0001];
 
 % Sparowanie dla regulatora PID wejść obiektu do jego wyjść
-u_dla_y = [4 1 3];
+u_dla_y = [4 1 3]; % [4 1 3]
+
+wykres = 1; %numer wykresu
+parameters = sprintf('Kr=%s, Ti=%s, Td=%s', mat2str(K_r), mat2str(T_i), mat2str(T_d)); %Zmienna parametrów do tytułu wykresu
+linia = 1.25;
 
 % Parametery regulatora DMC
 D = 400; % Horyzont dynamiki
-N = D;   % Horyzont predykcji 98
-N_u = D;   % Horyzont sterowania 18
-psi = [0.25 0.35 0.25]; % [1 1 1] -> [0.2 0.2 0.2] -> [0.25 0.35 0.25] -> [0.25 0.35 0.25]
-lambda = [1 1 1 6]; % [1 1 1 1] -> [1 1 1 1] -> [1 1 1 1] -> [1 1 1 6]
+N = 80;   % Horyzont predykcji 400 -> 80
+N_u = 8;   % Horyzont sterowania 400 -> 80 -> 8
+psi = [5.5 1 2]; % [1 1 1] -> [5.5 1 3.5]
+lambda = [20 10 5 0.1]; % [1 1 1 1] -> [20 10 5 0.1] - przed psi
 
 for j=1:wejscia
     u(j, :) = zeros(k_konc, 1);
