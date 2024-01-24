@@ -4,8 +4,8 @@ wyjscia = 3;
 
 % Horyzonty regulatora
 D = 400;
-N = D;
-N_u = D;
+N = 80;
+N_u = 8;
 
 psi = [dmc_param(1) dmc_param(2) dmc_param(3)];
 lambda = [dmc_param(4) dmc_param(5) dmc_param(6) dmc_param(7)];

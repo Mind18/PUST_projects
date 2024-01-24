@@ -92,6 +92,8 @@ if strcmp(zad(6), 'Y')
 end
 
 if strcmp(zad(7), 'Y')
+    psi = [5.5 1 2];
+    lambda = [20 10 5 0.1];
     k_konc = 2000;
     DMC_klasyczne;
 end

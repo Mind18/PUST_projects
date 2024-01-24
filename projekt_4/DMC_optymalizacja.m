@@ -22,10 +22,13 @@ b = 50;
 lb = [0, 0, 0, 0, 0, 0, 0];
 ub = [10, 10, 10, 50, 25, 10, 10];
 f = @(dmc_param)DMC_SE(dmc_param, S);
-dmc_params = fmincon(f, x0, A, b, [], [], lb, ub);
+% dmc_params = fmincon(f, x0, A, b, [], [], lb, ub);
+% 
+% psi = [dmc_params(1) dmc_params(2) dmc_params(3)];
+% lambda = [dmc_params(4) dmc_params(5) dmc_params(6) dmc_params(7)];
 
-psi = [dmc_params(1) dmc_params(2) dmc_params(3)];
-lambda = [dmc_params(4) dmc_params(5) dmc_params(6) dmc_params(7)];
+psi = [9.4887 9.4746 9.6204];
+lambda = [0.976 1.5806 7.4216 2.1519];
 
 % Generowanie macierzy wagowych
 Psi = zeros(wyjscia*N, wyjscia*N);
@@ -167,7 +170,7 @@ end
 title('u(k) - DMC optymlaizacja');
 legend('u_1', 'u_2', 'u_3', 'u_4');
 hold off;
-export_fig("./pliki_wynikowe/uzad.pdf")
+export_fig("./pliki_wynikowe/dmc_optymalizacja_u.pdf")
 
 figure;
 hold on;
@@ -178,4 +181,4 @@ end
 title('y(k) - DMC optymalizacja E=' + string(E));
 legend('y_1', 'y^{zad}_1', 'y_2', 'y^{zad}_2', 'y_3', 'y^{zad}_3');
 hold off;
-export_fig("./pliki_wynikowe/yzad.pdf")
+export_fig("./pliki_wynikowe/dmc_optymalizacja_y.pdf")
