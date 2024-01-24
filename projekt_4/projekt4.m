@@ -41,16 +41,17 @@ T_d = [0.2 0.1 1e-6];    % [0.2 0.1 0.02], [0.2 0.1 0.015], [0.2 0.1 1e-6]
 % Sparowanie dla regulatora PID wejść obiektu do jego wyjść
 u_dla_y = [4 1 3]; % [4 1 3]
 
-wykres = 1; %numer wykresu
-parameters = sprintf('Kr=%s, Ti=%s, Td=%s', mat2str(K_r), mat2str(T_i), mat2str(T_d)); %Zmienna parametrów do tytułu wykresu
-linia = 1.25;
-
 % Parametery regulatora DMC
 D = 400; % Horyzont dynamiki
 N = 80;   % Horyzont predykcji 400 -> 80
 N_u = 8;   % Horyzont sterowania 400 -> 80 -> 8
 psi = [5.5 1 2]; % [1 1 1] -> [5.5 1 3.5]
 lambda = [20 10 5 0.1]; % [1 1 1 1] -> [20 10 5 0.1] - przed psi
+
+wykres = 1; %numer wykresu
+parameters = sprintf('Kr=%s, Ti=%s, Td=%s', mat2str(K_r), mat2str(T_i), mat2str(T_d)); %Zmienna parametrów do tytułu wykresu
+parametersDMC = sprintf('D=%s, N=%s, Nu=%s, psi=%s, lambda=%s',mat2str(D), mat2str(N), mat2str(N_u), mat2str(psi),mat2str(lambda));
+linia = 1.25;
 
 for j=1:wejscia
     u(j, :) = zeros(k_konc, 1);
@@ -60,7 +61,7 @@ for i=1:wyjscia
     y(i, :) = zeros(k_konc, 1);
 end
 
-zad = ['N', 'Y', 'N', 'Y', 'N', 'N', 'N']; % Zadania, które będą wykonywane
+zad = ['N', 'Y', 'N', 'Y', 'N', 'Y', 'Y']; % Zadania, które będą wykonywane
 
 if strcmp(zad(1), 'Y')
     punkt_pracy_4;

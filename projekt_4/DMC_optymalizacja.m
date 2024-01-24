@@ -17,10 +17,10 @@ e_dmc(1:k_konc) = 0;
 
 % Optymalizacja parametrów
 x0 = [psi(1) psi(2) psi(3) lambda(1) lambda(2) lambda(3) lambda(4)];
-A = [1, 1, 1, 1, 1, 1, 1];
+A = [1, 1, 1, 0.1, 0.1, 1, 1];
 b = 50;
 lb = [0, 0, 0, 0, 0, 0, 0];
-ub = [10, 10, 10, 20, 20, 20, 10];
+ub = [10, 10, 10, 50, 25, 10, 10];
 f = @(dmc_param)DMC_SE(dmc_param, S);
 dmc_params = fmincon(f, x0, A, b, [], [], lb, ub);
 
