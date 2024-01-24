@@ -5,6 +5,7 @@ wyjscia = 3;
 % Punkt pracy
 upp = 0; ypp = 0;
 
+% Inicjacja zmiennych używanych przez funkcje
 du_min = -2;
 du_max = 2;
 
@@ -12,7 +13,7 @@ u_min = -20;
 u_max = 20;
 
 T_p = 0.5;
-k_konc = 1500;
+k_konc = 2000;
 y_zad = 1.2;
 Y_zad = {[y_zad 1.8 1 2], [y_zad 1 0.3 0.8], [y_zad 0.8 1.9 0.0]};
 

@@ -35,8 +35,8 @@ u_dla_y = [4 1 3];
 D = 400; % Horyzont dynamiki
 N = D;   % Horyzont predykcji 98
 N_u = D;   % Horyzont sterowania 18
-psi = [1 1 1];
-lambda = [5.4 8.7 6.1 25]; % 12 9 6 20
+psi = [0.25 0.35 0.25]; % [1 1 1] -> [0.2 0.2 0.2] -> [0.25 0.35 0.25] -> [0.25 0.35 0.25]
+lambda = [1 1 1 6]; % [1 1 1 1] -> [1 1 1 1] -> [1 1 1 1] -> [1 1 1 6]
 
 for j=1:wejscia
     u(j, :) = zeros(k_konc, 1);
@@ -46,7 +46,7 @@ for i=1:wyjscia
     y(i, :) = zeros(k_konc, 1);
 end
 
-zad = ['Y', 'Y', 'Y', 'N', 'Y']; % Zadania, które będą wykonywane
+zad = ['N', 'Y', 'N', 'Y', 'N', 'N', 'N']; % Zadania, które będą wykonywane
 
 if strcmp(zad(1), 'Y')
     punkt_pracy_4;
@@ -69,4 +69,14 @@ end
 if strcmp(zad(5), 'Y')
     k_konc = 2000;
     PID_optymalizacja;
+end
+
+if strcmp(zad(6), 'Y')
+    k_konc = 2000;
+    DMC_optymalizacja;
+end
+
+if strcmp(zad(7), 'Y')
+    k_konc = 2000;
+    DMC_klasyczne;
 end

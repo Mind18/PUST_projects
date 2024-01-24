@@ -12,6 +12,7 @@ U_p = zeros(wejscia*(D-1), 1);
 delta_U = zeros(wejscia, 1);
 
 e = zeros(wyjscia, k_konc);
+e_1 = zeros(wyjscia*N, 1); % Wektor uchybu wykorzystywany w obliczeniach
 e_tmp = 0;
 e_dmc(1:k_konc) = 0;
 
@@ -31,7 +32,7 @@ Lambda = zeros(wejscia*N_u, wejscia*N_u);
 lambda_inputed = 1;
 for i=1:wejscia*N_u
     Lambda(i, i) = lambda(lambda_inputed);
-    if lambda_inputed == wejscia
+    if lambda_inputed == wyjscia
         lambda_inputed = 1;
     else
         lambda_inputed = lambda_inputed + 1;
@@ -86,12 +87,6 @@ end
 % Wyznaczenie wektora współczynników K
 K = ((M'*Psi*M+Lambda)^(-1))*M'*Psi;
 
-% Wyznaczenie macierzy K_e
-K_e = zeros(wejscia, wyjscia);
-for i=0:N-1
-    K_e = K_e + K(1:wejscia, 1+i*wyjscia:(i+1)*wyjscia);
-end
-
 for k=10:k_konc
     % symulacja obiektu
     [y(1, k), y(2, k), y(3, k)] = symulacja_obiektu8y_p4(u(1, k-1), ...
@@ -104,18 +99,16 @@ for k=10:k_konc
     % Wyznaczenie zmiany sterowania
     K_j = zeros(wejscia, 1);
     e(:, k)=yzad(1:wyjscia, k) - y(1:wyjscia, k); % Uchyb regulacji
-    for j=1:D-1
-        K_j_inc = K(1:wejscia, :)*M_p(:, 1+(j-1)*wejscia:j*wejscia);
-        K_j = K_j + K_j_inc*U_p(1+(j-1)*wejscia:j*wejscia);
-    end
-    delta_U = K_e*e(:, k) - K_j;
+    e_1 = e(mod(0:wyjscia*N-1, wyjscia)+1, k);
+    delta_U = K*(e_1-M_p*U_p);
+    delta_u = delta_U(1:wejscia);
     % Ograniczenia zmiany sterowania
     for n_u=1:wejscia
-        if delta_U(n_u) < du_min
-            delta_U(n_u) = du_min;
+        if delta_u(n_u) < du_min
+            delta_u(n_u) = du_min;
         end
-        if delta_U(n_u) > du_max
-            delta_U(n_u) = du_max;
+        if delta_u(n_u) > du_max
+            delta_u(n_u) = du_max;
         end
     end
     % Zapamiętanie zmiany sterowania do kolejnych iteracji
@@ -123,9 +116,9 @@ for k=10:k_konc
         U_p(1+(n-1)*wejscia:n*wejscia, 1) = ...
             U_p(1+(n-2)*wejscia:(n-1)*wejscia, 1);
     end
-    U_p(1:wejscia) = delta_U;
+    U_p(1:wejscia) = delta_u;
     % Dokonanie zmiany wartości sterowania
-    u(:, k) = u(:, k-1) + delta_U;
+    u(:, k) = u(:, k-1) + delta_u;
     % Ograniczenie wartości sterowania
     for n_u=1:wejscia
         if u(n_u, k) < u_min
@@ -152,7 +145,7 @@ hold on;
 for i=1:wejscia
     plot(1:k_konc, u(i, :));
 end
-title('u(k) - DMC oszczędny');
+title('u(k) - DMC klasyczny ');
 legend('u_1', 'u_2', 'u_3', 'u_4');
 hold off;
 export_fig("./pliki_wynikowe/uzad.pdf")
@@ -163,7 +156,7 @@ for i=1:wyjscia
     plot(1:k_konc, y(i, :));
     plot(1:k_konc, yzad(i, 1:k_konc));
 end
-title('y(k) - DMC oszczędny E=' + string(E));
+title('y(k) - DMC klasyczny E=' + string(E));
 legend('y_1', 'y^{zad}_1', 'y_2', 'y^{zad}_2', 'y_3', 'y^{zad}_3');
 hold off;
 export_fig("./pliki_wynikowe/yzad.pdf")
