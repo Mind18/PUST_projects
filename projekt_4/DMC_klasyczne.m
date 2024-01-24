@@ -143,21 +143,21 @@ E = e_dmc(k_konc); % Zapamiętanie błędu średniokwadratowego E symulacji
 figure;
 hold on;
 for i=1:wejscia
-    plot(1:k_konc, u(i, :));
+    plot(1:k_konc, u(i, :),'LineWidth', linia);
 end
-title('u(k) - DMC klasyczny ');
-legend('u_1', 'u_2', 'u_3', 'u_4');
+title(['u(k) - DMC klasyczny ' parametersDMC]);
+legend('u_1', 'u_2', 'u_3', 'u_4', 'Location', 'Best');
 hold off;
-export_fig("./pliki_wynikowe/uzad.pdf")
+export_fig("./pliki_wynikowe/"+string(wykres)+"DMCKLAS_uzad.pdf")
 
 figure;
 hold on;
 for i=1:wyjscia
-    plot(1:k_konc, y(i, :));
-    plot(1:k_konc, yzad(i, 1:k_konc));
+    plot(1:k_konc, y(i, :),'LineWidth', linia);
+    plot(1:k_konc, yzad(i, 1:k_konc),'LineWidth', linia);
 end
-title('y(k) - DMC klasyczny E=' + string(E));
-legend('y_1', 'y^{zad}_1', 'y_2', 'y^{zad}_2', 'y_3', 'y^{zad}_3');
+title(['y(k) - DMC klasyczny E=' string(E) ' ' parametersDMC]);
+legend('y_1', 'y^{zad}_1', 'y_2', 'y^{zad}_2', 'y_3', 'y^{zad}_3', 'Location', 'Best');
 hold off;
-export_fig("./pliki_wynikowe/yzad.pdf")
+export_fig("./pliki_wynikowe/"+string(wykres)+"DMCKLAS_yzad.pdf")
     
