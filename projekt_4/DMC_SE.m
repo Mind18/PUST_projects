@@ -1,4 +1,28 @@
-import symulacja_obiektu8y_p4.*
+function [sqrd_error] = DMC_SE(dmc_param, S)
+wejscia = 4;
+wyjscia = 3;
+
+% Horyzonty regulatora
+D = 400;
+N = D;
+N_u = D;
+
+psi = [dmc_param(1) dmc_param(2) dmc_param(3)];
+lambda = [dmc_param(4) dmc_param(5) dmc_param(6) dmc_param(7)];
+
+% Punkt pracy
+upp = 0; ypp = 0;
+
+% Inicjacja zmiennych używanych przez funkcje
+du_min = -2;
+du_max = 2;
+
+u_min = -20;
+u_max = 20;
+
+k_konc = 2000;
+y_zad = 1.2;
+Y_zad = {[y_zad 1.8 1 2], [y_zad 1 0.3 0.8], [y_zad 0.8 1.9 0.0]};
 
 % Alokacja wektora sterowań w odpowiednim rozmiarze
 u = zeros(wejscia, k_konc);
@@ -31,7 +55,7 @@ Lambda = zeros(wejscia*N_u, wejscia*N_u);
 lambda_inputed = 1;
 for i=1:wejscia*N_u
     Lambda(i, i) = lambda(lambda_inputed);
-    if lambda_inputed == wejscia
+    if lambda_inputed == wyjscia
         lambda_inputed = 1;
     else
         lambda_inputed = lambda_inputed + 1;
@@ -145,30 +169,6 @@ for k=10:k_konc
     e_tmp = 0;
 end
 
-E = e_dmc(k_konc); % Zapamiętanie błędu średniokwadratowego E symulacji
-
-figure;
-hold on;
-for i=1:wejscia
-    plot(1:k_konc, u(i, :),'LineWidth', linia);
+sqrd_error = e_dmc(k_konc); % Zapamiętanie błędu średniokwadratowego E symulacji
 end
 
-title(['u(k)' parametersDMC]);
-legend('u_1', 'u_2', 'u_3', 'u_4', 'Location', 'Best');
-
-hold off;
-export_fig("./pliki_wynikowe/"+string(wykres)+"DMC_uzad.pdf")
-
-figure;
-hold on;
-for i=1:wyjscia
-    plot(1:k_konc, y(i, :),'LineWidth', linia);
-    plot(1:k_konc, yzad(i, 1:k_konc),'LineWidth', linia);
-end
-
-title(['y(k) - DMC E=' string(E) ' ' parametersDMC]);
-legend('y_1', 'y^{zad}_1', 'y_2', 'y^{zad}_2', 'y_3', 'y^{zad}_3', 'Location', 'Best');
-
-hold off;
-export_fig("./pliki_wynikowe/"+string(wykres)+"DMC_yzad.pdf")
-    
