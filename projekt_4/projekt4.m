@@ -60,7 +60,7 @@ for i=1:wyjscia
     y(i, :) = zeros(k_konc, 1);
 end
 
-zad = ['Y', 'Y', 'Y', 'N', 'N']; % Zadania, które będą wykonywane
+zad = ['N', 'Y', 'N', 'Y', 'N', 'N', 'N']; % Zadania, które będą wykonywane
 
 if strcmp(zad(1), 'Y')
     punkt_pracy_4;
@@ -83,4 +83,14 @@ end
 if strcmp(zad(5), 'Y')
     k_konc = 2000;
     PID_optymalizacja;
+end
+
+if strcmp(zad(6), 'Y')
+    k_konc = 2000;
+    DMC_optymalizacja;
+end
+
+if strcmp(zad(7), 'Y')
+    k_konc = 2000;
+    DMC_klasyczne;
 end

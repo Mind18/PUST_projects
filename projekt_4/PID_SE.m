@@ -5,6 +5,7 @@ wyjscia = 3;
 % Punkt pracy
 upp = 0; ypp = 0;
 
+% Inicjacja zmiennych używanych przez funkcje
 du_min = -2;
 du_max = 2;
 
